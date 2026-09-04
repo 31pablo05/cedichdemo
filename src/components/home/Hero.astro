@@ -1,0 +1,236 @@
+---
+import { site, getWhatsappLink } from '../../data/site.js';
+
+const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
+---
+
+<section
+  class="relative w-full overflow-hidden pt-[132px] pb-12 md:min-h-[600px] md:pt-[164px] md:pb-14"
+  style={{ backgroundImage: 'var(--gradient-navy)' }}
+>
+  <!-- Patrón hexagonal decorativo -->
+  <svg
+    class="absolute inset-0 w-full h-full opacity-[0.06] pointer-events-none"
+    aria-hidden="true"
+  >
+    <defs>
+      <pattern
+        id="hero-hex"
+        width="56"
+        height="98"
+        patternUnits="userSpaceOnUse"
+      >
+        <polygon
+          points="28,0 56,14 56,42 28,56 0,42 0,14"
+          fill="none"
+          stroke="var(--color-cyan)"
+          stroke-width="1"
+        />
+        <polygon
+          points="28,42 56,56 56,84 28,98 0,84 0,56"
+          fill="none"
+          stroke="var(--color-cyan)"
+          stroke-width="1"
+        />
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hero-hex)" />
+  </svg>
+
+  <!-- Imagen de fondo: columna derecha en desktop, fondo completo en mobile -->
+  <div class="absolute inset-0 md:left-[46%] hero-image-enter">
+    <!-- Respaldo mientras no exista la foto: PENDIENTE CLIENTE, va detrás de la foto real -->
+    <div
+      class="absolute inset-0 flex items-center justify-center"
+      style={{
+        backgroundImage: 'var(--gradient-navy)',
+        backgroundSize: '220% 100%',
+        backgroundPosition: 'right center',
+      }}
+    >
+      <img
+        src="/imagenes/herodesktop1.png"
+        alt=""
+        width="200"
+        height="200"
+        class="w-32 h-32 md:w-48 md:h-48 opacity-[0.08]"
+      />
+    </div>
+
+    {/* PENDIENTE CLIENTE: reemplazar por foto institucional del centro o del equipo */}
+    <img
+      src="/imagenes/herodesktop2.png"
+      alt="Equipo médico de CEDICH en el centro de endoscopía"
+      width="1200"
+      height="900"
+      loading="eager"
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+
+    <!-- Capa 1: degradado horizontal para apoyar el texto -->
+    <div
+      class="absolute inset-0"
+      style={{
+        backgroundImage:
+          'linear-gradient(to right, var(--color-navy) 0%, color-mix(in srgb, var(--color-navy) 85%, transparent) 15%, color-mix(in srgb, var(--color-navy) 55%, transparent) 30%, color-mix(in srgb, var(--color-navy) 25%, transparent) 42%, transparent 55%)',
+      }}
+    />
+    <!-- Capa 1b: degradado vertical para que la imagen no choque con los bordes de la sección -->
+    <div
+      class="absolute inset-0"
+      style={{
+        backgroundImage:
+          'linear-gradient(to bottom, color-mix(in srgb, var(--color-navy) 40%, transparent) 0%, transparent 30%), linear-gradient(to top, color-mix(in srgb, var(--color-navy) 40%, transparent) 0%, transparent 30%)',
+      }}
+    />
+    <!-- Capa 2: navy multiply para unificar con la paleta -->
+    <div class="absolute inset-0 bg-[var(--color-navy)] opacity-25 mix-blend-multiply" />
+    <!-- Capa 3: patrón hexagonal en blanco -->
+    <svg class="absolute inset-0 w-full h-full opacity-[0.05]" aria-hidden="true">
+      <defs>
+        <pattern id="hero-hex-white" width="56" height="98" patternUnits="userSpaceOnUse">
+          <polygon
+            points="28,0 56,14 56,42 28,56 0,42 0,14"
+            fill="none"
+            stroke="white"
+            stroke-width="1"
+          />
+          <polygon
+            points="28,42 56,56 56,84 28,98 0,84 0,56"
+            fill="none"
+            stroke="white"
+            stroke-width="1"
+          />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hero-hex-white)" />
+    </svg>
+
+    <!-- Capa navy adicional para mobile, donde la foto ocupa todo el fondo -->
+    <div class="absolute inset-0 bg-[var(--color-navy)] opacity-[0.82] md:hidden" />
+  </div>
+
+  <div class="container relative">
+    <div class="max-w-full md:max-w-[46%] md:pr-12 text-left">
+      <p class="eyebrow eyebrow-light reveal reveal-delay-0">RAWSON, CHUBUT</p>
+
+      <h1 class="mt-4 text-white reveal reveal-delay-1">
+        Centro de Endoscopía Digestiva de Chubut
+      </h1>
+
+      <p class="mt-5 text-white/80 text-[17px] max-w-[52ch] reveal reveal-delay-2">
+        Diagnóstico preciso, tecnología de última generación y un equipo comprometido con tu
+        bienestar. Coordinamos tu turno por WhatsApp, sin llamadas ni esperas.
+      </p>
+
+      <div class="mt-[40px] md:mt-8 flex flex-col md:flex-row gap-4 reveal reveal-delay-3">
+        <a
+          href={whatsappTurno}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 rounded-[var(--radius-pill)] text-white px-[28px] py-[14px] shadow-[var(--shadow-card)] transition-all hover:shadow-[var(--shadow-card-hover)] hover:brightness-110"
+          style={{ backgroundImage: 'var(--gradient-blue)' }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
+          </svg>
+          Pedir turno por WhatsApp
+        </a>
+
+        <a
+          href="#pacientes"
+          class="inline-flex items-center justify-center gap-2 rounded-[var(--radius-pill)] text-white border-[1.5px] border-white/35 px-[28px] py-[14px] transition-all hover:border-[var(--color-cyan)] hover:bg-white/[0.06]"
+        >
+          Cómo pedir turno
+        </a>
+      </div>
+
+      <div class="mt-[48px] md:mt-10 pt-6 border-t border-white/[0.12] reveal reveal-delay-4">
+        <div class="flex flex-col md:flex-row gap-[14px] md:gap-7 max-w-[640px]">
+          <div class="flex items-start gap-3 md:flex-1 md:min-w-[168px]">
+            <svg
+              class="w-[22px] h-[22px] shrink-0 text-[var(--color-cyan)]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <circle cx="9" cy="8" r="3" />
+              <path d="M3 20a6 6 0 0 1 12 0" />
+              <circle cx="17" cy="9" r="2.5" />
+              <path d="M15 20a5 5 0 0 1 6-4.9" />
+            </svg>
+            <p class="text-[13px] max-w-none leading-[1.35]">
+              <span class="block text-white font-semibold whitespace-nowrap">Atención cálida</span>
+              <span class="block text-white/60">y personalizada</span>
+            </p>
+          </div>
+
+          <div class="hidden md:block w-px bg-white/[0.12]"></div>
+
+          <div class="flex items-start gap-3 md:flex-1 md:min-w-[168px]">
+            <svg
+              class="w-[22px] h-[22px] shrink-0 text-[var(--color-cyan)]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <rect x="3" y="4" width="18" height="12" rx="1.5" />
+              <path d="M8 20h8" />
+              <path d="M12 16v4" />
+              <path d="M7 9l3 3 2-2 4 4" />
+            </svg>
+            <p class="text-[13px] max-w-none leading-[1.35]">
+              <span class="block text-white font-semibold whitespace-nowrap">Tecnología</span>
+              <span class="block text-white/60">de última generación</span>
+            </p>
+          </div>
+
+          <div class="hidden md:block w-px bg-white/[0.12]"></div>
+
+          <div class="flex items-start gap-3 md:flex-1 md:min-w-[168px]">
+            <svg
+              class="w-[22px] h-[22px] shrink-0 text-[var(--color-cyan)]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+            <p class="text-[13px] max-w-none leading-[1.35]">
+              <span class="block text-white font-semibold whitespace-nowrap">Procedimientos</span>
+              <span class="block text-white/60">seguros y eficaces</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-image-enter img:first-of-type {
+    animation: hero-image-scale 900ms ease-out;
+  }
+
+  @keyframes hero-image-scale {
+    from {
+      transform: scale(1.04);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-image-enter img:first-of-type {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,96 @@
+---
+import { nav } from '../../data/nav.js';
+import { site, getWhatsappLink } from '../../data/site.js';
+import MobileNav from './MobileNav.jsx';
+
+const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 left-0 w-full z-50 h-[76px] bg-[var(--color-navy)] transition-all duration-300"
+>
+  <div class="container h-full flex items-center justify-between gap-4">
+    <a href="#main" class="flex items-center gap-3 shrink-0">
+      <img
+        src="/logos/logo-cedich.png"
+        alt="CEDICH"
+        width="42"
+        height="42"
+        class="h-[42px] w-auto"
+      />
+      <span class="hidden lg:flex flex-col leading-tight">
+        <span class="font-display font-bold text-[20px] text-white">CEDICH</span>
+        <span class="text-[10px] leading-tight text-[var(--color-cyan)]">
+          Centro de Endoscopías Digestivas del Chubut
+        </span>
+      </span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-8">
+      {
+        nav.map((item) => (
+          <a
+            href={item.ancla}
+            class="group relative text-white/85 text-[15px] font-medium transition-colors hover:text-white"
+          >
+            {item.etiqueta}
+            <span class="absolute left-0 -bottom-1 h-[2px] w-0 bg-[var(--color-cyan)] transition-all duration-200 group-hover:w-full" />
+          </a>
+        ))
+      }
+    </nav>
+
+    <a
+      href={whatsappLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hidden lg:inline-flex items-center gap-2 rounded-[var(--radius-pill)] bg-white text-[var(--color-ink)] px-[22px] py-[12px] transition-all hover:bg-[var(--color-surface)] hover:shadow-[var(--shadow-card-hover)]"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
+      </svg>
+      Consultar por WhatsApp
+    </a>
+
+    <div class="flex lg:hidden items-center gap-3">
+      <a
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center justify-center w-11 h-11 rounded-full bg-white text-[var(--color-ink)]"
+        aria-label="Consultar por WhatsApp"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
+        </svg>
+      </a>
+      <MobileNav client:load />
+    </div>
+  </div>
+</header>
+
+<style>
+  #site-header.is-scrolled {
+    background-color: var(--color-navy);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-card);
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+
+  const onScroll = () => {
+    if (!header) return;
+    if (window.scrollY > 40) {
+      header.classList.add('is-scrolled');
+    } else {
+      header.classList.remove('is-scrolled');
+    }
+  };
+
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>

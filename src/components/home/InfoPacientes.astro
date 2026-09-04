@@ -1,0 +1,18 @@
+---
+import { faq } from '../../data/faq.js';
+import Faq from './Faq.jsx';
+import ObrasSociales from './ObrasSociales.astro';
+---
+
+<section class="bg-white py-14 md:py-24">
+  <div class="container">
+    <div class="flex flex-col lg:flex-row gap-6">
+      <div class="lg:w-[58%]">
+        <Faq items={faq} client:visible />
+      </div>
+      <div class="lg:w-[42%]">
+        <ObrasSociales />
+      </div>
+    </div>
+  </div>
+</section>
