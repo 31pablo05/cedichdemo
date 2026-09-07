@@ -1,155 +1,226 @@
 ---
-import { site, getWhatsappLink } from '../../data/site.js';
+import { getWhatsappLink } from '../../data/site.js';
 
 const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
 ---
 
-<section
-  class="relative w-full overflow-hidden pt-[132px] pb-12 md:min-h-[600px] md:pt-[164px] md:pb-14"
-  style={{ backgroundImage: 'var(--gradient-navy)' }}
->
-  <!-- Patrón hexagonal decorativo -->
+<section class="hero relative w-full overflow-hidden">
+  <!-- =====================================================
+       IMAGEN RESPONSIVE DE FONDO
+       Mobile: heromobile2.png
+       Desktop: herodesktop2.png
+  ====================================================== -->
+  <picture class="absolute inset-0 block h-full w-full">
+    <source
+      media="(min-width: 768px)"
+      srcset="/imagenes/herodesktop1.png"
+    />
+
+    <img
+      src="/imagenes/heromob2.png"
+      alt=""
+      width="1080"
+      height="1920"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-background absolute inset-0 h-full w-full object-cover"
+    />
+  </picture>
+
+  <!-- =====================================================
+       OVERLAY DESKTOP
+       Oscuro a la izquierda para el contenido.
+       La imagen queda más visible hacia la derecha.
+  ====================================================== -->
+  <div
+    class="absolute inset-0 hidden md:block"
+    style={{
+      background:
+        'linear-gradient(90deg, rgba(3,18,40,0.98) 0%, rgba(3,18,40,0.95) 24%, rgba(3,18,40,0.84) 38%, rgba(3,18,40,0.55) 52%, rgba(3,18,40,0.18) 72%, rgba(3,18,40,0.08) 100%)',
+    }}
+  ></div>
+
+  <!-- =====================================================
+       OVERLAY MOBILE
+       Mantiene la imagen visible pero permite leer.
+  ====================================================== -->
+  <div
+    class="absolute inset-0 md:hidden"
+    style={{
+      background:
+        'linear-gradient(180deg, rgba(3,18,40,0.88) 0%, rgba(3,18,40,0.76) 35%, rgba(3,18,40,0.78) 65%, rgba(3,18,40,0.95) 100%)',
+    }}
+  ></div>
+
+  <!-- Tinte general -->
+  <div
+    class="absolute inset-0 bg-[var(--color-navy)] opacity-[0.10] mix-blend-multiply"
+  ></div>
+
+  <!-- =====================================================
+       PATRÓN HEXAGONAL
+       Muy sutil. Solo aporta textura.
+  ====================================================== -->
   <svg
-    class="absolute inset-0 w-full h-full opacity-[0.06] pointer-events-none"
+    class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.055]"
     aria-hidden="true"
   >
     <defs>
       <pattern
         id="hero-hex"
-        width="56"
-        height="98"
+        width="64"
+        height="112"
         patternUnits="userSpaceOnUse"
       >
         <polygon
-          points="28,0 56,14 56,42 28,56 0,42 0,14"
+          points="32,0 64,16 64,48 32,64 0,48 0,16"
           fill="none"
           stroke="var(--color-cyan)"
           stroke-width="1"
         />
+
         <polygon
-          points="28,42 56,56 56,84 28,98 0,84 0,56"
+          points="32,48 64,64 64,96 32,112 0,96 0,64"
           fill="none"
           stroke="var(--color-cyan)"
           stroke-width="1"
         />
       </pattern>
     </defs>
+
     <rect width="100%" height="100%" fill="url(#hero-hex)" />
   </svg>
 
-  <!-- Imagen de fondo: columna derecha en desktop, fondo completo en mobile -->
-  <div class="absolute inset-0 md:left-[46%] hero-image-enter">
-    <!-- Respaldo mientras no exista la foto: PENDIENTE CLIENTE, va detrás de la foto real -->
+  <!-- Glow muy sutil -->
+  <div
+    class="pointer-events-none absolute left-[-180px] top-[20%] h-[420px] w-[420px] rounded-full bg-[var(--color-cyan)]/[0.06] blur-[120px]"
+  ></div>
+
+  <!-- =====================================================
+       CONTENIDO
+  ====================================================== -->
+  <div
+    class="container relative z-10 flex min-h-[760px] items-center pt-[118px] pb-12
+           md:min-h-[650px] md:pt-[135px] md:pb-14
+           xl:min-h-[690px]"
+  >
     <div
-      class="absolute inset-0 flex items-center justify-center"
-      style={{
-        backgroundImage: 'var(--gradient-navy)',
-        backgroundSize: '220% 100%',
-        backgroundPosition: 'right center',
-      }}
+      class="w-full text-left
+             md:max-w-[610px]
+             lg:max-w-[650px]
+             xl:max-w-[700px]"
     >
-      <img
-        src="/imagenes/herodesktop1.png"
-        alt=""
-        width="200"
-        height="200"
-        class="w-32 h-32 md:w-48 md:h-48 opacity-[0.08]"
-      />
-    </div>
+      <!-- Ubicación -->
+      <p
+        class="eyebrow eyebrow-light reveal reveal-delay-0
+               text-[12px] tracking-[0.18em]
+               md:text-[13px]"
+      >
+        RAWSON, CHUBUT
+      </p>
 
-    {/* PENDIENTE CLIENTE: reemplazar por foto institucional del centro o del equipo */}
-    <img
-      src="/imagenes/herodesktop2.png"
-      alt="Equipo médico de CEDICH en el centro de endoscopía"
-      width="1200"
-      height="900"
-      loading="eager"
-      class="absolute inset-0 w-full h-full object-cover"
-    />
-
-    <!-- Capa 1: degradado horizontal para apoyar el texto -->
-    <div
-      class="absolute inset-0"
-      style={{
-        backgroundImage:
-          'linear-gradient(to right, var(--color-navy) 0%, color-mix(in srgb, var(--color-navy) 85%, transparent) 15%, color-mix(in srgb, var(--color-navy) 55%, transparent) 30%, color-mix(in srgb, var(--color-navy) 25%, transparent) 42%, transparent 55%)',
-      }}
-    />
-    <!-- Capa 1b: degradado vertical para que la imagen no choque con los bordes de la sección -->
-    <div
-      class="absolute inset-0"
-      style={{
-        backgroundImage:
-          'linear-gradient(to bottom, color-mix(in srgb, var(--color-navy) 40%, transparent) 0%, transparent 30%), linear-gradient(to top, color-mix(in srgb, var(--color-navy) 40%, transparent) 0%, transparent 30%)',
-      }}
-    />
-    <!-- Capa 2: navy multiply para unificar con la paleta -->
-    <div class="absolute inset-0 bg-[var(--color-navy)] opacity-25 mix-blend-multiply" />
-    <!-- Capa 3: patrón hexagonal en blanco -->
-    <svg class="absolute inset-0 w-full h-full opacity-[0.05]" aria-hidden="true">
-      <defs>
-        <pattern id="hero-hex-white" width="56" height="98" patternUnits="userSpaceOnUse">
-          <polygon
-            points="28,0 56,14 56,42 28,56 0,42 0,14"
-            fill="none"
-            stroke="white"
-            stroke-width="1"
-          />
-          <polygon
-            points="28,42 56,56 56,84 28,98 0,84 0,56"
-            fill="none"
-            stroke="white"
-            stroke-width="1"
-          />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#hero-hex-white)" />
-    </svg>
-
-    <!-- Capa navy adicional para mobile, donde la foto ocupa todo el fondo -->
-    <div class="absolute inset-0 bg-[var(--color-navy)] opacity-[0.82] md:hidden" />
-  </div>
-
-  <div class="container relative">
-    <div class="max-w-full md:max-w-[46%] md:pr-12 text-left">
-      <p class="eyebrow eyebrow-light reveal reveal-delay-0">RAWSON, CHUBUT</p>
-
-      <h1 class="mt-4 text-white reveal reveal-delay-1">
+      <!-- H1 -->
+      <h1
+        class="mt-4 max-w-[13ch] text-white
+               text-[42px] leading-[0.99] tracking-[-0.035em]
+               sm:text-[48px]
+               md:text-[56px]
+               lg:text-[62px]
+               xl:text-[66px]
+               reveal reveal-delay-1"
+      >
         Centro de Endoscopía Digestiva de Chubut
       </h1>
 
-      <p class="mt-5 text-white/80 text-[17px] max-w-[52ch] reveal reveal-delay-2">
-        Diagnóstico preciso, tecnología de última generación y un equipo comprometido con tu
-        bienestar. Coordinamos tu turno por WhatsApp, sin llamadas ni esperas.
+      <!-- Bajada -->
+      <p
+        class="mt-6 max-w-[54ch]
+               text-[16px] leading-[1.7] text-white/78
+               md:text-[17px]
+               lg:text-[18px]
+               reveal reveal-delay-2"
+      >
+        Diagnóstico preciso, tecnología de última generación y un
+        equipo comprometido con tu bienestar. Coordinamos tu turno
+        por WhatsApp, sin llamadas ni esperas.
       </p>
 
-      <div class="mt-[40px] md:mt-8 flex flex-col md:flex-row gap-4 reveal reveal-delay-3">
+      <!-- ===================================================
+           CTAs
+      ==================================================== -->
+      <div
+        class="mt-8 flex flex-col gap-3
+               sm:flex-row sm:gap-4
+               reveal reveal-delay-3"
+      >
+        <!-- Principal -->
         <a
           href={whatsappTurno}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center gap-2 rounded-[var(--radius-pill)] text-white px-[28px] py-[14px] shadow-[var(--shadow-card)] transition-all hover:shadow-[var(--shadow-card-hover)] hover:brightness-110"
+          class="group inline-flex min-h-[54px] w-full items-center
+                 justify-center gap-2.5 rounded-[var(--radius-pill)]
+                 px-7 py-3.5 text-[15px] font-semibold text-white
+                 shadow-[var(--shadow-card)]
+                 transition duration-300
+                 hover:-translate-y-[2px]
+                 hover:brightness-110
+                 hover:shadow-[var(--shadow-card-hover)]
+                 sm:w-auto"
           style={{ backgroundImage: 'var(--gradient-blue)' }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <svg
+            class="h-[19px] w-[19px]"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
             <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
           </svg>
+
           Pedir turno por WhatsApp
         </a>
 
+        <!-- Secundario -->
         <a
           href="#pacientes"
-          class="inline-flex items-center justify-center gap-2 rounded-[var(--radius-pill)] text-white border-[1.5px] border-white/35 px-[28px] py-[14px] transition-all hover:border-[var(--color-cyan)] hover:bg-white/[0.06]"
+          class="inline-flex min-h-[54px] w-full items-center
+                 justify-center rounded-[var(--radius-pill)]
+                 border border-white/30
+                 bg-[rgba(5,27,57,0.30)]
+                 px-7 py-3.5 text-[15px] font-semibold text-white
+                 backdrop-blur-[6px]
+                 transition duration-300
+                 hover:-translate-y-[2px]
+                 hover:border-[var(--color-cyan)]
+                 hover:bg-white/[0.08]
+                 sm:w-auto"
         >
           Cómo pedir turno
         </a>
       </div>
 
-      <div class="mt-[48px] md:mt-10 pt-6 border-t border-white/[0.12] reveal reveal-delay-4">
-        <div class="flex flex-col md:flex-row gap-[14px] md:gap-7 max-w-[640px]">
-          <div class="flex items-start gap-3 md:flex-1 md:min-w-[168px]">
+      <!-- ===================================================
+           BENEFICIOS
+      ==================================================== -->
+      <div
+        class="mt-9 border-t border-white/[0.13] pt-6
+               md:mt-10
+               reveal reveal-delay-4"
+      >
+        <div
+          class="grid grid-cols-1 gap-4
+                 min-[390px]:grid-cols-3
+                 md:max-w-[690px] md:grid-cols-3 md:gap-0"
+        >
+          <!-- Atención -->
+          <div
+            class="flex items-start gap-3
+                   min-[390px]:flex-col min-[390px]:gap-2
+                   md:flex-row md:gap-3 md:pr-6"
+          >
             <svg
-              class="w-[22px] h-[22px] shrink-0 text-[var(--color-cyan)]"
+              class="h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -161,17 +232,27 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
               <circle cx="17" cy="9" r="2.5" />
               <path d="M15 20a5 5 0 0 1 6-4.9" />
             </svg>
-            <p class="text-[13px] max-w-none leading-[1.35]">
-              <span class="block text-white font-semibold whitespace-nowrap">Atención cálida</span>
-              <span class="block text-white/60">y personalizada</span>
+
+            <p class="text-[12px] leading-[1.4] md:text-[13px]">
+              <span class="block font-semibold text-white">
+                Atención cálida
+              </span>
+              <span class="mt-0.5 block text-white/60">
+                y personalizada
+              </span>
             </p>
           </div>
 
-          <div class="hidden md:block w-px bg-white/[0.12]"></div>
-
-          <div class="flex items-start gap-3 md:flex-1 md:min-w-[168px]">
+          <!-- Tecnología -->
+          <div
+            class="flex items-start gap-3
+                   min-[390px]:flex-col min-[390px]:gap-2
+                   md:border-l md:border-white/[0.12]
+                   md:px-6
+                   md:flex-row md:gap-3"
+          >
             <svg
-              class="w-[22px] h-[22px] shrink-0 text-[var(--color-cyan)]"
+              class="h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -183,17 +264,27 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
               <path d="M12 16v4" />
               <path d="M7 9l3 3 2-2 4 4" />
             </svg>
-            <p class="text-[13px] max-w-none leading-[1.35]">
-              <span class="block text-white font-semibold whitespace-nowrap">Tecnología</span>
-              <span class="block text-white/60">de última generación</span>
+
+            <p class="text-[12px] leading-[1.4] md:text-[13px]">
+              <span class="block font-semibold text-white">
+                Tecnología
+              </span>
+              <span class="mt-0.5 block text-white/60">
+                de última generación
+              </span>
             </p>
           </div>
 
-          <div class="hidden md:block w-px bg-white/[0.12]"></div>
-
-          <div class="flex items-start gap-3 md:flex-1 md:min-w-[168px]">
+          <!-- Seguridad -->
+          <div
+            class="flex items-start gap-3
+                   min-[390px]:flex-col min-[390px]:gap-2
+                   md:border-l md:border-white/[0.12]
+                   md:pl-6
+                   md:flex-row md:gap-3"
+          >
             <svg
-              class="w-[22px] h-[22px] shrink-0 text-[var(--color-cyan)]"
+              class="h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -203,9 +294,14 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
               <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" />
               <path d="M9 12l2 2 4-4" />
             </svg>
-            <p class="text-[13px] max-w-none leading-[1.35]">
-              <span class="block text-white font-semibold whitespace-nowrap">Procedimientos</span>
-              <span class="block text-white/60">seguros y eficaces</span>
+
+            <p class="text-[12px] leading-[1.4] md:text-[13px]">
+              <span class="block font-semibold text-white">
+                Procedimientos
+              </span>
+              <span class="mt-0.5 block text-white/60">
+                seguros y eficaces
+              </span>
             </p>
           </div>
         </div>
@@ -215,21 +311,48 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
 </section>
 
 <style>
-  .hero-image-enter img:first-of-type {
-    animation: hero-image-scale 900ms ease-out;
+  /*
+   * El background ocupa siempre el hero completo.
+   * Solo modificamos el punto de recorte según dispositivo.
+   */
+
+  .hero-background {
+    object-position: 52% center;
+    animation: hero-image-enter 1200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  @keyframes hero-image-scale {
-    from {
-      transform: scale(1.04);
+  @media (min-width: 768px) {
+    .hero-background {
+      /*
+       * Si necesitás mover el médico/logo:
+       *
+       * más a la derecha -> 60%, 65%, 70%
+       * más a la izquierda -> 45%, 40%
+       */
+      object-position: 62% center;
     }
+  }
+
+  @media (min-width: 1280px) {
+    .hero-background {
+      object-position: center center;
+    }
+  }
+
+  @keyframes hero-image-enter {
+    from {
+      transform: scale(1.035);
+      opacity: 0.7;
+    }
+
     to {
       transform: scale(1);
+      opacity: 1;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-image-enter img:first-of-type {
+    .hero-background {
       animation: none;
     }
   }
