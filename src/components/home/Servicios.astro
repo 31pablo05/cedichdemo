@@ -6,17 +6,17 @@ import SectionHeading from '../ui/SectionHeading.astro';
 /** @type {Record<string, string>} */
 const iconosPaths = {
   estomago:
-    '<path d="M9 3v3.3c0 1.1-1.8 1.6-2.6 3.5-1.1 2.9.2 6 2.9 7.6a5.6 5.6 0 0 0 8-2.4c.7-1.5.2-3.1-1-4.1-.7-.6-1-1-1-1.9v-1.3c1.4-.1 2.5-.7 3-1.9" />',
+    '<path d="M10.8 1.6c-.8 0-1.4.6-1.4 1.4v2.5C6 6.5 3.4 9.7 3.4 13.5c0 4.4 3.6 8 8 8h.3c3 0 5.4-2.4 5.4-5.4 0-2.1-1.2-3.9-3-4.8-.4-.2-.7-.6-.7-1.1V8.8c0-.5.3-.9.8-1 1.4-.4 2.6-1.3 3.2-2.6.4-.8-.2-1.7-1.1-1.7-.5 0-.9.3-1.1.7-.3.6-.9 1-1.6 1h-1.4V3c0-.8-.6-1.4-1.4-1.4z" fill="currentColor" stroke="none"/><path d="M15.8 15.4c1.6 0 2.9 1.3 2.9 2.9v2.3" stroke-width="2.3" stroke-linecap="round"/>',
   colon:
-    '<path d="M5 19V7a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1a2 2 0 0 0-2 2v2" />',
+    '<path d="M4.6 21.5v-11A5.4 5.4 0 0 1 10 5.1h4a5.4 5.4 0 0 1 5.4 5.4v5.1a4 4 0 0 1-4 4h-1.6a2.8 2.8 0 0 0-2.8 2.8" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>',
   higado:
-    '<path d="M5 7c1.5-2.5 6-3.5 10-2.5s5.5 3 5 5.5c-.4 2-2 3-4 3.8-2.3.9-3.5 2-4 4.2" /><path d="M8 18c-1.8-.2-3-1.3-3-3 0-1.6.5-3 1.2-4.3" /><path d="M14 15.5c-1 .8-1.3 2.3-.6 3.5.7 1.3 2.3 1.8 3.6 1.1 1.3-.7 1.8-2.3 1.1-3.6-.6-1.2-2-1.7-3.2-1.3" /><path d="M12.8 15.2l1.4.7" />',
+    '<path d="M2.8 4.6h12.4c2.7 0 4.8 2.2 4.8 4.8 0 3.3-2.3 6.1-5.5 6.7l-2.2.4c-.6.1-1.1-.1-1.4-.6l-.8-1.1-1.2 1c-.4.4-1 .4-1.5.1C4.6 14.3 2 10.6 2 6.4v-1c0-.5.3-.8.8-.8z" fill="currentColor" stroke="none"/><path d="M13.6 17.4c0 1.9 1.2 3.3 2.6 3.3s2.6-1.4 2.6-3.3c0-1.3-.6-2.4-1.5-2.9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
   escudo:
-    '<path d="M12 2.5l8.5 3.2v6.3c0 5-3.6 8.4-8.5 10-4.9-1.6-8.5-5-8.5-10V5.7l8.5-3.2Z" /><path d="M8.3 12.4l2.6 2.6 5.3-5.6" />',
+    '<path d="M12 2.4 3.9 5.4v6.2c0 4.7 3.3 8.4 8.1 9.9 4.8-1.5 8.1-5.2 8.1-9.9V5.4L12 2.4z" stroke-width="2.2" stroke-linejoin="round"/><path d="M8.4 11.9l2.6 2.6 5.1-5.4" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>',
 };
 ---
 
-<section id="servicios" class="relative bg-[var(--color-surface)] pt-14 pb-10 md:pt-24 md:pb-16 overflow-hidden">
+<section id="servicios" class="relative bg-[var(--color-surface)] pt-14 pb-6 md:pt-24 md:pb-16 overflow-hidden">
   <!-- Franja de transición desde el hero oscuro -->
   <div class="pointer-events-none absolute inset-x-0 top-0 h-20" style={{ backgroundImage: 'linear-gradient(to bottom, white 0%, var(--color-surface) 100%)' }}></div>
 
@@ -43,17 +43,17 @@ const iconosPaths = {
     />
 
     <div
-      class="servicios-scroll mt-[28px] md:mt-10 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 mb-20 sm:mx-0 sm:mb-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 sm:snap-none lg:grid-cols-4"
+      class="servicios-scroll mt-[28px] md:mt-10 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 sm:snap-none lg:grid-cols-4"
     >
       {
         servicios.map((servicio, index) => (
           <div
-            class={`servicio-card group reveal reveal-delay-${Math.min(index, 4)} relative h-full w-[78vw] shrink-0 snap-start overflow-hidden flex flex-col bg-white border border-[var(--color-border)] rounded-[var(--radius)] shadow-[var(--shadow-card)] p-6 md:p-[26px] sm:w-auto sm:shrink`}
+            class={`servicio-card group reveal reveal-delay-${Math.min(index, 4)} relative h-full w-[72vw] max-w-[260px] shrink-0 snap-start overflow-hidden flex flex-col bg-white border border-[var(--color-border)] rounded-[var(--radius)] shadow-[var(--shadow-card)] p-5 md:p-[26px] sm:w-auto sm:max-w-none sm:shrink`}
           >
             <span class="servicio-card-accent absolute inset-x-0 top-0 left-0 h-[3px] w-0" />
 
             <span
-              class="servicio-card-index absolute top-3 right-4 font-display font-bold text-[46px] leading-none select-none"
+              class="servicio-card-index absolute top-3 right-4 font-display font-bold text-[34px] sm:text-[46px] leading-none select-none"
               aria-hidden="true"
             >
               {String(index + 1).padStart(2, '0')}
@@ -65,16 +65,15 @@ const iconosPaths = {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="1.5"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   aria-hidden="true"
-                  class="servicio-card-icon w-6 h-6 text-white"
+                  class="servicio-card-icon w-6 h-6 sm:w-[26px] sm:h-[26px] text-white"
                   set:html={iconosPaths[servicio.icono]}
                 />
               </div>
 
-              <h3 class="servicio-card-title mt-5 text-[var(--color-ink)] max-w-[22ch] leading-[1.3] min-h-[2.6em]">{servicio.titulo}</h3>
+              <h3 class="servicio-card-title mt-5 text-[var(--color-ink)] max-w-[22ch] leading-[1.3] sm:min-h-[2.6em]">{servicio.titulo}</h3>
 
               <p class="servicio-card-desc mt-3 text-[14px] text-[var(--color-muted)] leading-[1.6] max-w-none flex-1">
                 {servicio.descripcion}
@@ -104,6 +103,24 @@ const iconosPaths = {
         ))
       }
     </div>
+
+    <p class="mt-3 flex items-center justify-center gap-1 text-[11px] text-[var(--color-muted)] sm:hidden">
+      Deslizá para ver todos los estudios
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M5 12h14" />
+        <path d="M13 6l6 6-6 6" />
+      </svg>
+    </p>
   </div>
 </section>
 

@@ -15,32 +15,55 @@ export default function PreparacionAccordion({ estudios }) {
         const headerId = `preparacion-header-${index}`;
 
         return (
-          <div key={estudio.estudio}>
+          <div
+            key={estudio.estudio}
+            className={`relative overflow-hidden rounded-[var(--radius)] border transition-colors ${
+              isOpen
+                ? 'border-[var(--color-blue)]'
+                : 'border-[var(--color-border)] hover:border-[var(--color-blue)]'
+            }`}
+          >
+            {isOpen && (
+              <span
+                className="absolute inset-y-0 left-0 w-[3px]"
+                style={{ backgroundImage: 'var(--gradient-blue)' }}
+                aria-hidden="true"
+              />
+            )}
+
             <button
               type="button"
               id={headerId}
               aria-expanded={isOpen}
               aria-controls={panelId}
               onClick={() => toggle(index)}
-              className="w-full flex items-center justify-between gap-4 bg-white border border-[var(--color-border)] rounded-[var(--radius)] px-5 py-[18px] transition-colors hover:border-[var(--color-blue)]"
+              className={`w-full flex items-center justify-between gap-4 px-5 py-[18px] transition-colors ${
+                isOpen ? 'bg-[color-mix(in_srgb,var(--color-blue)_6%,white)]' : 'bg-white'
+              }`}
             >
               <span className="font-display text-[16px] font-semibold text-[var(--color-ink)]">
                 {estudio.estudio}
               </span>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="var(--color-blue)"
-                strokeWidth="1.5"
-                className="shrink-0 transition-transform duration-200"
-                style={{ transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}
-                aria-hidden="true"
+              <span
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
+                  isOpen ? 'bg-[var(--color-blue)]' : 'bg-[color-mix(in_srgb,var(--color-blue)_10%,white)]'
+                }`}
               >
-                <path d="M12 5v14" />
-                <path d="M5 12h14" />
-              </svg>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke={isOpen ? 'white' : 'var(--color-blue)'}
+                  strokeWidth="1.5"
+                  className="shrink-0 transition-transform duration-200"
+                  style={{ transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}
+                  aria-hidden="true"
+                >
+                  <path d="M12 5v14" />
+                  <path d="M5 12h14" />
+                </svg>
+              </span>
             </button>
 
             <div
@@ -48,17 +71,17 @@ export default function PreparacionAccordion({ estudios }) {
               role="region"
               aria-labelledby={headerId}
               className="overflow-hidden transition-[max-height] duration-[250ms] ease-in-out"
-              style={{ maxHeight: isOpen ? '600px' : '0px' }}
+              style={{ maxHeight: isOpen ? '900px' : '0px' }}
             >
               <div className="px-5 py-5">
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-wrap gap-2.5">
+                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-blue)_25%,white)] bg-[color-mix(in_srgb,var(--color-blue)_8%,white)] px-3.5 py-2">
                     <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue)"
+                      stroke="var(--color-blue-dark)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
@@ -66,14 +89,14 @@ export default function PreparacionAccordion({ estudios }) {
                       <path d="M12 7v5l3 3" />
                     </svg>
                     <span className="text-[13px] text-[var(--color-muted)]">{estudio.duracion}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-blue)_25%,white)] bg-[color-mix(in_srgb,var(--color-blue)_8%,white)] px-3.5 py-2">
                     <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue)"
+                      stroke="var(--color-blue-dark)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
@@ -82,14 +105,14 @@ export default function PreparacionAccordion({ estudios }) {
                     <span className="text-[13px] text-[var(--color-muted)]">
                       {estudio.sedacion ? 'Con sedación' : 'Sin sedación'}
                     </span>
-                  </div>
-                  <div className="flex items-center gap-2">
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-blue)_25%,white)] bg-[color-mix(in_srgb,var(--color-blue)_8%,white)] px-3.5 py-2">
                     <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue)"
+                      stroke="var(--color-blue-dark)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
@@ -101,30 +124,33 @@ export default function PreparacionAccordion({ estudios }) {
                     <span className="text-[13px] text-[var(--color-muted)]">
                       {estudio.acompanante ? 'Con acompañante' : 'Sin acompañante'}
                     </span>
-                  </div>
+                  </span>
                 </div>
 
-                <ul className="mt-4 flex flex-col gap-2.5">
-                  {estudio.indicaciones.map((indicacion) => (
-                    <li key={indicacion} className="flex items-start gap-2.5">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="var(--color-blue)"
-                        strokeWidth="2"
-                        className="shrink-0 mt-1"
-                        aria-hidden="true"
-                      >
-                        <path d="M5 12.5l4.5 4.5L19 7" />
-                      </svg>
-                      <span className="text-[14px] text-[var(--color-muted)] leading-[1.7]">
-                        {indicacion}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="mt-4 border-t border-[var(--color-border)] pt-4">
+                  <ul className="flex flex-col gap-2.5">
+                    {estudio.indicaciones.map((indicacion) => (
+                      <li key={indicacion} className="flex items-start gap-2.5">
+                        <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--color-blue)_10%,white)]">
+                          <svg
+                            width="13"
+                            height="13"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="var(--color-blue-dark)"
+                            strokeWidth="2"
+                            aria-hidden="true"
+                          >
+                            <path d="M5 12.5l4.5 4.5L19 7" />
+                          </svg>
+                        </span>
+                        <span className="text-[14px] text-[var(--color-muted)] leading-[1.7]">
+                          {indicacion}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
