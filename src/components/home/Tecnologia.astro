@@ -15,14 +15,13 @@ const iconosPaths = {
   class="container my-14 md:my-24"
 >
   <div
-    class="relative rounded-[var(--radius-lg)] overflow-hidden"
+    class="relative flex flex-col-reverse overflow-hidden rounded-[var(--radius-lg)] border border-white/[0.08] shadow-[var(--shadow-card-hover)] lg:block lg:min-h-[620px]"
     style={{ backgroundImage: 'var(--gradient-navy)' }}
   >
     <HexPattern color="var(--color-cyan)" opacity={0.06} />
 
-    <div class="relative flex flex-col-reverse lg:flex-row">
-      <!-- Zona izquierda: texto -->
-      <div class="lg:w-[52%] p-6 md:p-12">
+    <!-- Zona izquierda: texto -->
+    <div class="p-6 md:p-12 lg:relative lg:z-10 lg:w-[55%] lg:p-14">
         <p class="eyebrow eyebrow-light">TECNOLOGÍA Y EQUIPAMIENTO</p>
         <h2 class="mt-4 text-white">Diagnóstico preciso con equipamiento propio</h2>
         <p class="mt-4 text-white/75 text-[15px] max-w-[50ch]">
@@ -30,17 +29,17 @@ const iconosPaths = {
           rápidos, más seguros y con mejor calidad de imagen para vos.
         </p>
 
-        <div class="mt-8 flex flex-row gap-6 md:gap-8 text-center lg:text-left">
+        <div class="mt-8 flex flex-col gap-5">
           {
             tecnologia.map((item) => (
-              <div class="flex-1 flex flex-col items-center lg:items-start">
-                <div class="w-12 h-12 rounded-full border border-[var(--color-cyan)]/40 bg-white/[0.06] flex items-center justify-center">
+              <div class="flex items-start gap-4">
+                <div class="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-[var(--radius)] border border-[var(--color-cyan)]/25 bg-white/[0.08]">
                   <svg
                     width="22"
                     height="22"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="white"
+                    stroke="var(--color-cyan)"
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -48,8 +47,10 @@ const iconosPaths = {
                     set:html={iconosPaths[item.icono]}
                   />
                 </div>
-                <p class="mt-3 text-[13px] font-semibold text-white max-w-[140px]">{item.titulo}</p>
-                <p class="mt-1 text-[12px] text-white/60 max-w-[140px]">{item.descripcion}</p>
+                <div>
+                  <p class="text-[15px] font-semibold text-white">{item.titulo}</p>
+                  <p class="mt-1 text-[14px] text-white/65">{item.descripcion}</p>
+                </div>
               </div>
             ))
           }
@@ -57,44 +58,55 @@ const iconosPaths = {
 
         <a
           href="#servicios"
-          class="mt-8 inline-flex items-center justify-center rounded-[var(--radius-pill)] bg-white text-[var(--color-ink)] px-6 py-3 font-medium"
+          class="group mt-8 inline-flex items-center justify-center gap-2 rounded-[var(--radius-pill)] bg-white text-[var(--color-ink)] px-6 py-3 font-medium"
         >
           Ver estudios que realizamos
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            class="transition-transform group-hover:translate-x-1"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="M13 6l6 6-6 6" />
+          </svg>
         </a>
-      </div>
+    </div>
 
-      <!-- Zona derecha: foto -->
-      <div class="relative lg:w-[48%] aspect-video lg:aspect-auto">
-        <!-- Respaldo mientras no exista la foto: PENDIENTE CLIENTE, foto del endoscopio o sala de estudios -->
-        <div
-          class="absolute inset-0 flex items-center justify-center"
-          style={{ backgroundImage: 'var(--gradient-navy)' }}
-        >
-          <HexPattern color="var(--color-cyan)" opacity={0.06} />
+    <!-- Zona derecha: foto. Panel en mobile, fondo completo de la tarjeta desde lg -->
+    <div class="relative aspect-[16/10] lg:absolute lg:inset-0 lg:aspect-auto">
+        <picture>
+          <source media="(min-width: 1024px)" srcset="/imagenes/equipamiento-desktop.webp" />
           <img
-            src="/logos/logo-cedich.png"
-            alt=""
-            width="160"
-            height="160"
-            class="relative w-28 h-28 md:w-40 md:h-40 opacity-10"
+            src="/imagenes/equipamiento-mobile.webp"
+            alt="Sala de estudios y equipamiento de endoscopía de CEDICH"
+            width="900"
+            height="750"
+            loading="lazy"
+            class="absolute inset-0 h-full w-full object-cover object-center saturate-[.85] lg:object-[60%_50%]"
           />
-        </div>
+        </picture>
 
-        <img
-          src="/imagenes/equipamiento.jpg"
-          alt="Equipamiento de endoscopía de CEDICH"
-          width="800"
-          height="600"
-          loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover"
-        />
+        <div class="absolute inset-0 bg-[var(--color-navy)] opacity-25 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-[var(--color-navy)] opacity-10"></div>
 
         <div
-          class="absolute inset-y-0 left-0 w-1/2"
-          style={{ backgroundImage: 'linear-gradient(to right, var(--color-navy), transparent)' }}
+          class="absolute inset-x-0 bottom-0 h-1/2 lg:hidden"
+          style={{
+            backgroundImage: 'linear-gradient(to bottom, transparent 0%, var(--color-navy) 100%)',
+          }}
         />
-        <div class="absolute inset-0 bg-[var(--color-navy)] opacity-20 mix-blend-multiply"></div>
-      </div>
+        <div
+          class="hidden lg:block lg:absolute lg:inset-0"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, var(--color-navy) 0%, var(--color-navy) 45%, transparent 85%)',
+          }}
+        />
     </div>
   </div>
 </section>
