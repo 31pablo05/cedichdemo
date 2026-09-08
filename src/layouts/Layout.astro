@@ -15,6 +15,22 @@ const {
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url.origin);
+const ogImageAlt = `${site.nombreCompleto} — ${site.nombreCorto}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalOrganization',
+  name: site.nombreCompleto,
+  description,
+  url: (Astro.site ?? Astro.url.origin).toString(),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.direccion,
+    addressLocality: site.localidad,
+  },
+  telephone: site.telefono,
+  sameAs: [site.instagram.url],
+};
 ---
 
 <!doctype html>
@@ -29,6 +45,11 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url.origin);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
     <meta property="og:site_name" content={site.nombreCorto} />
@@ -37,12 +58,15 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url.origin);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="font-body text-[var(--color-ink)] bg-white">
     <a
