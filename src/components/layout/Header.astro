@@ -11,17 +11,19 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
   <div class="header-glow absolute inset-x-0 top-0 h-24 pointer-events-none"></div>
 
   <div class="container relative h-full flex items-center justify-between gap-4">
-    <a href="#main" class="flex items-center gap-2.5 shrink-0 md:gap-3">
-      <img
-        src="/logos/logo-cedich.png"
-        alt="CEDICH"
-        width="42"
-        height="42"
-        class="header-logo h-[36px] w-auto md:h-[42px]"
-      />
+    <a href="/" class="flex items-center gap-2.5 shrink-0 md:gap-3">
+      <span class="header-logo-container flex items-center justify-center rounded-full bg-white p-[5px] md:p-[6px]">
+        <img
+          src="/logos/logo-cedich.png"
+          alt="CEDICH"
+          width="42"
+          height="42"
+          class="header-logo h-[26px] w-auto md:h-[30px]"
+        />
+      </span>
       <span class="flex flex-col leading-tight">
         <span class="font-display font-bold text-[16px] text-white md:text-[20px]">CEDICH</span>
-        <span class="hidden text-[10px] leading-tight text-[var(--color-cyan)] md:block">
+        <span class="hidden text-[10px] leading-tight text-white/70 md:block">
           Centro de Endoscopías Digestivas del Chubut
         </span>
       </span>
@@ -75,6 +77,12 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
     transition: opacity 300ms ease;
   }
 
+  .header-logo-container {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-card);
+    transition: padding 300ms ease, border-color 300ms ease;
+  }
+
   .header-logo {
     transition: height 300ms ease;
   }
@@ -111,8 +119,12 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
     opacity: 0;
   }
 
+  #site-header.is-scrolled .header-logo-container {
+    padding: 4px;
+  }
+
   #site-header.is-scrolled .header-logo {
-    height: 30px;
+    height: 22px;
   }
 
   #site-header.is-scrolled .header-whatsapp {

@@ -46,7 +46,7 @@ export default function PreparacionAccordion({ estudios }) {
               </span>
               <span
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
-                  isOpen ? 'bg-[var(--color-blue)]' : 'bg-[color-mix(in_srgb,var(--color-blue)_10%,white)]'
+                  isOpen ? 'bg-[var(--color-blue)]' : 'bg-[var(--color-cyan-pale)]'
                 }`}
               >
                 <svg
@@ -75,13 +75,13 @@ export default function PreparacionAccordion({ estudios }) {
             >
               <div className="px-5 py-5">
                 <div className="flex flex-wrap gap-2.5">
-                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-blue)_25%,white)] bg-[color-mix(in_srgb,var(--color-blue)_8%,white)] px-3.5 py-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-cyan-light)_40%,var(--color-cyan-pale))] bg-[var(--color-cyan-pale)] px-3.5 py-2">
                     <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue-dark)"
+                      stroke="var(--color-blue)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
@@ -90,13 +90,13 @@ export default function PreparacionAccordion({ estudios }) {
                     </svg>
                     <span className="text-[13px] text-[var(--color-muted)]">{estudio.duracion}</span>
                   </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-blue)_25%,white)] bg-[color-mix(in_srgb,var(--color-blue)_8%,white)] px-3.5 py-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-cyan-light)_40%,var(--color-cyan-pale))] bg-[var(--color-cyan-pale)] px-3.5 py-2">
                     <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue-dark)"
+                      stroke="var(--color-blue)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
@@ -106,13 +106,13 @@ export default function PreparacionAccordion({ estudios }) {
                       {estudio.sedacion ? 'Con sedación' : 'Sin sedación'}
                     </span>
                   </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-blue)_25%,white)] bg-[color-mix(in_srgb,var(--color-blue)_8%,white)] px-3.5 py-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-cyan-light)_40%,var(--color-cyan-pale))] bg-[var(--color-cyan-pale)] px-3.5 py-2">
                     <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue-dark)"
+                      stroke="var(--color-blue)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
@@ -131,13 +131,13 @@ export default function PreparacionAccordion({ estudios }) {
                   <ul className="flex flex-col gap-2.5">
                     {estudio.indicaciones.map((indicacion) => (
                       <li key={indicacion} className="flex items-start gap-2.5">
-                        <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--color-blue)_10%,white)]">
+                        <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-[var(--color-cyan-pale)]">
                           <svg
                             width="13"
                             height="13"
                             viewBox="0 0 24 24"
                             fill="none"
-                            stroke="var(--color-blue-dark)"
+                            stroke="var(--color-blue)"
                             strokeWidth="2"
                             aria-hidden="true"
                           >

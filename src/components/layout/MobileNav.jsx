@@ -120,13 +120,15 @@ export default function MobileNav() {
         <div className="relative flex flex-col h-full px-5 py-6">
           <div className="flex items-center justify-between">
             <a href="#main" onClick={close} className="flex items-center gap-3">
-              <img
-                src="/logos/logo-cedich.png"
-                alt="CEDICH"
-                width="42"
-                height="42"
-                className="h-[42px] w-auto"
-              />
+              <span className="flex items-center justify-center rounded-full bg-white p-[6px] border border-white/15 shadow-[var(--shadow-card)]">
+                <img
+                  src="/logos/logo-cedich.png"
+                  alt="CEDICH"
+                  width="42"
+                  height="42"
+                  className="h-[30px] w-auto"
+                />
+              </span>
               <span className="flex flex-col leading-tight">
                 <span className="font-display font-bold text-[20px] text-white">CEDICH</span>
                 <span className="text-[10px] leading-tight text-[var(--color-cyan)]">

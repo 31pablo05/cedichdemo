@@ -3,18 +3,20 @@
 
 :root {
   /* Azules institucionales */
-  --color-navy-deep: #071527;
-  --color-navy: #0B2140;
-  --color-navy-panel: #0E2C52;
-  --color-blue: #1B7FD4;
-  --color-blue-dark: #0F5FA8;
-  --color-cyan: #4BA9E8;
+  --color-navy-deep: #001A28;
+  --color-navy: #013A4F;
+  --color-navy-panel: #275869;
+  --color-blue: #0E86B8;
+  --color-blue-dark: #086084;
+  --color-cyan: #0BACDB;
+  --color-cyan-light: #7ECDE6;
+  --color-cyan-pale: #CEE4EB;
 
   /* Neutros */
   --color-surface: #F6F9FC;
   --color-surface-alt: #EDF3F9;
   --color-border: #E3EAF2;
-  --color-ink: #0E1D2F;
+  --color-ink: #111317;
   --color-muted: #5C6B7E;
   --color-white: #FFFFFF;
 
@@ -37,8 +39,8 @@
   --shadow-float: 0 8px 28px rgba(0, 0, 0, 0.22);
 
   /* Gradientes */
-  --gradient-navy: linear-gradient(135deg, #071527 0%, #0B2140 55%, #0E2C52 100%);
-  --gradient-blue: linear-gradient(135deg, #1B7FD4 0%, #0F5FA8 100%);
+  --gradient-navy: linear-gradient(135deg, #001A28 0%, #013A4F 55%, #275869 100%);
+  --gradient-blue: linear-gradient(135deg, #0E86B8 0%, #086084 100%);
 }
 
 html {
@@ -107,6 +109,12 @@ p {
 @media (min-width: 768px) {
   .container {
     padding-inline: 40px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1360px;
   }
 }
 

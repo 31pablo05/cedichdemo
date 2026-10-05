@@ -14,7 +14,7 @@ export const site = {
   ],
   instagram: {
     url: 'https://www.instagram.com/cedicharg/',
-    usuario: '@cedich_arg',
+    usuario: '@cedicharg',
   },
   facebook: {
     url: 'https://www.facebook.com/cedichendoscopia/',
