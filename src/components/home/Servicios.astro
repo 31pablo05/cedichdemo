@@ -121,6 +121,14 @@ const iconosPaths = {
         <path d="M13 6l6 6-6 6" />
       </svg>
     </p>
+
+    <div class="mt-2.5 flex items-center justify-center gap-1.5 sm:hidden" aria-hidden="true">
+      {
+        servicios.map((_, index) => (
+          <span class="servicio-dot h-1.5 w-1.5 rounded-full bg-[var(--color-border)]" data-dot={index} />
+        ))
+      }
+    </div>
   </div>
 </section>
 
@@ -228,4 +236,43 @@ const iconosPaths = {
       transition: none;
     }
   }
+
+  .servicio-dot {
+    transition: width 200ms ease, background-color 200ms ease;
+  }
+
+  .servicio-dot.is-active {
+    width: 18px;
+    background-color: var(--color-blue);
+  }
 </style>
+
+<script>
+  const scroller = document.querySelector('.servicios-scroll');
+  const dots = Array.from(document.querySelectorAll('.servicio-dot'));
+
+  if (scroller && dots.length) {
+    const cards = Array.from(scroller.querySelectorAll('.servicio-card'));
+
+    const updateActiveDot = () => {
+      const scrollerLeft = scroller.getBoundingClientRect().left;
+      let closestIndex = 0;
+      let minDistance = Infinity;
+
+      cards.forEach((card, index) => {
+        const distance = Math.abs(card.getBoundingClientRect().left - scrollerLeft);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === closestIndex);
+      });
+    };
+
+    scroller.addEventListener('scroll', updateActiveDot, { passive: true });
+    updateActiveDot();
+  }
+</script>

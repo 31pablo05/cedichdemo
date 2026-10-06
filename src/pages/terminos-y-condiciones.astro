@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site.js';
+
+const ultimaActualizacion = 'Octubre de 2026';
+---
+
+<Layout
+  title="Términos y condiciones · CEDICH"
+  description="Condiciones de uso del sitio web de CEDICH."
+>
+  <section class="bg-white py-14 md:py-24">
+    <div class="container max-w-[820px]">
+      <p class="eyebrow eyebrow-dark">LEGAL</p>
+      <h1 class="mt-4 text-[var(--color-ink)]">Términos y condiciones</h1>
+      <p class="mt-4 text-[13px] text-[var(--color-muted)] max-w-none">
+        Última actualización: {ultimaActualizacion}
+      </p>
+
+      <div class="mt-10 flex flex-col gap-8">
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">1. Objeto del sitio</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Este sitio tiene carácter institucional e informativo. Presenta los servicios de{' '}
+            {site.nombreCompleto} y facilita el contacto por WhatsApp para coordinar consultas y
+            turnos. No existe en este sitio un sistema de reserva de turnos online.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">2. No reemplaza la consulta médica</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            La información publicada en este sitio (incluyendo las indicaciones de preparación para
+            estudios) es orientativa y general. No constituye asesoramiento médico ni reemplaza la
+            evaluación de un profesional de la salud. Ante cualquier duda sobre tu caso particular,
+            comunicate con nuestro equipo.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">3. Propiedad intelectual</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            El logo, los textos, las imágenes y el diseño de este sitio son propiedad de{' '}
+            {site.nombreCorto} o se utilizan con la autorización correspondiente. No está permitida
+            su reproducción total o parcial sin autorización previa.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">4. Enlaces externos</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Este sitio incluye enlaces a WhatsApp, Instagram, Facebook y Google Maps. No tenemos
+            control sobre el contenido ni las políticas de esas plataformas y no somos responsables
+            por su disponibilidad o funcionamiento.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">5. Limitación de responsabilidad</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Hacemos todo lo posible para que la información de este sitio sea precisa y esté
+            actualizada, pero no garantizamos la ausencia total de errores. El uso de este sitio es
+            responsabilidad de quien lo visita.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">6. Legislación aplicable</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Estos términos se rigen por las leyes de la República Argentina, con jurisdicción en la
+            provincia del Chubut.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">7. Cambios a estos términos</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Podemos actualizar estos términos en el futuro. La fecha de la última actualización
+            figura al comienzo de esta página.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

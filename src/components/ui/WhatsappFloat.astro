@@ -28,10 +28,29 @@ const whatsappLink = getWhatsappLink('Hola, quiero coordinar un turno');
     opacity: 1;
     transform: scale(1);
     pointer-events: auto;
+    animation: whatsapp-pulse 1.8s ease-in-out 2;
   }
 
   #whatsapp-float.is-visible:hover {
     transform: scale(1.06);
+    animation: none;
+  }
+
+  @keyframes whatsapp-pulse {
+    0%,
+    100% {
+      box-shadow: var(--shadow-float);
+    }
+
+    50% {
+      box-shadow: var(--shadow-float), 0 0 0 10px rgba(37, 211, 102, 0.18);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #whatsapp-float.is-visible {
+      animation: none;
+    }
   }
 </style>
 

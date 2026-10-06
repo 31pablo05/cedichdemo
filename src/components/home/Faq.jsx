@@ -11,7 +11,12 @@ export default function Faq({ items }) {
   };
 
   return (
-    <div className="bg-white border border-[var(--color-border)] rounded-[var(--radius)] shadow-[var(--shadow-card)] p-7">
+    <div className="relative overflow-hidden bg-white border border-[var(--color-border)] rounded-[var(--radius)] shadow-[var(--shadow-card)] p-7">
+      <span
+        className="absolute inset-x-0 top-0 h-[3px]"
+        style={{ backgroundImage: 'var(--gradient-blue)' }}
+        aria-hidden="true"
+      />
       <p className="eyebrow eyebrow-dark">PREGUNTAS FRECUENTES</p>
       <h2 className="mt-4 text-[24px] font-display text-[var(--color-ink)]">Las dudas más comunes</h2>
 
@@ -29,7 +34,7 @@ export default function Faq({ items }) {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggle(index)}
-                className="w-full flex items-center justify-between gap-4 py-4 text-left group"
+                className="w-full flex items-center justify-between gap-4 rounded-[var(--radius-sm)] px-2 -mx-2 py-4 text-left transition-colors duration-200 hover:bg-[color-mix(in_srgb,var(--color-blue)_5%,white)] group"
               >
                 <span className="text-[15px] font-medium text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-blue)]">
                   {item.pregunta}

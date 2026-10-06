@@ -119,7 +119,7 @@ export default function MobileNav() {
 
         <div className="relative flex flex-col h-full px-5 py-6">
           <div className="flex items-center justify-between">
-            <a href="#main" onClick={close} className="flex items-center gap-3">
+            <a href="/" onClick={close} className="flex items-center gap-3">
               <span className="flex items-center justify-center rounded-full bg-white p-[6px] border border-white/15 shadow-[var(--shadow-card)]">
                 <img
                   src="/logos/logo-cedich.png"

@@ -15,7 +15,7 @@ const iconosPaths = {
   class="container my-14 md:my-24"
 >
   <div
-    class="relative flex flex-col-reverse overflow-hidden rounded-[var(--radius-lg)] border border-white/[0.08] shadow-[var(--shadow-card-hover)] lg:block lg:min-h-[620px]"
+    class="spotlight relative flex flex-col-reverse overflow-hidden rounded-[var(--radius-lg)] border border-white/[0.08] shadow-[var(--shadow-card-hover)] lg:block lg:min-h-[620px]"
     style={{ backgroundImage: 'var(--gradient-navy)' }}
   >
     <HexPattern color="var(--color-cyan)" opacity={0.06} />
@@ -87,10 +87,11 @@ const iconosPaths = {
             width="900"
             height="750"
             loading="lazy"
-            class="absolute inset-0 h-full w-full object-cover object-center saturate-[.85] lg:object-[60%_50%]"
+            class="tecnologia-img absolute inset-0 h-full w-full object-cover object-center lg:object-[60%_50%]"
           />
         </picture>
 
+        <div class="absolute inset-0 bg-[var(--color-blue)] opacity-[0.22] mix-blend-color"></div>
         <div class="absolute inset-0 bg-[var(--color-navy)] opacity-25 mix-blend-multiply"></div>
         <div class="absolute inset-0 bg-[var(--color-navy)] opacity-10"></div>
 

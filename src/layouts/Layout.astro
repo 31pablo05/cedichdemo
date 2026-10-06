@@ -104,6 +104,32 @@ const jsonLd = {
       };
 
       reveal();
+
+      // Resplandor que sigue el cursor en paneles .spotlight, throttled con rAF
+      const spotlightEls = document.querySelectorAll('.spotlight');
+
+      spotlightEls.forEach((el) => {
+        if (!(el instanceof HTMLElement)) return;
+
+        let ticking = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        el.addEventListener('pointermove', (event) => {
+          if (!(event instanceof PointerEvent)) return;
+          lastX = event.clientX;
+          lastY = event.clientY;
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(() => {
+              const rect = el.getBoundingClientRect();
+              el.style.setProperty('--spot-x', `${lastX - rect.left}px`);
+              el.style.setProperty('--spot-y', `${lastY - rect.top}px`);
+              ticking = false;
+            });
+          }
+        });
+      });
     </script>
   </body>
 </html>

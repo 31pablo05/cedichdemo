@@ -10,14 +10,14 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
        Mobile: heromobile2.png
        Desktop: herodesktop2.png
   ====================================================== -->
-  <picture class="absolute inset-0 block h-full w-full">
+  <picture class="hero-picture absolute inset-0 block h-full w-full">
     <source
       media="(min-width: 768px)"
-      srcset="/imagenes/herodesktop5.png"
+      srcset="/imagenes/herodesktop6.png"
     />
 
     <img
-      src="/imagenes/heromob5.png"
+      src="/imagenes/heromob6.png"
       alt=""
       width="1080"
       height="1920"
@@ -57,7 +57,14 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
     class="absolute inset-0 bg-[var(--color-navy)] opacity-[0.10] mix-blend-multiply"
   ></div>
 
-  
+  <!-- Resplandor de profundidad, esquina opuesta al texto -->
+  <div
+    class="pointer-events-none absolute inset-0 hidden md:block"
+    style={{
+      backgroundImage:
+        'radial-gradient(55% 50% at 88% 12%, rgba(11,172,219,0.18) 0%, transparent 70%)',
+    }}
+  ></div>
 
   <!-- =====================================================
        CONTENIDO
@@ -271,6 +278,27 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
       </div>
     </div>
   </div>
+
+  <!-- Indicador de scroll, desktop -->
+  <div class="hero-scroll-cue pointer-events-none absolute inset-x-0 bottom-6 z-10 hidden md:flex justify-center">
+    <span class="flex flex-col items-center gap-1.5 text-white/50">
+      <span class="text-[11px] font-medium tracking-[0.12em] uppercase">Descubrí más</span>
+      <svg
+        class="hero-scroll-arrow"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </span>
+  </div>
 </section>
 
 <style>
@@ -284,6 +312,40 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
   .hero-background {
     object-position: 52% 35%;
     animation: hero-image-enter 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Ken Burns continuo y muy sutil, independiente de la entrada de la imagen */
+  .hero-picture {
+    animation: hero-ken-burns 22s ease-in-out infinite alternate;
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  @keyframes hero-ken-burns {
+    from {
+      transform: scale(1);
+    }
+
+    to {
+      transform: scale(1.045);
+    }
+  }
+
+  .hero-scroll-arrow {
+    animation: hero-bounce 1.8s ease-in-out infinite;
+  }
+
+  @keyframes hero-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.55;
+    }
+
+    50% {
+      transform: translateY(5px);
+      opacity: 1;
+    }
   }
 
   @media (min-width: 768px) {
@@ -322,7 +384,9 @@ const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-background {
+    .hero-background,
+    .hero-picture,
+    .hero-scroll-arrow {
       animation: none;
     }
   }

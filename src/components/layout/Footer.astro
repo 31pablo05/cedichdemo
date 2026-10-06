@@ -1,36 +1,306 @@
 ---
-import { site } from '../../data/site.js';
+import { site, getWhatsappLink } from '../../data/site.js';
+import { nav } from '../../data/nav.js';
+import { legal } from '../../data/legal.js';
+import { footer } from '../../data/footer.js';
+import HexPattern from '../ui/HexPattern.astro';
 
 const anioActual = new Date().getFullYear();
+const whatsappCta = getWhatsappLink(footer.cta.mensaje);
+const whatsappConsulta = getWhatsappLink(footer.contacto.mensajeConsulta);
+
+/** @type {Record<string, string>} */
+const iconosRedes = {
+  instagram:
+    '<rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',
+  facebook:
+    '<path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.9.2-1.5 1.5-1.5h1.6V4.3C15.8 4.2 14.7 4 13.6 4c-2.5 0-4.1 1.5-4.1 4.3V10.5H7v3h2.5V21h4Z" fill="currentColor" stroke="none"/>',
+  tiktok:
+    '<path d="M14.5 2c.3 1.9 1.6 3.3 3.5 3.7v2.6c-1.3 0-2.5-.4-3.5-1.1v5.6c0 3-2.4 5.4-5.4 5.4S3.7 15.8 3.7 12.8c0-2.7 2-4.9 4.6-5.3v2.7c-1.1.3-1.9 1.3-1.9 2.6 0 1.4 1.2 2.6 2.6 2.6s2.6-1.2 2.6-2.6V2h2.9Z" fill="currentColor" stroke="none"/>',
+  whatsapp:
+    '<path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" fill="currentColor" stroke="none"/>',
+};
+
+const redes = [
+  { nombre: 'Instagram', url: site.instagram.url, icono: iconosRedes.instagram },
+  { nombre: 'Facebook', url: site.facebook.url, icono: iconosRedes.facebook },
+  { nombre: 'TikTok', url: site.tiktok.url, icono: iconosRedes.tiktok },
+  { nombre: 'WhatsApp', url: whatsappConsulta, icono: iconosRedes.whatsapp },
+].filter((red) => red.url);
 ---
 
-<footer class="bg-[var(--color-navy-deep)] py-10">
-  <div class="container">
-    <div class="flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
-      <a href="#main" class="flex items-center gap-3">
-        <span class="flex items-center justify-center rounded-full bg-white p-[5px]">
-          <img
-            src="/logos/logo-cedich.png"
-            alt="CEDICH"
-            width="38"
-            height="38"
-            class="h-[28px] w-auto"
-          />
-        </span>
-        <span class="font-display font-bold text-[18px] text-white">CEDICH</span>
-      </a>
+<footer class="relative bg-[var(--color-navy-deep)] pb-24 md:pb-12">
+  <!-- 1. Tarjeta de llamado a la acción -->
+  <div class="container relative z-10 pt-12 md:pt-16">
+    <div
+      class="footer-cta relative overflow-hidden rounded-[var(--radius-lg)] p-6 shadow-[var(--shadow-float)] sm:p-8 md:p-10"
+      style={{ backgroundImage: 'var(--gradient-blue)' }}
+    >
+      <HexPattern color="var(--color-white)" opacity={0.08} />
 
-      <p class="text-[13px] text-white/55 max-w-none">{site.nombreCompleto}</p>
+      <div class="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+        <div>
+          <h2 class="text-white text-[22px] sm:text-[26px]">{footer.cta.titulo}</h2>
+          <p class="mt-2 max-w-[42ch] text-[14px] text-white/85 sm:text-[15px]">{footer.cta.bajada}</p>
+        </div>
 
-      <p class="text-[13px] text-white/55 max-w-none">
-        {anioActual} CEDICH. Todos los derechos reservados.
+        <a
+          href={whatsappCta}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-[var(--radius-pill)] bg-white px-7 py-3.5 text-[15px] font-semibold text-[var(--color-ink)] shadow-[var(--shadow-card)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)] sm:w-auto"
+        >
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
+          </svg>
+          {footer.cta.boton}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Cuerpo en columnas -->
+  <div class="footer-body relative mt-10 overflow-hidden pt-14 pb-14 md:mt-12 md:pt-[88px] md:pb-[88px]">
+    <div class="footer-top-line pointer-events-none absolute inset-x-0 top-0 h-px" aria-hidden="true" />
+    <HexPattern color="var(--color-cyan)" opacity={0.04} />
+
+    <div class="container relative grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-8">
+      <!-- Columna 1: marca -->
+      <div>
+        <a href="/" class="inline-flex items-center gap-3">
+          <span class="flex items-center justify-center rounded-full bg-white p-[5px]">
+            <img src="/logos/logo-cedich.png" alt="CEDICH" width="38" height="38" class="h-7 w-auto" />
+          </span>
+          <span class="flex flex-col leading-tight">
+            <span class="font-display font-bold text-[18px] text-white">CEDICH</span>
+            <span class="text-[12px] text-white/70">{site.nombreCompleto}</span>
+          </span>
+        </a>
+
+        <p class="mt-4 max-w-[34ch] text-[13px] leading-[1.7] text-white/70">{footer.descripcion}</p>
+
+        <div class="mt-5 flex items-center gap-2.5">
+          {
+            redes.map((red) => (
+              <a
+                href={red.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${red.nombre} de CEDICH`}
+                class="footer-social relative flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/80 before:absolute before:-inset-[2px] before:rounded-full before:content-['']"
+              >
+                <svg class="relative h-[18px] w-[18px]" viewBox="0 0 24 24" aria-hidden="true" set:html={red.icono} />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Columna 2: navegación -->
+      <div>
+        <p class="footer-col-title">{footer.columnas.navegacion}</p>
+        <nav aria-label="Navegación del pie" class="mt-4 flex flex-col gap-3">
+          {
+            nav.map((item) => (
+              <a href={item.ancla} class="footer-nav-link inline-flex w-fit items-center text-[13px] text-white/70">
+                <span class="footer-nav-dash" aria-hidden="true" />
+                <span class="footer-nav-label">{item.etiqueta}</span>
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+
+      <!-- Columna 3: contacto -->
+      <div>
+        <p class="footer-col-title">{footer.columnas.contacto}</p>
+        <address class="mt-4 flex flex-col gap-3 text-[13px] not-italic text-white/70">
+          <div class="flex items-start gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-cyan)" stroke-width="1.5" class="mt-0.5 shrink-0" aria-hidden="true">
+              <path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z" />
+              <circle cx="12" cy="9.5" r="2.5" />
+            </svg>
+            <span class="leading-[1.6]">
+              {site.direccion}, {site.localidad}
+              <span class="block text-white/50">{site.referencia}</span>
+            </span>
+          </div>
+
+          <a href={`tel:+${site.whatsapp}`} class="footer-contact-link flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-cyan)" stroke-width="1.5" class="shrink-0" aria-hidden="true">
+              <path d="M6 3h3l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2Z" />
+            </svg>
+            {site.telefono}
+          </a>
+
+          <a href={whatsappConsulta} target="_blank" rel="noopener noreferrer" class="footer-contact-link flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-cyan)" class="shrink-0" aria-hidden="true">
+              <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
+            </svg>
+            WhatsApp
+          </a>
+
+          <a
+            href={site.googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-link-arrow group mt-1 inline-flex w-fit items-center gap-1.5 text-[13px] font-semibold text-white"
+          >
+            {footer.contacto.comoLlegar}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transition-transform group-hover:translate-x-1" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </address>
+      </div>
+
+      <!-- Columna 4: horarios -->
+      <div>
+        <p class="footer-col-title">{footer.columnas.horarios}</p>
+        <ul class="mt-4 flex flex-col divide-y divide-dashed divide-white/10 text-[13px] text-white/70">
+          {
+            site.horarios.map((horario) => (
+              <li class="flex items-center justify-between gap-3 py-2.5 first:pt-0">
+                <span>{horario.dia}</span>
+                <span>{horario.franja}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-4 text-[12px] text-white/50">{footer.horarios.nota}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Barra inferior -->
+  <div class="container relative pt-8">
+    <div class="flex flex-col items-center gap-3 border-t border-white/10 pt-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
+      <p class="text-[12px] text-white/50 max-w-none">
+        © {anioActual} CEDICH. Todos los derechos reservados.
       </p>
+
+      {
+        legal.length > 0 && (
+          <nav aria-label="Legales" class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+            {legal.map((item, index) => (
+              <>
+                <a href={item.href} class="footer-legal-link">
+                  {item.etiqueta}
+                </a>
+                {index < legal.length - 1 && (
+                  <span class="text-white/25" aria-hidden="true">
+                    ·
+                  </span>
+                )}
+              </>
+            ))}
+          </nav>
+        )
+      }
     </div>
 
-    <div class="mt-8 border-t border-white/10"></div>
+    <p class="mt-3 text-center text-[12px] text-white/50 max-w-none md:text-left">
+      {footer.avisoMedico}
+    </p>
 
-    <p class="mt-5 text-[12px] text-white/40 text-center lg:text-left max-w-none">
-      La información de este sitio es orientativa y no reemplaza la consulta médica.
+    <p class="mt-4 text-center text-[11px] text-white/35 max-w-none md:text-left">
+      <a
+        href={footer.credito.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="transition-colors duration-200 hover:text-white/60"
+      >
+        {footer.credito.texto}
+      </a>
     </p>
   </div>
 </footer>
+
+<style>
+  .footer-cta {
+    transition: none;
+  }
+
+  .footer-top-line {
+    background-image: linear-gradient(to right, var(--color-cyan), transparent);
+    opacity: 0.4;
+  }
+
+  .footer-col-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+  }
+
+  .footer-social {
+    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+
+  .footer-social:hover,
+  .footer-social:focus-visible {
+    background-color: var(--color-cyan);
+    border-color: var(--color-cyan);
+    color: var(--color-navy-deep);
+  }
+
+  .footer-nav-dash {
+    display: inline-block;
+    width: 0;
+    height: 1px;
+    margin-right: 0;
+    background-color: var(--color-cyan);
+    transition: width 200ms ease, margin-right 200ms ease;
+  }
+
+  .footer-nav-label {
+    transition: color 200ms ease;
+  }
+
+  .footer-nav-link:hover .footer-nav-dash,
+  .footer-nav-link:focus-visible .footer-nav-dash {
+    width: 12px;
+    margin-right: 8px;
+  }
+
+  .footer-nav-link:hover .footer-nav-label,
+  .footer-nav-link:focus-visible .footer-nav-label {
+    color: white;
+  }
+
+  .footer-contact-link {
+    transition: color 200ms ease;
+  }
+
+  .footer-contact-link:hover,
+  .footer-contact-link:focus-visible {
+    color: white;
+  }
+
+  .footer-legal-link {
+    display: inline-block;
+    padding-block: 2px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 200ms ease;
+  }
+
+  .footer-legal-link:hover,
+  .footer-legal-link:focus-visible {
+    color: var(--color-cyan);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-social,
+    .footer-nav-dash,
+    .footer-nav-label,
+    .footer-contact-link,
+    .footer-legal-link {
+      transition: color 150ms linear, background-color 150ms linear, border-color 150ms linear, width 150ms linear, margin-right 150ms linear;
+    }
+  }
+</style>

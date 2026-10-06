@@ -5,7 +5,12 @@ import { getWhatsappLink } from '../../data/site.js';
 const whatsappLink = getWhatsappLink('Hola, quiero consultar si trabajan con mi obra social');
 ---
 
-<div class="h-full bg-white border border-[var(--color-border)] rounded-[var(--radius)] shadow-[var(--shadow-card)] p-7">
+<div class="relative overflow-hidden h-full bg-white border border-[var(--color-border)] rounded-[var(--radius)] shadow-[var(--shadow-card)] p-7">
+  <span
+    class="absolute inset-x-0 top-0 h-[3px]"
+    style={{ backgroundImage: 'var(--gradient-blue)' }}
+    aria-hidden="true"
+  ></span>
   <p class="eyebrow eyebrow-dark">OBRAS SOCIALES</p>
   <h2 class="mt-4 text-[24px] font-display text-[var(--color-ink)]">
     Trabajamos con obras sociales y prepagas
@@ -16,7 +21,7 @@ const whatsappLink = getWhatsappLink('Hola, quiero consultar si trabajan con mi 
   <div class="mt-5 grid grid-cols-2 gap-2.5">
     {
       obrasSociales.map((nombre) => (
-        <span class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-sm)] px-4 py-2.5 text-[14px] font-semibold text-[var(--color-muted)] text-center">
+        <span class="obra-chip bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-sm)] px-4 py-2.5 text-[14px] font-semibold text-[var(--color-muted)] text-center">
           {nombre}
         </span>
       ))
@@ -35,3 +40,26 @@ const whatsappLink = getWhatsappLink('Hola, quiero consultar si trabajan con mi 
     Consultar mi cobertura
   </a>
 </div>
+
+<style>
+  .obra-chip {
+    transition: border-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .obra-chip:hover {
+    border-color: var(--color-blue);
+    color: var(--color-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .obra-chip {
+      transition: border-color 150ms linear, color 150ms linear;
+    }
+
+    .obra-chip:hover {
+      transform: none;
+    }
+  }
+</style>

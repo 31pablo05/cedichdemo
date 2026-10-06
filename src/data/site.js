@@ -13,11 +13,16 @@ export const site = {
     { dia: 'Miércoles', franja: '09:00 a 12:00' },
   ],
   instagram: {
-    url: 'https://www.instagram.com/cedicharg/',
-    usuario: '@cedicharg',
+    url: 'https://www.instagram.com/cedich_arg/',
+    usuario: '@cedich_arg',
   },
   facebook: {
     url: 'https://www.facebook.com/cedichendoscopia/',
+  },
+  // PENDIENTE CLIENTE: confirmar si CEDICH tiene TikTok y su usuario
+  tiktok: {
+    url: '',
+    usuario: '',
   },
   googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Pedro+Mart%C3%ADnez+45%2C+Rawson%2C+Chubut',
 };

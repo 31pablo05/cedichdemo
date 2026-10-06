@@ -1,0 +1,183 @@
+---
+import { nosotros } from '../../data/nosotros.js';
+import HexPattern from '../ui/HexPattern.astro';
+
+/** @type {Record<string, string>} */
+const iconosPaths = {
+  usuario:
+    '<circle cx="9" cy="8" r="3" /><path d="M3 20a6 6 0 0 1 12 0" /><circle cx="17" cy="9" r="2.5" /><path d="M15 20a5 5 0 0 1 6-4.9" />',
+  salud: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" /><path d="M9 12l2 2 4-4" />',
+  tecnologia:
+    '<rect x="3" y="4" width="18" height="12" rx="1.5" /><path d="M8 20h8" /><path d="M12 16v4" /><path d="M7 9l3 3 2-2 4 4" />',
+};
+---
+
+<section id="nosotros" class="relative bg-white py-14 md:py-20 overflow-hidden">
+  <!-- Resplandor radial azul muy tenue -->
+  <div
+    class="pointer-events-none absolute inset-x-0 top-0 h-[520px]"
+    style={{
+      backgroundImage:
+        'radial-gradient(55% 55% at 50% 0%, color-mix(in srgb, var(--color-blue) 8%, transparent) 0%, transparent 100%)',
+    }}
+  ></div>
+
+  <div class="nosotros-hex-mask absolute inset-0 pointer-events-none">
+    <HexPattern color="var(--color-blue)" opacity={0.03} />
+  </div>
+
+  <div class="container relative">
+    <div class="flex flex-col lg:flex-row lg:gap-12 lg:items-center">
+      <!-- Zona izquierda: contenido -->
+      <div class="lg:w-[52%]">
+        <p class="eyebrow eyebrow-dark">{nosotros.eyebrow}</p>
+        <h2 class="mt-4 text-[var(--color-ink)]">{nosotros.titulo}</h2>
+        <p class="mt-5 text-[15px] md:text-[16px] text-[var(--color-muted)] leading-[1.7] max-w-[62ch]">
+          {nosotros.parrafo1}
+        </p>
+        <p class="mt-4 text-[15px] md:text-[16px] text-[var(--color-muted)] leading-[1.7] max-w-[62ch]">
+          {nosotros.parrafo2}
+        </p>
+
+        <!-- Diferenciales -->
+        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-4">
+          {
+            nosotros.diferenciales.map((diferencial) => (
+              <div class="diferencial-card flex items-start gap-3 rounded-[var(--radius)] border border-transparent p-3 -m-3 sm:flex-col sm:items-start sm:gap-2">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-dark)]">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    set:html={iconosPaths[diferencial.icono]}
+                  />
+                </div>
+                <div>
+                  <h3 class="text-[15px] font-semibold text-[var(--color-ink)]">{diferencial.titulo}</h3>
+                  <p class="mt-0.5 text-[13px] text-[var(--color-muted)] max-w-none">
+                    {diferencial.descripcion}
+                  </p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- CTA -->
+        <a
+          href={nosotros.cta.destino}
+          class="mt-8 inline-flex items-center gap-2 rounded-[var(--radius-pill)] bg-[var(--color-blue)] px-6 py-3 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(27,127,212,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(27,127,212,0.45)]"
+        >
+          {nosotros.cta.texto}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Zona derecha: imagen institucional + dato del fundador -->
+      <div class="mt-12 lg:mt-0 lg:w-[48%]">
+        <div class="nosotros-image relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)]">
+          {
+            nosotros.imagen ? (
+              <img
+                src={nosotros.imagen}
+                alt="CEDICH - Centro de Endoscopías Digestivas del Chubut"
+                width="720"
+                height="540"
+                loading="lazy"
+                class="nosotros-image-img h-full w-full object-cover"
+              />
+            ) : (
+              <div class="flex h-full w-full items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border)]">
+                <div class="text-center px-8">
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--color-blue)"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="mx-auto mb-3 opacity-40"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="9" cy="9" r="2" />
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                  </svg>
+                  <p class="text-[13px] text-[var(--color-muted)] max-w-none">
+                    PENDIENTE CLIENTE: imagen institucional de CEDICH
+                  </p>
+                </div>
+              </div>
+            )
+          }
+
+          <!-- Card flotante con info del fundador -->
+          <div class="absolute bottom-4 left-4 right-4 rounded-[var(--radius)] border border-white/20 bg-white/95 backdrop-blur-sm p-4 shadow-[var(--shadow-card-hover)]">
+            <p class="text-[15px] font-semibold text-[var(--color-ink)]">{nosotros.fundador.nombre}</p>
+            <p class="mt-1 text-[13px] text-[var(--color-muted)] max-w-none">{nosotros.fundador.cargo}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .nosotros-hex-mask {
+    mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+  }
+
+  .diferencial-card {
+    transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+  }
+
+  .diferencial-card:hover {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    transform: translateY(-2px);
+  }
+
+  .nosotros-image-img {
+    transition: transform 500ms ease;
+  }
+
+  .nosotros-image:hover .nosotros-image-img {
+    transform: scale(1.04);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .diferencial-card,
+    .nosotros-image-img {
+      transition: none;
+    }
+
+    .diferencial-card:hover {
+      transform: none;
+    }
+
+    .nosotros-image:hover .nosotros-image-img {
+      transform: none;
+    }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site.js';
+
+const ultimaActualizacion = 'Octubre de 2026';
+---
+
+<Layout
+  title="Política de privacidad · CEDICH"
+  description="Cómo CEDICH trata la información de las personas que visitan este sitio."
+>
+  <section class="bg-white py-14 md:py-24">
+    <div class="container max-w-[820px]">
+      <p class="eyebrow eyebrow-dark">LEGAL</p>
+      <h1 class="mt-4 text-[var(--color-ink)]">Política de privacidad</h1>
+      <p class="mt-4 text-[13px] text-[var(--color-muted)] max-w-none">
+        Última actualización: {ultimaActualizacion}
+      </p>
+
+      <div class="mt-10 flex flex-col gap-8">
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">1. Responsable del sitio</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Este sitio es un canal informativo de {site.nombreCompleto} ({site.nombreCorto}), ubicado
+            en {site.direccion}, {site.localidad}. Esta política explica qué información se recopila
+            a través de este sitio web y cómo se utiliza.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">2. Qué información recopilamos</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Este sitio no tiene formularios de contacto, registro de usuarios ni sistema de turnos
+            online: no recopilamos ni almacenamos datos personales a través de él. Cuando elegís
+            escribirnos por WhatsApp, Instagram o Facebook, la conversación y los datos que
+            compartas (nombre, teléfono, motivo de consulta) quedan sujetos a las políticas de
+            privacidad de esas plataformas, no a este sitio.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">3. Cookies y datos técnicos</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            El sitio utiliza tipografías alojadas en Google Fonts y un mapa embebido de Google Maps
+            para mostrar nuestra ubicación. Ambos servicios pueden recibir datos técnicos básicos del
+            navegador (como la dirección IP) para funcionar, de acuerdo con las políticas de
+            privacidad de Google. No utilizamos cookies propias de seguimiento ni herramientas de
+            analítica de terceros.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">4. Enlaces a redes y plataformas externas</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Este sitio enlaza a WhatsApp, Instagram y Facebook. Una vez que salís de nuestro sitio
+            hacia esas plataformas, el tratamiento de tus datos pasa a regirse por las políticas de
+            privacidad de cada una de ellas.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">5. Tus derechos</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            De acuerdo con la Ley 25.326 de Protección de Datos Personales de la República Argentina,
+            tenés derecho a acceder, rectificar o solicitar la supresión de los datos que nos hayas
+            compartido por WhatsApp u otros canales directos. Para ejercer este derecho, escribinos
+            por WhatsApp o llamanos al {site.telefono}.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[20px] text-[var(--color-ink)]">6. Cambios a esta política</h2>
+          <p class="mt-3 text-[15px] text-[var(--color-muted)]">
+            Podemos actualizar esta política en el futuro. La fecha de la última actualización figura
+            al comienzo de esta página.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
