@@ -1,5 +1,13 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+/* Las fuentes se cargan con <link> en Layout.astro; las variables viven en :root, así que se exponen como utilidades */
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+@utility font-body {
+  font-family: var(--font-body);
+}
 
 :root {
   /* Azules institucionales */
@@ -90,6 +98,7 @@ p {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  max-width: none;
 }
 
 .eyebrow-light {

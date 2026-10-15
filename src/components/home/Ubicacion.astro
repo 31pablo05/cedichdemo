@@ -16,7 +16,7 @@ const mapaSrc = `https://www.google.com/maps?q=${encodeURIComponent(
   <HexPattern color="var(--color-cyan)" opacity={0.06} />
 
   <div class="container relative">
-    <div class="grid grid-cols-1 lg:grid-cols-[32%_38%_30%] gap-8 lg:gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)_minmax(0,1fr)] gap-8 lg:gap-6">
       <!-- Columna de datos -->
       <div>
         <p class="eyebrow eyebrow-light">UBICACIÓN Y CONTACTO</p>
@@ -138,7 +138,7 @@ const mapaSrc = `https://www.google.com/maps?q=${encodeURIComponent(
       <!-- Columna de la card de WhatsApp -->
       <div>
         <div
-          class="relative overflow-hidden rounded-[var(--radius)] p-7"
+          class="relative overflow-hidden rounded-[var(--radius)] p-6 xl:p-7"
           style={{ backgroundImage: 'var(--gradient-blue)' }}
         >
           <div class="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/20 blur-[60px]"></div>
@@ -156,7 +156,7 @@ const mapaSrc = `https://www.google.com/maps?q=${encodeURIComponent(
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            class="relative mt-[22px] inline-flex items-center justify-center w-full rounded-[var(--radius-pill)] bg-white text-[var(--color-blue-dark)] px-6 py-3 font-semibold"
+            class="relative mt-[22px] inline-flex items-center justify-center w-full rounded-[var(--radius-pill)] bg-white text-[var(--color-blue-dark)] px-5 xl:px-6 py-3 font-semibold whitespace-nowrap"
           >
             Escribir por WhatsApp
           </a>

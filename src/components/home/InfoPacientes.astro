@@ -6,13 +6,9 @@ import ObrasSociales from './ObrasSociales.astro';
 
 <section class="bg-white py-14 md:py-24">
   <div class="container">
-    <div class="flex flex-col lg:flex-row gap-6">
-      <div class="lg:w-[58%]">
-        <Faq items={faq} client:visible />
-      </div>
-      <div class="lg:w-[42%]">
-        <ObrasSociales />
-      </div>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,58fr)_minmax(0,42fr)]">
+      <Faq items={faq} client:visible />
+      <ObrasSociales />
     </div>
   </div>
 </section>

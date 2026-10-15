@@ -6,24 +6,24 @@ import MobileNav from './MobileNav.jsx';
 const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
 ---
 
-<header id="site-header" class="fixed top-0 left-0 w-full z-50 h-[76px]">
+<header id="site-header" class="fixed top-0 left-0 w-full z-50 h-[76px] lg:h-[82px]">
   <!-- Velo sutil detrás de la barra, para leer sobre la foto del hero sin fondo sólido -->
   <div class="header-glow absolute inset-x-0 top-0 h-24 pointer-events-none"></div>
 
   <div class="container relative h-full flex items-center justify-between gap-4">
     <a href="/" class="flex items-center gap-2.5 shrink-0 md:gap-3">
-      <span class="header-logo-container flex items-center justify-center rounded-full bg-white p-[5px] md:p-[6px]">
+      <span class="header-logo-container flex items-center justify-center rounded-full bg-white p-[5px] md:p-[6px] lg:p-[7px]">
         <img
           src="/logos/logo-cedich.png"
           alt="CEDICH"
           width="42"
           height="42"
-          class="header-logo h-[26px] w-auto md:h-[30px]"
+          class="header-logo h-[26px] w-auto md:h-[30px] lg:h-[35px]"
         />
       </span>
       <span class="flex flex-col leading-tight">
-        <span class="font-display font-bold text-[16px] text-white md:text-[20px]">CEDICH</span>
-        <span class="hidden text-[10px] leading-tight text-white/70 md:block">
+        <span class="font-display font-bold text-[16px] text-white md:text-[20px] lg:text-[24px]">CEDICH</span>
+        <span class="hidden text-[10px] leading-tight text-white/70 md:block lg:text-[12px]">
           Centro de Endoscopías Digestivas del Chubut
         </span>
       </span>
@@ -96,10 +96,10 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
   }
 
   .header-whatsapp {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: color-mix(in srgb, var(--color-navy-deep) 55%, transparent);
+    border: 1.5px solid color-mix(in srgb, var(--color-white) 70%, transparent);
     color: white;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
     animation: header-whatsapp-glow 3s ease-in-out infinite;
   }
 
@@ -115,29 +115,39 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
   }
 
   .header-whatsapp:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background-color: white;
+    border-color: white;
+    color: var(--color-ink);
     animation: none;
   }
 
   #site-header.is-scrolled {
     height: 64px;
-    background-color: color-mix(in srgb, var(--color-navy) 90%, transparent);
-    backdrop-filter: blur(12px) saturate(150%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--shadow-card);
+    background-color: color-mix(in srgb, var(--color-navy-deep) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(150%);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-cyan) 22%, transparent);
+    box-shadow: 0 6px 24px color-mix(in srgb, var(--color-navy-deep) 30%, transparent);
   }
 
   #site-header.is-scrolled .header-glow {
     opacity: 0;
   }
 
-  #site-header.is-scrolled .header-logo-container {
-    padding: 4px;
+  /* En desktop el logo mantiene el mismo tamaño con y sin scroll; solo la altura de la barra se compacta */
+  @media (min-width: 1024px) {
+    #site-header.is-scrolled {
+      height: 70px;
+    }
   }
 
-  #site-header.is-scrolled .header-logo {
-    height: 22px;
+  @media (max-width: 1023.98px) {
+    #site-header.is-scrolled .header-logo-container {
+      padding: 4px;
+    }
+
+    #site-header.is-scrolled .header-logo {
+      height: 22px;
+    }
   }
 
   #site-header.is-scrolled .header-whatsapp {
@@ -151,6 +161,12 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
   #site-header.is-scrolled .header-whatsapp:hover {
     background-color: var(--color-surface);
     box-shadow: var(--shadow-card-hover);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header-whatsapp {
+      animation: none;
+    }
   }
 </style>
 
@@ -169,35 +185,81 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // Indicador de sección activa: observa qué sección cruza la franja superior del viewport
+  // Indicador de sección activa: una sección pasa a ser la activa cuando su borde superior
+  // cruza el primer tercio de la pantalla (contando el header fijo).
   const navLinks = Array.from(document.querySelectorAll('[data-nav-link]'));
-  const sections = [];
-  for (const link of navLinks) {
-    const ancla = link.getAttribute('data-ancla');
-    if (!ancla) continue;
-    const section = document.querySelector(ancla);
-    if (!section) continue;
-    sections.push(section);
-  }
+  const navAnchors = new Set(navLinks.map((link) => link.getAttribute('data-ancla')));
 
-  const setActiveSection = (id = '') => {
+  // Cada bloque de la página hereda el ítem del menú de la sección anterior si no tiene uno propio
+  // (Tecnología → Profesionales; preguntas frecuentes y obras sociales → Pacientes; footer → Contacto).
+  const zones = [];
+  let currentGroup = '';
+  document.querySelectorAll('main > *, body > footer').forEach((el) => {
+    if (el.id && navAnchors.has(`#${el.id}`)) currentGroup = `#${el.id}`;
+    zones.push({ el, group: currentGroup });
+  });
+
+  const setActiveGroup = (group) => {
     navLinks.forEach((link) => {
-      link.classList.toggle('is-active', link.getAttribute('data-ancla') === `#${id}`);
+      const isActive = group !== '' && link.getAttribute('data-ancla') === group;
+      link.classList.toggle('is-active', isActive);
+      if (isActive) {
+        link.setAttribute('aria-current', 'location');
+      } else {
+        link.removeAttribute('aria-current');
+      }
     });
   };
 
-  if ('IntersectionObserver' in window && sections.length) {
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: '-76px 0px -70% 0px', threshold: 0 }
-    );
+  const computeGroup = () => {
+    const headerHeight = header ? header.offsetHeight : 0;
+    const line = headerHeight + (window.innerHeight - headerHeight) / 3;
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (atBottom && zones.length) return zones[zones.length - 1].group;
 
-    sections.forEach((section) => sectionObserver.observe(section));
-  }
+    let group = '';
+    for (const zone of zones) {
+      if (zone.el.getBoundingClientRect().top <= line) group = zone.group;
+      else break;
+    }
+    return group;
+  };
+
+  // Mientras la página scrollea hacia un ítem clickeado, se respeta ese ítem para evitar parpadeos intermedios
+  let isNavigating = false;
+  let navigatingTimer = 0;
+  let ticking = false;
+
+  const holdNavigation = () => {
+    isNavigating = true;
+    window.clearTimeout(navigatingTimer);
+    navigatingTimer = window.setTimeout(() => {
+      isNavigating = false;
+      setActiveGroup(computeGroup());
+    }, 250);
+  };
+
+  const onSpyScroll = () => {
+    if (isNavigating) {
+      holdNavigation();
+      return;
+    }
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      setActiveGroup(computeGroup());
+    });
+  };
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      setActiveGroup(link.getAttribute('data-ancla') ?? '');
+      holdNavigation();
+    });
+  });
+
+  setActiveGroup(computeGroup());
+  window.addEventListener('scroll', onSpyScroll, { passive: true });
+  window.addEventListener('resize', onSpyScroll, { passive: true });
 </script>
