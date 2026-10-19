@@ -1,6 +1,6 @@
 export const site = {
   nombreCorto: 'CEDICH',
-  nombreCompleto: 'Centro de Endoscopías Digestivas del Chubut',
+  nombreCompleto: 'Centro de Endoscopías Digestivas de Chubut',
   telefono: '280 453 3933',
   whatsapp: '5492804533933',
   direccion: 'Pedro Martínez 45',

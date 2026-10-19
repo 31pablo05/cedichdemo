@@ -9,6 +9,7 @@ export default function MobileNav() {
   const [activeAncla, setActiveAncla] = useState(null);
   const buttonRef = useRef(null);
   const panelRef = useRef(null);
+  const closeButtonRef = useRef(null);
   const closeTimerRef = useRef(null);
 
   const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
@@ -23,6 +24,7 @@ export default function MobileNav() {
     buttonRef.current?.focus();
   };
 
+  // Bloquear scroll del body cuando el menú está abierto
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -35,6 +37,32 @@ export default function MobileNav() {
     };
   }, [isOpen]);
 
+  // Manejar tabindex de elementos interactivos para prevenir tabulación cuando está cerrado
+  useEffect(() => {
+    if (!panelRef.current) return;
+
+    const panel = panelRef.current;
+    const focusableElements = panel.querySelectorAll(
+      'a[href], button:not([disabled])'
+    );
+
+    focusableElements.forEach((el) => {
+      if (isOpen) {
+        el.removeAttribute('tabindex');
+      } else {
+        el.setAttribute('tabindex', '-1');
+      }
+    });
+  }, [isOpen]);
+
+  // Mover foco al panel cuando se abre
+  useEffect(() => {
+    if (isOpen && closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+  }, [isOpen]);
+
+  // Escape cierra el menú
   useEffect(() => {
     if (!isOpen) return;
 
@@ -46,6 +74,39 @@ export default function MobileNav() {
 
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isOpen]);
+
+  // Focus trap: mantener el foco dentro del panel
+  useEffect(() => {
+    if (!isOpen || !panelRef.current) return;
+
+    const panel = panelRef.current;
+    const focusableElements = panel.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+
+    const trapFocus = (event) => {
+      if (event.key !== 'Tab') return;
+
+      if (event.shiftKey) {
+        // Shift+Tab: si está en el primero, ir al último
+        if (document.activeElement === firstFocusable) {
+          event.preventDefault();
+          lastFocusable?.focus();
+        }
+      } else {
+        // Tab: si está en el último, ir al primero
+        if (document.activeElement === lastFocusable) {
+          event.preventDefault();
+          firstFocusable?.focus();
+        }
+      }
+    };
+
+    panel.addEventListener('keydown', trapFocus);
+    return () => panel.removeEventListener('keydown', trapFocus);
   }, [isOpen]);
 
   useEffect(() => {
@@ -73,9 +134,9 @@ export default function MobileNav() {
         ref={buttonRef}
         type="button"
         aria-expanded={isOpen}
-        aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
+        aria-label="Abrir menú"
         onClick={open}
-        className="mobile-nav-trigger flex items-center justify-center w-[42px] h-[42px] rounded-full"
+        className="mobile-nav-trigger flex items-center justify-center w-11 h-11 rounded-full"
       >
         <span className="relative flex flex-col items-center justify-center gap-[5px] w-[22px]">
           <span className="block h-[2px] w-full bg-white" />
@@ -86,11 +147,16 @@ export default function MobileNav() {
 
       <div
         ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menú de navegación"
         aria-hidden={!isOpen}
         className={`fixed inset-0 z-[100] flex flex-col overflow-y-auto transition-transform duration-[280ms] ease-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
+          isOpen ? 'translate-x-0' : 'translate-x-full invisible'
         }`}
-        style={{ backgroundImage: 'var(--gradient-navy)' }}
+        style={{
+          backgroundImage: 'var(--gradient-navy)',
+        }}
       >
         <svg
           className="absolute inset-0 w-full h-full opacity-[0.06] pointer-events-none"
@@ -138,12 +204,13 @@ export default function MobileNav() {
               <span className="flex flex-col leading-tight">
                 <span className="font-display font-bold text-[20px] text-white">CEDICH</span>
                 <span className="text-[10px] leading-tight text-[var(--color-cyan)]">
-                  Centro de Endoscopías Digestivas del Chubut
+                  Centro de Endoscopías Digestivas de Chubut
                 </span>
               </span>
             </a>
 
             <button
+              ref={closeButtonRef}
               type="button"
               aria-label="Cerrar menú"
               onClick={close}
