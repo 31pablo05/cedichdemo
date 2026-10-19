@@ -2,6 +2,7 @@
 // href: destino del link; apunta a la home para que funcione también desde las páginas legales.
 // Estando en la home, "/#seccion" scrollea dentro de la misma página sin recargarla.
 export const nav = [
+  { etiqueta: 'Inicio', ancla: '#inicio' },
   { etiqueta: 'Nosotros', ancla: '#nosotros' },
   { etiqueta: 'Servicios', ancla: '#servicios' },
   { etiqueta: 'Profesionales', ancla: '#profesionales' },

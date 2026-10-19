@@ -13,8 +13,8 @@ const fuentesDesktop = fuentesResponsive('profesional-desktop', [1024, 1280, 167
 ---
 
 <section id="profesionales" class="relative w-full overflow-hidden" style={{ backgroundImage: 'var(--gradient-navy)' }}>
-  <!-- Foto del profesional: panel en mobile, fondo completo de la sección desde lg -->
-  <div class="relative aspect-[4/5] w-full overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
+  <!-- Foto del profesional: panel en mobile, mitad superior en tablet, fondo completo desde lg -->
+  <div class="relative aspect-[4/5] w-full overflow-hidden md:aspect-[16/9] lg:absolute lg:inset-0 lg:aspect-auto">
     <picture>
       <source media="(min-width: 1024px)" type="image/avif" srcset={fuentesDesktop.avif} sizes="100vw" />
       <source media="(min-width: 1024px)" type="image/webp" srcset={fuentesDesktop.webp} sizes="100vw" />
@@ -26,16 +26,25 @@ const fuentesDesktop = fuentesResponsive('profesional-desktop', [1024, 1280, 167
         width="1672"
         height="941"
         loading="lazy"
-        class="absolute inset-0 h-full w-full object-cover object-[50%_14%] lg:object-[50%_18%]"
+        class="absolute inset-0 h-full w-full object-cover object-[50%_14%] md:object-[50%_20%] lg:object-[50%_18%]"
       />
     </picture>
 
     <!-- Overlay vertical, para legibilidad del contenido que va debajo en mobile -->
     <div
-      class="pointer-events-none absolute inset-0 lg:hidden"
+      class="pointer-events-none absolute inset-0 md:hidden"
       style={{
         backgroundImage:
           'linear-gradient(to bottom, color-mix(in srgb, var(--color-navy-deep) 10%, transparent) 0%, transparent 38%, color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 78%, color-mix(in srgb, var(--color-navy-deep) 95%, transparent) 100%)',
+      }}
+    />
+
+    <!-- Overlay vertical en tablet, más suave que mobile -->
+    <div
+      class="pointer-events-none absolute inset-0 hidden md:block lg:hidden"
+      style={{
+        backgroundImage:
+          'linear-gradient(to bottom, color-mix(in srgb, var(--color-navy-deep) 5%, transparent) 0%, transparent 30%, color-mix(in srgb, var(--color-navy-deep) 45%, transparent) 75%, color-mix(in srgb, var(--color-navy-deep) 85%, transparent) 100%)',
       }}
     />
 
@@ -58,8 +67,9 @@ const fuentesDesktop = fuentesResponsive('profesional-desktop', [1024, 1280, 167
     />
   </div>
 
-  <!-- Contenido: eyebrow, título, bajada y CTA -->
-  <div class="container relative z-10 pt-8 pb-6 md:pt-10 lg:flex lg:min-h-[680px] lg:items-center lg:py-20 xl:min-h-[740px]">
+  <!-- Contenido: eyebrow, título, bajada, CTA y card del profesional -->
+  <div class="container relative z-10 pt-8 pb-6 md:pt-10 md:pb-10 lg:flex lg:min-h-[680px] lg:items-center lg:py-20 xl:min-h-[740px]">
+    <!-- Texto principal -->
     <div class="reveal lg:max-w-[400px] xl:max-w-[440px]">
       <p class="eyebrow eyebrow-light">PROFESIONALES</p>
       <h2 class="mt-4 text-white">Experiencia médica al servicio de tu salud</h2>
@@ -76,43 +86,63 @@ const fuentesDesktop = fuentesResponsive('profesional-desktop', [1024, 1280, 167
         Consultar por WhatsApp
       </a>
     </div>
-  </div>
 
-  <!-- Card del profesional: capa informativa, no una segunda tarjeta grande -->
-  <div class="profesional-card reveal reveal-delay-2 relative z-10 mx-5 mb-10 rounded-[var(--radius-lg)] border border-white/15 bg-[color-mix(in_srgb,var(--color-navy-panel)_80%,transparent)] p-5 shadow-[var(--shadow-float)] backdrop-blur-md transition-shadow duration-300 md:mx-10 sm:w-[320px] lg:absolute lg:inset-auto lg:bottom-12 lg:right-6 lg:mx-0 lg:mb-0 lg:w-[260px] xl:right-14">
-    <h3 class="text-[18px] font-bold text-white">{profesional.nombre}</h3>
-    <div class="mt-3 border-t border-white/[0.12]"></div>
+    <!-- Card del profesional: abajo en mobile, al lado en tablet (768-1023), bottom-right en desktop -->
+    <div class="profesional-card reveal reveal-delay-2 relative z-10 mx-5 mt-10 rounded-[var(--radius-lg)] border border-white/15 bg-[color-mix(in_srgb,var(--color-navy-panel)_80%,transparent)] p-5 shadow-[var(--shadow-float)] backdrop-blur-md transition-shadow duration-300 sm:w-[320px] md:mx-10 md:mt-0 md:ml-auto md:w-[280px] lg:absolute lg:inset-auto lg:bottom-12 lg:right-6 lg:mx-0 lg:w-[260px] xl:right-14">
+      <h3 class="text-[18px] font-bold text-white">{profesional.nombre}</h3>
+      <div class="mt-3 border-t border-white/[0.12]"></div>
 
-    <ul class="mt-3 flex flex-col gap-2.5">
+      <ul class="mt-3 flex flex-col gap-2.5">
+        {
+          profesional.atributos.map((atributo) => (
+            <li class="flex items-start gap-2.5">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--color-cyan)"
+                stroke-width="1.5"
+                class="mt-0.5 shrink-0"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M8.5 12.5l2.5 2.5 4.5-5" />
+              </svg>
+              <span class="text-[13px] text-white/85 max-w-none">{atributo}</span>
+            </li>
+          ))
+        }
+      </ul>
+
       {
-        profesional.atributos.map((atributo) => (
-          <li class="flex items-start gap-2.5">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-cyan)"
-              stroke-width="1.5"
-              class="mt-0.5 shrink-0"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="9" />
-              <path d="M8.5 12.5l2.5 2.5 4.5-5" />
-            </svg>
-            <span class="text-[13px] text-white/85 max-w-none">{atributo}</span>
-          </li>
-        ))
+        profesional.matricula && (
+          <p class="mt-3 text-[12px] text-[var(--color-cyan)] max-w-none">
+            {profesional.matricula}
+          </p>
+        )
       }
-    </ul>
 
-    {
-      profesional.matricula && (
-        <p class="mt-3 text-[12px] text-[var(--color-cyan)] max-w-none">
-          {profesional.matricula}
-        </p>
-      )
-    }
+      <a
+        href="#trayectoria"
+        class="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-white/70 transition-colors hover:text-[var(--color-cyan)] py-1 -my-1"
+      >
+        Conocer su trayectoria
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="transition-transform group-hover:translate-x-0.5"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14" />
+          <path d="M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    </div>
   </div>
 </section>
 

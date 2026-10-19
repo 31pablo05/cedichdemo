@@ -1,7 +1,7 @@
 ---
-import { getWhatsappLink } from '../../data/site.js';
+import { getWhatsappLink, whatsappMensajes } from '../../data/site.js';
 
-const whatsappLink = getWhatsappLink('Hola, quiero coordinar un turno');
+const whatsappLink = getWhatsappLink(whatsappMensajes.solicitarTurno);
 ---
 
 <a
@@ -10,7 +10,8 @@ const whatsappLink = getWhatsappLink('Hola, quiero coordinar un turno');
   target="_blank"
   rel="noopener noreferrer"
   aria-label="Pedir turno por WhatsApp"
-  class="group fixed bottom-5 right-5 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-[var(--color-whatsapp)] shadow-[var(--shadow-float)] opacity-0 scale-[0.8] pointer-events-none transition-all duration-[250ms] hover:scale-[1.06]"
+  tabindex="-1"
+  class="group fixed bottom-5 right-5 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-[var(--color-whatsapp)] shadow-[var(--shadow-float)] opacity-0 scale-[0.8] pointer-events-none transition-all duration-[250ms] hover:scale-[1.06] pb-safe-or-0"
 >
   <span
     class="hidden md:block absolute right-full mr-3 whitespace-nowrap bg-white shadow-[var(--shadow-card)] rounded-[var(--radius-pill)] px-[14px] py-2 text-[13px] font-semibold text-[var(--color-ink)] opacity-0 pointer-events-none transition-opacity group-hover:opacity-100"
@@ -24,10 +25,15 @@ const whatsappLink = getWhatsappLink('Hola, quiero coordinar un turno');
 </a>
 
 <style>
+  .pb-safe-or-0 {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
   #whatsapp-float.is-visible {
     opacity: 1;
     transform: scale(1);
     pointer-events: auto;
+    tabindex: 0;
     animation: whatsapp-pulse 1.8s ease-in-out 2;
   }
 
@@ -61,8 +67,10 @@ const whatsappLink = getWhatsappLink('Hola, quiero coordinar un turno');
     if (!floatButton) return;
     if (window.scrollY > 500) {
       floatButton.classList.add('is-visible');
+      floatButton.setAttribute('tabindex', '0');
     } else {
       floatButton.classList.remove('is-visible');
+      floatButton.setAttribute('tabindex', '-1');
     }
   };
 

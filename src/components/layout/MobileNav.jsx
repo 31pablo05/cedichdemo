@@ -1,18 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { nav } from '../../data/nav.js';
-import { site, getWhatsappLink } from '../../data/site.js';
+import { site, getWhatsappLink, whatsappMensajes } from '../../data/site.js';
 import { logoSrc } from '../../lib/imagenes.js';
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
   const [animKey, setAnimKey] = useState(0);
   const [activeAncla, setActiveAncla] = useState(null);
-  const buttonRef = useRef(null);
   const panelRef = useRef(null);
   const closeButtonRef = useRef(null);
   const closeTimerRef = useRef(null);
 
-  const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
+  const whatsappLink = getWhatsappLink(whatsappMensajes.solicitarTurno);
 
   const open = () => {
     setAnimKey((key) => key + 1);
@@ -21,8 +20,30 @@ export default function MobileNav() {
 
   const close = () => {
     setIsOpen(false);
-    buttonRef.current?.focus();
+    const triggerButton = document.getElementById('mobile-nav-trigger');
+    triggerButton?.focus();
   };
+
+  // Escuchar clicks en el botón del header
+  useEffect(() => {
+    const triggerButton = document.getElementById('mobile-nav-trigger');
+    if (!triggerButton) return;
+
+    const handleTriggerClick = () => {
+      open();
+    };
+
+    triggerButton.addEventListener('click', handleTriggerClick);
+    return () => triggerButton.removeEventListener('click', handleTriggerClick);
+  }, []);
+
+  // Actualizar aria-expanded del botón del header
+  useEffect(() => {
+    const triggerButton = document.getElementById('mobile-nav-trigger');
+    if (triggerButton) {
+      triggerButton.setAttribute('aria-expanded', isOpen.toString());
+    }
+  }, [isOpen]);
 
   // Bloquear scroll del body cuando el menú está abierto
   useEffect(() => {
@@ -116,35 +137,28 @@ export default function MobileNav() {
   const handleNavClick = (event, item) => {
     event.preventDefault();
     setActiveAncla(item.ancla);
-    closeTimerRef.current = setTimeout(() => {
-      close();
-      setActiveAncla(null);
+    
+    // Cerrar el menú
+    close();
+    setActiveAncla(null);
+    
+    // Pequeño delay para que se cierre el menú antes de navegar
+    setTimeout(() => {
       // En la home la sección existe: scroll suave sin recargar. Desde otras páginas se navega a la home.
-      if (document.querySelector(item.ancla)) {
-        window.location.hash = item.ancla;
+      const targetElement = document.querySelector(item.ancla);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Actualizar la URL sin recargar
+        history.pushState(null, '', item.href);
       } else {
+        // Si no existe la sección (estamos en otra página), navegar a la home
         window.location.assign(item.href);
       }
-    }, 180);
+    }, 300);
   };
 
   return (
     <>
-      <button
-        ref={buttonRef}
-        type="button"
-        aria-expanded={isOpen}
-        aria-label="Abrir menú"
-        onClick={open}
-        className="mobile-nav-trigger flex items-center justify-center w-11 h-11 rounded-full"
-      >
-        <span className="relative flex flex-col items-center justify-center gap-[5px] w-[22px]">
-          <span className="block h-[2px] w-full bg-white" />
-          <span className="block h-[2px] w-[70%] bg-white" />
-          <span className="block h-[2px] w-full bg-white" />
-        </span>
-      </button>
-
       <div
         ref={panelRef}
         role="dialog"
@@ -189,7 +203,7 @@ export default function MobileNav() {
 
         <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full bg-[var(--color-cyan)]/10 blur-[100px]" />
 
-        <div className="relative flex flex-col h-full px-5 py-6">
+        <div className="relative flex flex-col min-h-full px-5 py-6">
           <div className="flex items-center justify-between">
             <a href="/" onClick={close} className="flex items-center gap-3">
               <span className="flex items-center justify-center rounded-full bg-white p-[6px] border border-white/15 shadow-[var(--shadow-card)]">
@@ -275,7 +289,7 @@ export default function MobileNav() {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
             </svg>
-            Consultar por WhatsApp
+            Solicitar turno
           </a>
 
           <div className="mt-auto pt-6 border-t border-white/10">
@@ -283,7 +297,7 @@ export default function MobileNav() {
               Dónde estamos
             </p>
             <p className="mt-3 text-[14px] text-white/70">
-              {site.direccion}, {site.localidad}
+              {site.direccion}, {site.localidad}, {site.provincia}
             </p>
             {/* PENDIENTE CLIENTE: confirmar horarios reales de atención */}
             {site.horarios.map((horario) => (

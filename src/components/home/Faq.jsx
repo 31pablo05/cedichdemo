@@ -76,7 +76,7 @@ export default function Faq({ items }) {
           href={WHATSAPP}
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex items-center gap-1.5 text-[14px] font-semibold text-[var(--color-blue)]"
+          className="group inline-flex items-center gap-1.5 text-[14px] font-semibold text-[var(--color-blue-dark)] py-2.5 px-2 -mx-2 rounded-[var(--radius-sm)]"
         >
           Hacer una consulta
           <svg

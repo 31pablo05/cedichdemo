@@ -2,6 +2,7 @@
 import { site } from '../data/site.js';
 
 import Header from '../components/layout/Header.astro';
+import MobileNav from '../components/layout/MobileNav.jsx';
 import Footer from '../components/layout/Footer.astro';
 import WhatsappFloat from '../components/ui/WhatsappFloat.astro';
 
@@ -9,27 +10,37 @@ import '../styles/global.css';
 
 const {
   title = 'CEDICH · Endoscopía y colonoscopía en Rawson, Chubut',
-  description = 'Centro de Endoscopías Digestivas de Chubut. Endoscopía digestiva alta, colonoscopía y vía biliar en Rawson. Coordiná tu turno por WhatsApp.',
+  description = 'Centro de Endoscopías Digestivas de Chubut. Endoscopía digestiva alta, colonoscopía y tests de aire espirado en Rawson. Coordiná tu turno por WhatsApp.',
   ogImage = '/og-cedich.jpg',
 } = Astro.props;
 
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+// URLs canónicas sin barra final, consistentes con navegación interna
+const canonicalPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonicalUrl = new URL(canonicalPath === '/' ? '/' : canonicalPath, Astro.site ?? Astro.url.origin);
 const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url.origin);
 const ogImageAlt = `${site.nombreCompleto} — ${site.nombreCorto}`;
+
+const baseUrl = (Astro.site ?? Astro.url.origin).toString().replace(/\/$/, '');
+const logoUrl = `${baseUrl}/logos/logo-cedich-128.png`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalOrganization',
   name: site.nombreCompleto,
-  description,
-  url: (Astro.site ?? Astro.url.origin).toString(),
+  description: 'Centro de Endoscopías Digestivas de Chubut. Especialistas en endoscopía digestiva alta, colonoscopía y tests de aire espirado.',
+  url: baseUrl,
+  logo: logoUrl,
+  image: ogImageUrl.toString(),
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.direccion,
     addressLocality: site.localidad,
+    addressRegion: site.provincia,
+    postalCode: site.codigoPostal,
+    addressCountry: site.pais,
   },
-  telephone: site.telefono,
-  sameAs: [site.instagram.url],
+  telephone: site.telefonoInternacional,
+  sameAs: [site.instagram.url, site.facebook.url].filter(Boolean),
 };
 ---
 
@@ -38,6 +49,7 @@ const jsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#001A28" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
@@ -62,6 +74,7 @@ const jsonLd = {
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logos/logo-cedich-128.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -81,6 +94,7 @@ const jsonLd = {
     </a>
 
     <Header />
+    <MobileNav client:media="(max-width: 1023px)" />
 
     <main id="main">
       <slot />

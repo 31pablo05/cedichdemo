@@ -1,0 +1,6 @@
+# CEDICH - Centro de Endoscopías Digestivas de Chubut
+User-agent: *
+Allow: /
+
+# PENDIENTE CLIENTE: actualizar con el dominio definitivo
+Sitemap: https://cedichdemo.vercel.app/sitemap-index.xml

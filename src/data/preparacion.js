@@ -25,26 +25,61 @@ export const preparacion = [
     ],
   },
   {
-    estudio: 'Vía Biliar',
-    duracion: '20 a 30 minutos',
-    sedacion: true,
-    acompanante: true,
-    indicaciones: [
-      'Ayuno de 8 horas antes del estudio.',
-      'Traer estudios previos relacionados, si los tenés.',
-      'Concurrir con acompañante, ya que se realiza con sedación.',
-      'No conducir ni realizar actividades de riesgo el resto del día.',
-    ],
-  },
-  {
-    estudio: 'Prevención',
-    duracion: 'Según el estudio indicado',
+    estudio: 'Test de Aire Espirado',
+    duracion: 'Variable según el test',
     sedacion: false,
     acompanante: false,
     indicaciones: [
-      'La preparación depende del estudio de prevención indicado.',
-      'Te enviamos las indicaciones puntuales por WhatsApp.',
-      'Traer estudios previos relacionados, si los tenés.',
+      // PENDIENTE REVISIÓN MÉDICA
+      'La preparación para este estudio se confirma al coordinar el turno.',
+      'Consultanos por WhatsApp para recibir las indicaciones específicas.',
+    ],
+  },
+  {
+    estudio: 'Intolerancia a la Lactosa',
+    duracion: 'Variable según el test',
+    sedacion: false,
+    acompanante: false,
+    indicaciones: [
+      // PENDIENTE REVISIÓN MÉDICA
+      'La preparación para este estudio se confirma al coordinar el turno.',
+      'Consultanos por WhatsApp para recibir las indicaciones específicas.',
+    ],
+  },
+  {
+    estudio: 'Detección de SIBO',
+    duracion: 'Variable según el test',
+    sedacion: false,
+    acompanante: false,
+    indicaciones: [
+      // PENDIENTE REVISIÓN MÉDICA
+      'La preparación para este estudio se confirma al coordinar el turno.',
+      'Consultanos por WhatsApp para recibir las indicaciones específicas.',
     ],
   },
 ];
+
+// PENDIENTE CLIENTE: confirmar si estos servicios siguen vigentes
+// {
+//   estudio: 'Vía Biliar',
+//   duracion: '20 a 30 minutos',
+//   sedacion: true,
+//   acompanante: true,
+//   indicaciones: [
+//     'Ayuno de 8 horas antes del estudio.',
+//     'Traer estudios previos relacionados, si los tenés.',
+//     'Concurrir con acompañante, ya que se realiza con sedación.',
+//     'No conducir ni realizar actividades de riesgo el resto del día.',
+//   ],
+// },
+// {
+//   estudio: 'Prevención',
+//   duracion: 'Según el estudio indicado',
+//   sedacion: false,
+//   acompanante: false,
+//   indicaciones: [
+//     'La preparación depende del estudio de prevención indicado.',
+//     'Te enviamos las indicaciones puntuales por WhatsApp.',
+//     'Traer estudios previos relacionados, si los tenés.',
+//   ],
+// },

@@ -2,13 +2,15 @@ import { useState } from 'react';
 
 const iconosPaths = {
   'Endoscopía Digestiva Alta':
-    '<path d="M10.8 1.6c-.8 0-1.4.6-1.4 1.4v2.5C6 6.5 3.4 9.7 3.4 13.5c0 4.4 3.6 8 8 8h.3c3 0 5.4-2.4 5.4-5.4 0-2.1-1.2-3.9-3-4.8-.4-.2-.7-.6-.7-1.1V8.8c0-.5.3-.9.8-1 1.4-.4 2.6-1.3 3.2-2.6.4-.8-.2-1.7-1.1-1.7-.5 0-.9.3-1.1.7-.3.6-.9 1-1.6 1h-1.4V3c0-.8-.6-1.4-1.4-1.4z" fill="currentColor" stroke="none"/><path d="M15.8 15.4c1.6 0 2.9 1.3 2.9 2.9v2.3" stroke-width="2.3" stroke-linecap="round"/>',
+    '<circle cx="12" cy="10" r="3.5" stroke-width="1.5"/><path d="M8.5 10c0-1.9 1.6-3.5 3.5-3.5s3.5 1.6 3.5 3.5" stroke-width="1.5"/><path d="M12 13.5v3M9.5 16.5c0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5" stroke-width="1.5"/><ellipse cx="12" cy="7" rx="4.5" ry="2.5" stroke-width="1.5"/>',
   'Colonoscopía':
-    '<path d="M4.6 21.5v-11A5.4 5.4 0 0 1 10 5.1h4a5.4 5.4 0 0 1 5.4 5.4v5.1a4 4 0 0 1-4 4h-1.6a2.8 2.8 0 0 0-2.8 2.8" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>',
-  'Vía Biliar':
-    '<path d="M2.8 4.6h12.4c2.7 0 4.8 2.2 4.8 4.8 0 3.3-2.3 6.1-5.5 6.7l-2.2.4c-.6.1-1.1-.1-1.4-.6l-.8-1.1-1.2 1c-.4.4-1 .4-1.5.1C4.6 14.3 2 10.6 2 6.4v-1c0-.5.3-.8.8-.8z" fill="currentColor" stroke="none"/><path d="M13.6 17.4c0 1.9 1.2 3.3 2.6 3.3s2.6-1.4 2.6-3.3c0-1.3-.6-2.4-1.5-2.9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
-  'Prevención':
-    '<path d="M12 2.4 3.9 5.4v6.2c0 4.7 3.3 8.4 8.1 9.9 4.8-1.5 8.1-5.2 8.1-9.9V5.4L12 2.4z" stroke-width="2.2" stroke-linejoin="round"/><path d="M8.4 11.9l2.6 2.6 5.1-5.4" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>',
+    '<path d="M5 8c0-1.7 1.3-3 3-3h1c1.1 0 2 .9 2 2v0c0 1.1.9 2 2 2h2c1.1 0 2 .9 2 2v4c0 1.7-1.3 3-3 3h-2c-1.1 0-2-.9-2-2v0c0-1.1-.9-2-2-2H7c-1.1 0-2-.9-2-2V8z" stroke-width="1.5"/>',
+  'Test de Aire Espirado':
+    '<circle cx="12" cy="12" r="9" stroke-width="1.5"/><path d="M8 12h2m2 0h2m2 0h2M12 8v2m0 2v2m0 2v2" stroke-width="1.5" stroke-linecap="round"/><path d="M15 9l-3 3-3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+  'Intolerancia a la Lactosa':
+    '<path d="M6 4h12v12c0 2.2-1.8 4-4 4h-4c-2.2 0-4-1.8-4-4V4z" stroke-width="1.5"/><path d="M6 4h12v4H6V4z" stroke-width="1.5"/><circle cx="10" cy="14" r="1.5" fill="currentColor"/><circle cx="14" cy="14" r="1.5" fill="currentColor"/>',
+  'Detección de SIBO':
+    '<ellipse cx="12" cy="8" rx="5" ry="3" stroke-width="1.5"/><path d="M7 8v8c0 1.7 2.2 3 5 3s5-1.3 5-3V8" stroke-width="1.5"/><circle cx="9" cy="11" r="1" fill="currentColor"/><circle cx="15" cy="11" r="1" fill="currentColor"/><circle cx="12" cy="14" r="1" fill="currentColor"/>',
 };
 
 export default function PreparacionAccordion({ estudios }) {
@@ -63,7 +65,7 @@ export default function PreparacionAccordion({ estudios }) {
                     height="18"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke={isOpen ? 'white' : 'var(--color-blue)'}
+                    stroke={isOpen ? 'white' : 'var(--color-blue-dark)'}
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -112,14 +114,14 @@ export default function PreparacionAccordion({ estudios }) {
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue)"
+                      stroke="var(--color-blue-dark)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
                       <circle cx="12" cy="12" r="9" />
                       <path d="M12 7v5l3 3" />
                     </svg>
-                    <span className="text-[13px] text-[var(--color-muted)]">{estudio.duracion}</span>
+                    <span className="text-[13px] text-[var(--color-blue-dark)] font-medium">{estudio.duracion}</span>
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[color-mix(in_srgb,var(--color-cyan-light)_40%,var(--color-cyan-pale))] bg-[var(--color-cyan-pale)] px-3.5 py-2">
                     <svg
@@ -127,13 +129,13 @@ export default function PreparacionAccordion({ estudios }) {
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue)"
+                      stroke="var(--color-blue-dark)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
                       <path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" />
                     </svg>
-                    <span className="text-[13px] text-[var(--color-muted)]">
+                    <span className="text-[13px] text-[var(--color-blue-dark)] font-medium">
                       {estudio.sedacion ? 'Con sedación' : 'Sin sedación'}
                     </span>
                   </span>
@@ -143,7 +145,7 @@ export default function PreparacionAccordion({ estudios }) {
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="var(--color-blue)"
+                      stroke="var(--color-blue-dark)"
                       strokeWidth="1.5"
                       aria-hidden="true"
                     >
@@ -152,7 +154,7 @@ export default function PreparacionAccordion({ estudios }) {
                       <circle cx="17" cy="9" r="2.5" />
                       <path d="M15 20a5 5 0 0 1 6-4.9" />
                     </svg>
-                    <span className="text-[13px] text-[var(--color-muted)]">
+                    <span className="text-[13px] text-[var(--color-blue-dark)] font-medium">
                       {estudio.acompanante ? 'Con acompañante' : 'Sin acompañante'}
                     </span>
                   </span>

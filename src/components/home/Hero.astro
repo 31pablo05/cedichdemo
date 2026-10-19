@@ -1,14 +1,14 @@
 ---
-import { getWhatsappLink } from '../../data/site.js';
+import { getWhatsappLink, whatsappMensajes } from '../../data/site.js';
 import { fuentesResponsive } from '../../lib/imagenes.js';
 
-const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
+const whatsappTurno = getWhatsappLink(whatsappMensajes.solicitarTurno);
 
 const fuentesMobile = fuentesResponsive('hero-mobile', [480, 720, 941]);
 const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
 ---
 
-<section class="hero relative w-full overflow-hidden">
+<section id="inicio" class="hero relative w-full overflow-hidden">
   <!-- =====================================================
        IMAGEN RESPONSIVE DE FONDO
        Mobile: public/imagenes/optimizadas/hero-mobile-*
@@ -174,8 +174,8 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
            BENEFICIOS
       ==================================================== -->
       <div
-        class="mt-9 border-t border-white/[0.13] pt-6
-               md:mt-10
+        class="mt-10 border-t border-white/[0.13] pt-6
+               md:mt-12 md:pt-7
                reveal reveal-delay-4"
       >
         <div
@@ -270,7 +270,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
               <span class="block font-semibold text-white">
                 Procedimientos
               </span>
-              <span class="mt-0.5 block text-white/60">
+              <span class="mt-0.5 block text-white/75">
                 seguros y eficaces
               </span>
             </p>
@@ -292,7 +292,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
    */
 
   .hero-background {
-    object-position: 52% 35%;
+    object-position: 48% 35%;
     animation: hero-image-enter 1200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -301,7 +301,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
   }
 
   .hero-overlay-mobile {
-    background: linear-gradient(180deg, rgba(3, 18, 40, 0.88) 0%, rgba(3, 18, 40, 0.76) 35%, rgba(3, 18, 40, 0.78) 65%, rgba(3, 18, 40, 0.95) 100%);
+    background: linear-gradient(180deg, rgba(3, 18, 40, 0.92) 0%, rgba(3, 18, 40, 0.82) 32%, rgba(3, 18, 40, 0.80) 65%, rgba(3, 18, 40, 0.95) 100%);
   }
 
   .hero-glow {
