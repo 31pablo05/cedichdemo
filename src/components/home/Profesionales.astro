@@ -1,20 +1,27 @@
 ---
 import { profesionales } from '../../data/profesionales.js';
 import { getWhatsappLink } from '../../data/site.js';
+import { fuentesResponsive } from '../../lib/imagenes.js';
 
 // Con más de un profesional, este layout solo muestra el primero.
 // Para varios, pasar a una grilla de cards en lugar de este bloque foto+card.
 const profesional = profesionales[0];
 const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta médica');
+
+const fuentesMobile = fuentesResponsive('profesional-mobile', [480, 720, 941]);
+const fuentesDesktop = fuentesResponsive('profesional-desktop', [1024, 1280, 1672]);
 ---
 
 <section id="profesionales" class="relative w-full overflow-hidden" style={{ backgroundImage: 'var(--gradient-navy)' }}>
   <!-- Foto del profesional: panel en mobile, fondo completo de la sección desde lg -->
   <div class="relative aspect-[4/5] w-full overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
     <picture>
-      <source media="(min-width: 1024px)" srcset="/imagenes/herodesktop7.png" />
+      <source media="(min-width: 1024px)" type="image/avif" srcset={fuentesDesktop.avif} sizes="100vw" />
+      <source media="(min-width: 1024px)" type="image/webp" srcset={fuentesDesktop.webp} sizes="100vw" />
+      <source type="image/avif" srcset={fuentesMobile.avif} sizes="100vw" />
+      <source type="image/webp" srcset={fuentesMobile.webp} sizes="100vw" />
       <img
-        src="/imagenes/andresperfil2.png"
+        src={fuentesMobile.fallback}
         alt="Dr. Andrés Galarza en la sala de endoscopía de CEDICH"
         width="1672"
         height="941"

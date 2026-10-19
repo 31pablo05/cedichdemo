@@ -2,11 +2,19 @@
 import { nav } from '../../data/nav.js';
 import { site, getWhatsappLink } from '../../data/site.js';
 import MobileNav from './MobileNav.jsx';
+import { logoSrc } from '../../lib/imagenes.js';
 
 const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
+
+// Fuera de la home no hay hero oscuro detrás: el header arranca y se queda en su estado sólido
+const esSolido = Astro.url.pathname !== '/';
 ---
 
-<header id="site-header" class="fixed top-0 left-0 w-full z-50 h-[76px] lg:h-[82px]">
+<header
+  id="site-header"
+  class:list={['fixed top-0 left-0 w-full z-50 h-[76px] lg:h-[82px]', { 'is-scrolled': esSolido }]}
+  data-solido={esSolido ? '' : undefined}
+>
   <!-- Velo sutil detrás de la barra, para leer sobre la foto del hero sin fondo sólido -->
   <div class="header-glow absolute inset-x-0 top-0 h-24 pointer-events-none"></div>
 
@@ -14,8 +22,8 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
     <a href="/" class="flex items-center gap-2.5 shrink-0 md:gap-3">
       <span class="header-logo-container flex items-center justify-center rounded-full bg-white p-[5px] md:p-[6px] lg:p-[7px]">
         <img
-          src="/logos/logo-cedich.png"
-          alt="CEDICH"
+          src={logoSrc}
+          alt=""
           width="42"
           height="42"
           class="header-logo h-[26px] w-auto md:h-[30px] lg:h-[35px]"
@@ -33,7 +41,7 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
       {
         nav.map((item) => (
           <a
-            href={item.ancla}
+            href={item.href}
             data-nav-link
             data-ancla={item.ancla}
             class="nav-link group relative text-white/85 text-[15px] font-medium transition-colors hover:text-white"
@@ -172,10 +180,11 @@ const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta');
 
 <script>
   const header = document.getElementById('site-header');
+  const esSolido = header?.hasAttribute('data-solido') ?? false;
 
   const onScroll = () => {
     if (!header) return;
-    if (window.scrollY > 40) {
+    if (esSolido || window.scrollY > 40) {
       header.classList.add('is-scrolled');
     } else {
       header.classList.remove('is-scrolled');

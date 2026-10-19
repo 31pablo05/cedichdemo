@@ -1,6 +1,11 @@
 ---
 import { nosotros } from '../../data/nosotros.js';
 import HexPattern from '../ui/HexPattern.astro';
+import { fuentesResponsive } from '../../lib/imagenes.js';
+
+const fuentesImagen = nosotros.imagen
+  ? fuentesResponsive(nosotros.imagen, [480, 720, 1080, 1448])
+  : null;
 
 /** @type {Record<string, string>} */
 const iconosPaths = {
@@ -96,15 +101,27 @@ const iconosPaths = {
       <div class="mt-12 lg:mt-0 lg:w-[48%]">
         <div class="nosotros-image relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)]">
           {
-            nosotros.imagen ? (
-              <img
-                src={nosotros.imagen}
-                alt="CEDICH - Centro de Endoscopías Digestivas del Chubut"
-                width="720"
-                height="540"
-                loading="lazy"
-                class="nosotros-image-img h-full w-full object-cover"
-              />
+            fuentesImagen ? (
+              <picture>
+                <source
+                  type="image/avif"
+                  srcset={fuentesImagen.avif}
+                  sizes="(min-width: 1024px) 540px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
+                />
+                <source
+                  type="image/webp"
+                  srcset={fuentesImagen.webp}
+                  sizes="(min-width: 1024px) 540px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
+                />
+                <img
+                  src={fuentesImagen.fallback}
+                  alt="El equipo de CEDICH, con el Dr. Andrés Galarza, en el centro frente al logo institucional"
+                  width="720"
+                  height="540"
+                  loading="lazy"
+                  class="nosotros-image-img h-full w-full object-cover"
+                />
+              </picture>
             ) : (
               <div class="flex h-full w-full items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border)]">
                 <div class="text-center px-8">

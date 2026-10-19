@@ -4,6 +4,7 @@ import { nav } from '../../data/nav.js';
 import { legal } from '../../data/legal.js';
 import { footer } from '../../data/footer.js';
 import HexPattern from '../ui/HexPattern.astro';
+import { logoSrc } from '../../lib/imagenes.js';
 
 const anioActual = new Date().getFullYear();
 const whatsappCta = getWhatsappLink(footer.cta.mensaje);
@@ -69,7 +70,7 @@ const redes = [
       <div>
         <a href="/" class="inline-flex items-center gap-3">
           <span class="flex items-center justify-center rounded-full bg-white p-[5px]">
-            <img src="/logos/logo-cedich.png" alt="CEDICH" width="38" height="38" class="h-7 w-auto" />
+            <img src={logoSrc} alt="CEDICH" width="38" height="38" class="h-7 w-auto" />
           </span>
           <span class="flex flex-col leading-tight">
             <span class="font-display font-bold text-[18px] text-white">CEDICH</span>
@@ -102,7 +103,7 @@ const redes = [
         <nav aria-label="Navegación del pie" class="mt-4 flex flex-col gap-3">
           {
             nav.map((item) => (
-              <a href={item.ancla} class="footer-nav-link inline-flex w-fit items-center text-[13px] text-white/70">
+              <a href={item.href} class="footer-nav-link inline-flex w-fit items-center text-[13px] text-white/70">
                 <span class="footer-nav-dash" aria-hidden="true" />
                 <span class="footer-nav-label">{item.etiqueta}</span>
               </a>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { nav } from '../../data/nav.js';
 import { site, getWhatsappLink } from '../../data/site.js';
+import { logoSrc } from '../../lib/imagenes.js';
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,13 +52,18 @@ export default function MobileNav() {
     return () => clearTimeout(closeTimerRef.current);
   }, []);
 
-  const handleNavClick = (event, ancla) => {
+  const handleNavClick = (event, item) => {
     event.preventDefault();
-    setActiveAncla(ancla);
+    setActiveAncla(item.ancla);
     closeTimerRef.current = setTimeout(() => {
       close();
       setActiveAncla(null);
-      window.location.hash = ancla;
+      // En la home la sección existe: scroll suave sin recargar. Desde otras páginas se navega a la home.
+      if (document.querySelector(item.ancla)) {
+        window.location.hash = item.ancla;
+      } else {
+        window.location.assign(item.href);
+      }
     }, 180);
   };
 
@@ -122,7 +128,7 @@ export default function MobileNav() {
             <a href="/" onClick={close} className="flex items-center gap-3">
               <span className="flex items-center justify-center rounded-full bg-white p-[6px] border border-white/15 shadow-[var(--shadow-card)]">
                 <img
-                  src="/logos/logo-cedich.png"
+                  src={logoSrc}
                   alt="CEDICH"
                   width="42"
                   height="42"
@@ -159,8 +165,8 @@ export default function MobileNav() {
                   style={{ '--stagger-index': index }}
                 >
                   <a
-                    href={item.ancla}
-                    onClick={(event) => handleNavClick(event, item.ancla)}
+                    href={item.href}
+                    onClick={(event) => handleNavClick(event, item)}
                     className="flex items-center gap-3 py-[18px]"
                   >
                     <span className="font-display text-[11px] font-semibold text-[var(--color-cyan)]">

@@ -1,23 +1,40 @@
 ---
 import { getWhatsappLink } from '../../data/site.js';
+import { fuentesResponsive } from '../../lib/imagenes.js';
 
 const whatsappTurno = getWhatsappLink('Hola, quiero coordinar un turno');
+
+const fuentesMobile = fuentesResponsive('hero-mobile', [480, 720, 941]);
+const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
 ---
 
 <section class="hero relative w-full overflow-hidden">
   <!-- =====================================================
        IMAGEN RESPONSIVE DE FONDO
-       Mobile: heromobile2.png
-       Desktop: herodesktop2.png
+       Mobile: public/imagenes/optimizadas/hero-mobile-*
+       Desktop: public/imagenes/optimizadas/hero-desktop-*
+       Versiones AVIF/WebP en varios anchos.
+       sizes: con object-cover la imagen se recorta por alto, por eso
+       en mobile y tablet necesita más ancho que el viewport.
   ====================================================== -->
   <picture class="hero-picture absolute inset-0 block h-full w-full">
     <source
       media="(min-width: 768px)"
-      srcset="/imagenes/herodesktop6.png"
+      type="image/avif"
+      srcset={fuentesDesktop.avif}
+      sizes="(min-width: 1280px) 100vw, 1250px"
     />
+    <source
+      media="(min-width: 768px)"
+      type="image/webp"
+      srcset={fuentesDesktop.webp}
+      sizes="(min-width: 1280px) 100vw, 1250px"
+    />
+    <source type="image/avif" srcset={fuentesMobile.avif} sizes="520px" />
+    <source type="image/webp" srcset={fuentesMobile.webp} sizes="520px" />
 
     <img
-      src="/imagenes/heromob6.png"
+      src={fuentesMobile.fallback}
       alt=""
       width="1080"
       height="1920"

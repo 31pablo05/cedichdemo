@@ -30,5 +30,6 @@ export const nosotros = {
     texto: 'Conocer al equipo',
     destino: '#profesionales',
   },
-  imagen: '/imagenes/nosotroscedich.png',
+  // Nombre de la imagen optimizada en public/imagenes/optimizadas (vacío muestra el placeholder)
+  imagen: 'nosotros',
 };
