@@ -1,0 +1,77 @@
+---
+description: Reglas del proyecto web CEDICH (Astro + Tailwind v4). Se aplican siempre.
+alwaysApply: true
+---
+
+# Web CEDICH
+
+Sitio institucional de **CEDICH — Centro de Endoscopías Digestivas de Chubut** (Rawson, Chubut, Argentina).
+El objetivo es informar al paciente y derivar la consulta a WhatsApp. Es un sitio estático de una sola página
+(más dos páginas legales). No hay backend, base de datos, panel, sistema de turnos, login, blog ni páginas extra.
+Hoy es una DEMO para presentar al cliente; el alcance lo marca la propuesta comercial.
+
+El nombre oficial es "de Chubut" (no "del Chubut"). Si lo ves escrito distinto en algún lado, avisá.
+
+## Cómo trabajar
+- Una sección o un cambio por vez. Hacé solo lo que se pidió: no reorganices, no reformatees ni borres contenido aprobado.
+- Si un pedido implica algo fuera del alcance (páginas nuevas, blog, formularios con envío, backend), avisá antes de implementarlo.
+- No instales paquetes sin avisar.
+- Antes de dar algo por terminado: `npm run build` sin errores y revisar mobile (390 px), tablet (768 px) y desktop (1280 px).
+
+## Stack
+- Astro (componentes `.astro`), JavaScript sin TypeScript.
+- React islands (`.jsx`) solo si hay estado o eventos del DOM (hoy: MobileNav y poco más). Empezar siempre en `.astro`.
+- Tailwind CSS v4 (`@tailwindcss/vite`) + variables CSS en `src/styles/global.css`.
+- Deploy en Vercel. Se trabaja directo sobre `main`.
+
+## Tailwind v4 — ojo con el orden de capas
+Las reglas globales de `h1/h2/h3/p` en `global.css` están fuera de `@layer` y le ganan a las utilidades de Tailwind.
+No lo arregles de pasada: es un cambio aparte (mover esas reglas a `@layer base`) que se hace solo y con capturas antes/después.
+
+## Contenido
+- Los textos viven en `src/data/*.js`. No hardcodear textos en los componentes (tampoco `alt` nuevos si se pueden poner en data).
+- Imágenes: usar `fuentesResponsive()` de `src/lib/imagenes.js` con `<picture>` (AVIF/WebP) y el logo liviano `logoSrc`.
+  Siempre con `width`, `height`, `alt`. `loading="lazy"` salvo la imagen del hero.
+- Íconos como SVG inline. Sin librerías de íconos.
+- **No inventar** datos médicos, matrículas, nombres de profesionales, horarios ni obras sociales.
+  Lo no confirmado va como placeholder con el comentario `PENDIENTE CLIENTE`.
+  Los textos médicos que debe validar un profesional van con `PENDIENTE REVISIÓN MÉDICA`.
+- No usar logos de obras sociales ni fotos de banco de imágenes de médicos.
+- No prometer turnos online: todo CTA de turno va a WhatsApp o a la sección que explica el proceso.
+- Navegación: `src/data/nav.js` genera `{etiqueta, ancla, href: '/#ancla'}`. Los links usan `href`, así funcionan también desde las páginas legales.
+
+## Identidad visual
+Base blanca y luminosa con bandas navy de énfasis (hero, profesionales, tecnología, footer). El navy es estructura, no fondo dominante.
+Paleta: navy, azul, cyan, blanco, negro. Patrón hexagonal de marca como marca de agua muy tenue (nunca protagonista).
+Usar las variables CSS de `global.css` para colores; no inventar tonos nuevos.
+
+Tipografía actual: Plus Jakarta Sans (títulos) e IBM Plex Sans (texto). Montserrat y DM Sans se agregaron solo para header y hero
+en desktop: es una decisión abierta (unificar o quitar). No las extiendas a otras secciones sin consultarme.
+
+Encabezado de sección: eyebrow + H2, un solo eyebrow por sección. Sentence case en títulos y botones; mayúsculas solo en eyebrows.
+Párrafos con `max-width` de ~62ch. Un solo `h1` por página.
+
+## Botones y WhatsApp
+Tres tipos, con un estilo consistente cada uno y el mismo tamaño táctil (mínimo 44 px):
+- **Principal** (relleno): "Solicitar turno" → hero, header, menú mobile, tarjeta de Contacto.
+- **Por estudio**: "Consultar por este estudio" → cada servicio, con mensaje prearmado del estudio.
+- **General** (contorno): "Hablar con CEDICH" → consultas que no son de turno.
+"Consultar mi cobertura" (Obras sociales) usa el estilo secundario.
+Los mensajes prearmados salen de `src/data/site.js`. El número de WhatsApp sale de `site.js`, nunca escrito en el componente.
+(Estos textos se terminan de unificar con el prompt 13; hasta entonces puede haber variantes viejas.)
+
+## Movimiento
+Sutil y siempre desactivable con `prefers-reduced-motion: reduce`. Nada que bloquee o retrase el primer render del hero
+(título, bajada y botones visibles desde el inicio). Sin animaciones en loop en mobile. Cards: hover con borde/sombra;
+cualquier otro movimiento se acuerda sección por sección.
+
+## Accesibilidad
+- Contraste AA. El cyan claro no se usa para texto chico sobre blanco.
+- Foco visible en todo elemento interactivo.
+- Menú mobile y accordions con `aria-expanded`, navegables por teclado.
+- Elementos fuera de pantalla (botón flotante antes de aparecer) no deben recibir foco.
+- Jerarquía de títulos sin saltos.
+
+## Tono
+Español rioplatense, voseo, cálido y claro, pensado para bajar la ansiedad del paciente. Los botones dicen la acción concreta.
+Nunca "Enviar", "Ver más" ni "Click acá".
