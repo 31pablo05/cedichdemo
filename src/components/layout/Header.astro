@@ -19,25 +19,25 @@ const esSolido = Astro.url.pathname !== '/';
   <div class="header-glow absolute inset-x-0 top-0 h-24 pointer-events-none"></div>
 
   <div class="container relative h-full flex items-center justify-between gap-4">
-    <a href="/" class="flex items-center gap-2.5 shrink-0 md:gap-3">
-      <span class="header-logo-container flex items-center justify-center rounded-full bg-white p-[5px] md:p-[6px] lg:p-[7px]">
+    <a href="/" class="header-brand flex items-center gap-2.5 shrink-0 md:gap-3 lg:gap-3.5">
+      <span class="header-logo-container flex items-center justify-center rounded-full bg-white p-[5px] md:p-[6px] lg:p-[8px]">
         <img
           src={logoSrc}
           alt=""
           width="42"
           height="42"
-          class="header-logo h-[26px] w-auto md:h-[30px] lg:h-[35px]"
+          class="header-logo h-[26px] w-auto md:h-[30px] lg:h-[40px]"
         />
       </span>
       <span class="flex flex-col leading-tight">
-        <span class="font-display font-bold text-[16px] text-white md:text-[20px] lg:text-[24px]">CEDICH</span>
-        <span class="hidden text-[10px] leading-tight text-white/70 md:block lg:text-[12px]">
+        <span class="header-brand-name font-display font-bold text-[16px] text-white md:text-[20px] lg:text-[24px]">CEDICH</span>
+        <span class="header-brand-tag hidden text-[10px] leading-tight text-white/70 md:block lg:text-[12px]">
           Centro de Endoscopías Digestivas del Chubut
         </span>
       </span>
     </a>
 
-    <nav class="hidden lg:flex items-center gap-6 xl:gap-8">
+    <nav class="hidden lg:flex items-center gap-5 xl:gap-8">
       {
         nav.map((item) => (
           <a
@@ -145,6 +145,64 @@ const esSolido = Astro.url.pathname !== '/';
   @media (min-width: 1024px) {
     #site-header.is-scrolled {
       height: 70px;
+      background-color: color-mix(in srgb, var(--color-navy-deep) 94%, transparent);
+      border-bottom-color: color-mix(in srgb, var(--color-cyan) 24%, transparent);
+    }
+
+    .header-glow {
+      height: 120px;
+      background-image: linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-navy-deep) 78%, transparent) 0%,
+        color-mix(in srgb, var(--color-navy-deep) 38%, transparent) 55%,
+        transparent 100%
+      );
+    }
+
+    .header-logo-container {
+      border-color: color-mix(in srgb, var(--color-cyan-light) 45%, transparent);
+    }
+
+    .header-brand-name {
+      font-family: var(--font-title);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+
+    .header-brand-tag {
+      max-width: 150px;
+      margin-top: 3px;
+      font-family: var(--font-text);
+      font-size: 11.5px;
+      line-height: 1.25;
+      color: color-mix(in srgb, var(--color-white) 82%, transparent);
+    }
+
+    .nav-link {
+      font-family: var(--font-text);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .header-whatsapp {
+      min-height: 48px;
+      padding: 0 18px;
+      font-family: var(--font-text);
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .header-brand-tag {
+      max-width: none;
+      font-size: 12px;
+    }
+
+    .header-whatsapp {
+      padding: 0 24px;
     }
   }
 

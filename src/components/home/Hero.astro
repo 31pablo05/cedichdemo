@@ -49,39 +49,21 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
        Oscuro a la izquierda para el contenido.
        La imagen queda más visible hacia la derecha.
   ====================================================== -->
-  <div
-    class="absolute inset-0 hidden md:block"
-    style={{
-      background:
-        'linear-gradient(90deg, rgba(3,18,40,0.98) 0%, rgba(3,18,40,0.95) 24%, rgba(3,18,40,0.84) 38%, rgba(3,18,40,0.55) 52%, rgba(3,18,40,0.18) 72%, rgba(3,18,40,0.08) 100%)',
-    }}
-  ></div>
+  <div class="hero-overlay-desktop absolute inset-0 hidden md:block"></div>
 
   <!-- =====================================================
        OVERLAY MOBILE
        Mantiene la imagen visible pero permite leer.
   ====================================================== -->
-  <div
-    class="absolute inset-0 md:hidden"
-    style={{
-      background:
-        'linear-gradient(180deg, rgba(3,18,40,0.88) 0%, rgba(3,18,40,0.76) 35%, rgba(3,18,40,0.78) 65%, rgba(3,18,40,0.95) 100%)',
-    }}
-  ></div>
+  <div class="hero-overlay-mobile absolute inset-0 md:hidden"></div>
 
   <!-- Tinte general -->
   <div
-    class="absolute inset-0 bg-[var(--color-navy)] opacity-[0.10] mix-blend-multiply"
+    class="absolute inset-0 bg-[var(--color-navy)] opacity-[0.10] mix-blend-multiply lg:hidden"
   ></div>
 
   <!-- Resplandor de profundidad, esquina opuesta al texto -->
-  <div
-    class="pointer-events-none absolute inset-0 hidden md:block"
-    style={{
-      backgroundImage:
-        'radial-gradient(55% 50% at 88% 12%, rgba(11,172,219,0.18) 0%, transparent 70%)',
-    }}
-  ></div>
+  <div class="hero-glow pointer-events-none absolute inset-0 hidden md:block"></div>
 
   <!-- =====================================================
        CONTENIDO
@@ -89,17 +71,19 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
   <div
     class="container relative z-10 flex min-h-[760px] items-center pt-[118px] pb-12
            md:min-h-[650px] md:pt-[135px] md:pb-14
-           xl:min-h-[690px]"
+           lg:min-h-[680px] lg:pt-[124px] lg:pb-24
+           xl:min-h-[720px]
+           min-[1536px]:min-h-[740px]"
   >
     <div
       class="w-full text-left
              md:max-w-[610px]
-             lg:max-w-[650px]
-             xl:max-w-[700px]"
+             lg:max-w-[600px]
+             xl:max-w-[660px]"
     >
       <!-- Ubicación -->
       <p
-        class="eyebrow eyebrow-light reveal reveal-delay-0
+        class="hero-eyebrow eyebrow eyebrow-light reveal reveal-delay-0
                text-[12px] tracking-[0.18em]
                md:text-[13px]"
       >
@@ -108,12 +92,11 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
 
       <!-- H1 -->
       <h1
-        class="mt-4 max-w-[15ch] text-white
+        class="hero-title mt-4 max-w-[15ch] text-white
                text-[42px] leading-[0.99] tracking-[-0.035em]
                sm:text-[48px]
                md:text-[56px]
-               lg:text-[62px]
-               xl:text-[66px]
+               lg:max-w-none
                reveal reveal-delay-1"
       >
         Centro de Endoscopías Digestivas del Chubut
@@ -121,7 +104,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
 
       <!-- Bajada -->
       <p
-        class="mt-6 max-w-[54ch]
+        class="hero-lead mt-6 max-w-[54ch]
                text-[16px] leading-[1.7] text-white/78
                md:text-[17px]
                lg:text-[18px]
@@ -138,6 +121,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
       <div
         class="mt-8 flex flex-col gap-3
                sm:flex-row sm:gap-4
+               lg:mt-9
                reveal reveal-delay-3"
       >
         <!-- Principal -->
@@ -145,7 +129,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
           href={whatsappTurno}
           target="_blank"
           rel="noopener noreferrer"
-          class="group inline-flex min-h-[54px] w-full items-center
+          class="hero-cta hero-cta-primary group inline-flex min-h-[54px] w-full items-center
                  justify-center gap-2.5 rounded-[var(--radius-pill)]
                  px-7 py-3.5 text-[15px] font-semibold text-white
                  shadow-[var(--shadow-card)]
@@ -154,7 +138,6 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
                  hover:brightness-110
                  hover:shadow-[var(--shadow-card-hover)]
                  sm:w-auto"
-          style={{ backgroundImage: 'var(--gradient-blue)' }}
         >
           <svg
             class="h-[19px] w-[19px]"
@@ -171,7 +154,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
         <!-- Secundario -->
         <a
           href="#pacientes"
-          class="inline-flex min-h-[54px] w-full items-center
+          class="hero-cta hero-cta-secondary inline-flex min-h-[54px] w-full items-center
                  justify-center rounded-[var(--radius-pill)]
                  border border-white/30
                  bg-[rgba(5,27,57,0.30)]
@@ -196,18 +179,19 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
                reveal reveal-delay-4"
       >
         <div
-          class="grid grid-cols-1 gap-4
+          class="hero-benefits grid grid-cols-1 gap-4
                  min-[390px]:grid-cols-3
-                 md:max-w-[690px] md:grid-cols-3 md:gap-0"
+                 md:max-w-[690px] md:grid-cols-3 md:gap-0
+                 lg:flex lg:max-w-none"
         >
           <!-- Atención -->
           <div
-            class="flex items-start gap-3
+            class="hero-benefit flex items-start gap-3
                    min-[390px]:flex-col min-[390px]:gap-2
                    md:flex-row md:gap-3 md:pr-6"
           >
             <svg
-              class="h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
+              class="hero-benefit-icon h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -220,7 +204,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
               <path d="M15 20a5 5 0 0 1 6-4.9" />
             </svg>
 
-            <p class="text-[12px] leading-[1.4] md:text-[13px]">
+            <p class="hero-benefit-text text-[12px] leading-[1.4] md:text-[13px]">
               <span class="block font-semibold text-white">
                 Atención cálida
               </span>
@@ -232,14 +216,14 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
 
           <!-- Tecnología -->
           <div
-            class="flex items-start gap-3
+            class="hero-benefit flex items-start gap-3
                    min-[390px]:flex-col min-[390px]:gap-2
                    md:border-l md:border-white/[0.12]
                    md:px-6
                    md:flex-row md:gap-3"
           >
             <svg
-              class="h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
+              class="hero-benefit-icon h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -252,7 +236,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
               <path d="M7 9l3 3 2-2 4 4" />
             </svg>
 
-            <p class="text-[12px] leading-[1.4] md:text-[13px]">
+            <p class="hero-benefit-text text-[12px] leading-[1.4] md:text-[13px]">
               <span class="block font-semibold text-white">
                 Tecnología
               </span>
@@ -264,14 +248,14 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
 
           <!-- Seguridad -->
           <div
-            class="flex items-start gap-3
+            class="hero-benefit flex items-start gap-3
                    min-[390px]:flex-col min-[390px]:gap-2
                    md:border-l md:border-white/[0.12]
                    md:pl-6
                    md:flex-row md:gap-3"
           >
             <svg
-              class="h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
+              class="hero-benefit-icon h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -282,7 +266,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
               <path d="M9 12l2 2 4-4" />
             </svg>
 
-            <p class="text-[12px] leading-[1.4] md:text-[13px]">
+            <p class="hero-benefit-text text-[12px] leading-[1.4] md:text-[13px]">
               <span class="block font-semibold text-white">
                 Procedimientos
               </span>
@@ -296,26 +280,7 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
     </div>
   </div>
 
-  <!-- Indicador de scroll, desktop -->
-  <div class="hero-scroll-cue pointer-events-none absolute inset-x-0 bottom-6 z-10 hidden md:flex justify-center">
-    <span class="flex flex-col items-center gap-1.5 text-white/50">
-      <span class="text-[11px] font-medium tracking-[0.12em] uppercase">Descubrí más</span>
-      <svg
-        class="hero-scroll-arrow"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M6 9l6 6 6-6" />
-      </svg>
-    </span>
-  </div>
+  
 </section>
 
 <style>
@@ -329,6 +294,22 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
   .hero-background {
     object-position: 52% 35%;
     animation: hero-image-enter 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-overlay-desktop {
+    background: linear-gradient(90deg, rgba(3, 18, 40, 0.98) 0%, rgba(3, 18, 40, 0.95) 24%, rgba(3, 18, 40, 0.84) 38%, rgba(3, 18, 40, 0.55) 52%, rgba(3, 18, 40, 0.18) 72%, rgba(3, 18, 40, 0.08) 100%);
+  }
+
+  .hero-overlay-mobile {
+    background: linear-gradient(180deg, rgba(3, 18, 40, 0.88) 0%, rgba(3, 18, 40, 0.76) 35%, rgba(3, 18, 40, 0.78) 65%, rgba(3, 18, 40, 0.95) 100%);
+  }
+
+  .hero-glow {
+    background-image: radial-gradient(55% 50% at 88% 12%, rgba(11, 172, 219, 0.18) 0%, transparent 70%);
+  }
+
+  .hero-cta-primary {
+    background-image: var(--gradient-blue);
   }
 
   /* Ken Burns continuo y muy sutil, independiente de la entrada de la imagen */
@@ -400,11 +381,251 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
     }
   }
 
+  /* =====================================================
+     DESKTOP (1024 px o más)
+     Los selectores de clase del componente se imponen a las reglas
+     globales de h1 y p, que de otro modo fijan tamaño e interlínea.
+  ====================================================== */
+  @media (min-width: 1024px) {
+    /* La foto se corre a la derecha para que el logo de la pared quede libre de texto; el borde se funde con el petróleo */
+    .hero {
+      background-color: var(--color-navy-deep);
+    }
+
+    .hero-picture {
+      left: 20%;
+      width: 80%;
+      transform-origin: right center;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
+    }
+
+    .hero-background {
+      object-position: 30% 35%;
+    }
+
+    .hero-overlay-desktop {
+      background:
+        radial-gradient(
+          ellipse 62% 48% at 18% 100%,
+          color-mix(in srgb, var(--color-navy-deep) 88%, transparent) 0%,
+          color-mix(in srgb, var(--color-navy-deep) 68%, transparent) 55%,
+          transparent 100%
+        ),
+        linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--color-navy-deep) 95%, transparent) 0%,
+          color-mix(in srgb, var(--color-navy-deep) 90%, transparent) 32%,
+          color-mix(in srgb, var(--color-navy) 62%, transparent) 48%,
+          color-mix(in srgb, var(--color-navy) 20%, transparent) 60%,
+          transparent 72%
+        ),
+        linear-gradient(
+          0deg,
+          color-mix(in srgb, var(--color-navy-deep) 40%, transparent) 0%,
+          transparent 20%
+        );
+    }
+
+    .hero-glow {
+      background-image: radial-gradient(
+        50% 55% at 86% 8%,
+        color-mix(in srgb, var(--color-cyan) 20%, transparent) 0%,
+        transparent 70%
+      );
+    }
+
+    .hero-picture {
+      animation-duration: 32s;
+    }
+
+    @keyframes hero-ken-burns {
+      from {
+        transform: scale(1);
+      }
+
+      to {
+        transform: scale(1.03);
+      }
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-text);
+      font-size: 13px;
+      color: var(--color-cyan-light);
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 32px;
+      height: 2px;
+      border-radius: var(--radius-pill);
+      background-color: var(--color-cyan);
+    }
+
+    .hero-title {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: clamp(46px, calc(2.885vw + 16.5px), 58px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      /* ~11em deja entrar "Digestivas del Chubut" y no "Centro de Endoscopías": tres líneas sin saltos forzados */
+      max-width: 11.1em;
+      text-wrap: balance;
+    }
+
+    .hero-lead {
+      font-family: var(--font-text);
+      font-size: 18px;
+      line-height: 1.65;
+      max-width: 29em;
+      margin-top: 20px;
+      color: color-mix(in srgb, var(--color-white) 86%, transparent);
+    }
+
+    .hero-cta {
+      min-height: 56px;
+      padding: 0 28px;
+      border: 1.5px solid transparent;
+      font-family: var(--font-text);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      transition: background-color 250ms ease, border-color 250ms ease, color 250ms ease,
+        box-shadow 250ms ease, translate 250ms ease;
+    }
+
+    .hero-cta-primary {
+      background-color: var(--color-cyan);
+      background-image: none;
+      color: var(--color-navy-deep);
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--color-cyan) 28%, transparent);
+    }
+
+    .hero-cta-primary:hover {
+      background-color: var(--color-cyan-light);
+      filter: none;
+      box-shadow: 0 10px 28px color-mix(in srgb, var(--color-cyan) 38%, transparent);
+    }
+
+    .hero-cta-secondary {
+      border-color: color-mix(in srgb, var(--color-white) 55%, transparent);
+      background-color: color-mix(in srgb, var(--color-navy-deep) 40%, transparent);
+      color: var(--color-white);
+    }
+
+    .hero-cta-secondary:hover {
+      border-color: var(--color-white);
+      background-color: color-mix(in srgb, var(--color-white) 14%, transparent);
+    }
+
+    .hero-cta:focus-visible {
+      outline-color: var(--color-white);
+    }
+
+    .hero-benefits {
+      align-items: center;
+      max-width: 720px;
+    }
+
+    .hero-benefit {
+      flex: none;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hero-benefit + .hero-benefit {
+      margin-left: 24px;
+      padding-left: 24px;
+      border-color: color-mix(in srgb, var(--color-white) 16%, transparent);
+    }
+
+    .hero-benefit:first-child {
+      padding-right: 0;
+    }
+
+    .hero-benefit-icon {
+      box-sizing: content-box;
+      width: 22px;
+      height: 22px;
+      padding: 9px;
+      border: 1px solid color-mix(in srgb, var(--color-cyan) 38%, transparent);
+      border-radius: var(--radius-pill);
+      background-color: color-mix(in srgb, var(--color-navy-deep) 55%, transparent);
+      color: var(--color-cyan-light);
+    }
+
+    .hero-benefit-text {
+      max-width: none;
+      font-family: var(--font-text);
+      font-size: 14px;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .hero-benefit-text > span:first-child {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .hero-benefit-text > span + span {
+      margin-top: 2px;
+      color: color-mix(in srgb, var(--color-white) 72%, transparent);
+    }
+
+    .hero-scroll-cue {
+      bottom: 20px;
+      font-family: var(--font-text);
+    }
+
+    .hero-scroll-cue > span {
+      color: color-mix(in srgb, var(--color-white) 70%, transparent);
+    }
+  }
+
+  /* Entrada del hero: más pausada y con desaceleración suave */
+  @media (min-width: 1280px) {
+    .hero-lead {
+      max-width: 32em;
+    }
+  }
+  @media (min-width: 1024px) {
+    .hero .reveal {
+      transform: translateY(18px);
+      transition-duration: 800ms;
+      transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .hero .reveal.is-visible {
+      transform: translateY(0);
+    }
+
+    .hero .reveal-delay-1 { transition-delay: 100ms; }
+    .hero .reveal-delay-2 { transition-delay: 200ms; }
+    .hero .reveal-delay-3 { transition-delay: 300ms; }
+    .hero .reveal-delay-4 { transition-delay: 400ms; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero-background,
     .hero-picture,
     .hero-scroll-arrow {
       animation: none;
+    }
+
+    .hero .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .hero-cta,
+    .hero-cta:hover {
+      translate: none;
+      transition: none;
     }
   }
 </style>

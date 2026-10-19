@@ -35,6 +35,10 @@
   --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'IBM Plex Sans', sans-serif;
 
+  /* Tipografías del manual de marca: por ahora solo cabecera y portada desktop */
+  --font-title: 'Montserrat', var(--font-display);
+  --font-text: 'DM Sans', var(--font-body);
+
   /* Formas */
   --radius-sm: 8px;
   --radius: 12px;
