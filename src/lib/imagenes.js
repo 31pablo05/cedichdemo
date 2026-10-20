@@ -19,3 +19,6 @@ export function fuentesResponsive(nombre, anchos) {
 
 /** Logo liviano de 128 px: nítido en pantallas retina hasta ~40 px de alto. */
 export const logoSrc = '/logos/logo-cedich-128.png';
+
+/** Isotipo (solo el ojo, recortado) para el círculo del header y del menú mobile. */
+export const isotipo = { src: '/logos/isotipo-cedich-192.png', width: 192, height: 116 };

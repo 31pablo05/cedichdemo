@@ -1,4 +1,5 @@
 ---
+import { hero } from '../../data/hero.js';
 import { getWhatsappLink, whatsappMensajes } from '../../data/site.js';
 import { fuentesResponsive } from '../../lib/imagenes.js';
 
@@ -6,6 +7,16 @@ const whatsappTurno = getWhatsappLink(whatsappMensajes.solicitarTurno);
 
 const fuentesMobile = fuentesResponsive('hero-mobile', [480, 720, 941]);
 const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
+
+/** @type {Record<string, string>} */
+const iconosPaths = {
+  personas:
+    '<circle cx="9" cy="8" r="3" /><path d="M3 20a6 6 0 0 1 12 0" /><circle cx="17" cy="9" r="2.5" /><path d="M15 20a5 5 0 0 1 6-4.9" />',
+  equipo:
+    '<rect x="3" y="4" width="18" height="12" rx="1.5" /><path d="M8 20h8" /><path d="M12 16v4" /><path d="M7 9l3 3 2-2 4 4" />',
+  preparacion:
+    '<rect x="9" y="3" width="6" height="3.5" rx="1" /><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" /><path d="M9 13.5l2 2 4-4" />',
+};
 ---
 
 <section id="inicio" class="hero relative w-full overflow-hidden">
@@ -15,7 +26,8 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
        Desktop: public/imagenes/optimizadas/hero-desktop-*
        Versiones AVIF/WebP en varios anchos.
        sizes: con object-cover la imagen se recorta por alto, por eso
-       en mobile y tablet necesita más ancho que el viewport.
+       en mobile y tablet necesita más ancho que el viewport. En mobile
+       además se amplía para reencuadrar (ver .hero-background).
   ====================================================== -->
   <picture class="hero-picture absolute inset-0 block h-full w-full">
     <source
@@ -30,8 +42,8 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
       srcset={fuentesDesktop.webp}
       sizes="(min-width: 1280px) 100vw, 1250px"
     />
-    <source type="image/avif" srcset={fuentesMobile.avif} sizes="520px" />
-    <source type="image/webp" srcset={fuentesMobile.webp} sizes="520px" />
+    <source type="image/avif" srcset={fuentesMobile.avif} sizes="820px" />
+    <source type="image/webp" srcset={fuentesMobile.webp} sizes="820px" />
 
     <img
       src={fuentesMobile.fallback}
@@ -65,15 +77,18 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
   <!-- Resplandor de profundidad, esquina opuesta al texto -->
   <div class="hero-glow pointer-events-none absolute inset-0 hidden md:block"></div>
 
+  <!-- Cierre inferior: funde la foto con el fondo claro de Nosotros -->
+  <div class="hero-fade pointer-events-none absolute inset-x-0 bottom-0 hidden h-[110px] lg:block"></div>
+
   <!-- =====================================================
        CONTENIDO
+       Sin clases .reveal: título, bajada y botón se ven desde el primer
+       render, sin depender del script de aparición.
   ====================================================== -->
   <div
-    class="container relative z-10 flex min-h-[760px] items-center pt-[118px] pb-12
+    class="container relative z-10 flex min-h-svh items-center pt-[100px] pb-8
            md:min-h-[650px] md:pt-[135px] md:pb-14
-           lg:min-h-[680px] lg:pt-[124px] lg:pb-24
-           xl:min-h-[720px]
-           min-[1536px]:min-h-[740px]"
+           lg:min-h-[max(640px,100svh)] lg:pt-[124px] lg:pb-[136px]"
   >
     <div
       class="w-full text-left
@@ -83,204 +98,92 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
     >
       <!-- Ubicación -->
       <p
-        class="hero-eyebrow eyebrow eyebrow-light reveal reveal-delay-0
+        class="hero-eyebrow eyebrow eyebrow-light
                text-[12px] tracking-[0.18em]
                md:text-[13px]"
       >
-        RAWSON, CHUBUT
+        {hero.eyebrow}
       </p>
 
       <!-- H1 -->
       <h1
-        class="hero-title mt-4 max-w-[15ch] text-white
-               text-[42px] leading-[0.99] tracking-[-0.035em]
-               sm:text-[48px]
-               md:text-[56px]
-               lg:max-w-none
-               reveal reveal-delay-1"
+        class="hero-title mt-3 text-balance text-white
+               text-[36px] leading-[1.08] tracking-[-0.03em]
+               sm:text-[40px]
+               md:mt-4 md:max-w-[15ch] md:text-[56px] md:leading-[0.99] md:tracking-[-0.035em]
+               lg:max-w-none"
       >
-        Centro de Endoscopías Digestivas de Chubut
+        {hero.titulo}
       </h1>
 
       <!-- Bajada -->
       <p
-        class="hero-lead mt-6 max-w-[54ch]
-               text-[16px] leading-[1.7] text-white/78
-               md:text-[17px]
-               lg:text-[18px]
-               reveal reveal-delay-2"
+        class="hero-lead mt-4 max-w-[54ch]
+               text-[15px] leading-[1.6] text-white/80
+               md:mt-6 md:text-[17px] md:leading-[1.7]
+               lg:text-[18px]"
       >
-        Diagnóstico preciso, tecnología de última generación y un
-        equipo comprometido con tu bienestar. Coordinamos tu turno
-        por WhatsApp, sin llamadas ni esperas.
+        {hero.bajada}
       </p>
 
-      <!-- ===================================================
-           CTAs
-      ==================================================== -->
-      <div
-        class="mt-8 flex flex-col gap-3
-               sm:flex-row sm:gap-4
-               lg:mt-9
-               reveal reveal-delay-3"
+      <!-- CTA -->
+      <a
+        href={whatsappTurno}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hero-cta hero-cta-primary mt-6 inline-flex min-h-[52px] w-full items-center
+               justify-center gap-2.5 whitespace-nowrap rounded-[var(--radius-pill)]
+               px-7 py-3.5 text-[15px] font-semibold text-white
+               shadow-[var(--shadow-card)]
+               transition duration-300
+               hover:-translate-y-[2px]
+               hover:brightness-110
+               hover:shadow-[var(--shadow-card-hover)]
+               md:mt-8 md:w-auto
+               lg:mt-9"
       >
-        <!-- Principal -->
-        <a
-          href={whatsappTurno}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hero-cta hero-cta-primary group inline-flex min-h-[54px] w-full items-center
-                 justify-center gap-2.5 rounded-[var(--radius-pill)]
-                 px-7 py-3.5 text-[15px] font-semibold text-white
-                 shadow-[var(--shadow-card)]
-                 transition duration-300
-                 hover:-translate-y-[2px]
-                 hover:brightness-110
-                 hover:shadow-[var(--shadow-card-hover)]
-                 sm:w-auto"
+        <svg
+          class="h-[19px] w-[19px]"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
         >
-          <svg
-            class="h-[19px] w-[19px]"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
-          </svg>
-
-          Pedir turno por WhatsApp
-        </a>
-
-        <!-- Secundario -->
-        <a
-          href="#pacientes"
-          class="hero-cta hero-cta-secondary inline-flex min-h-[54px] w-full items-center
-                 justify-center rounded-[var(--radius-pill)]
-                 border border-white/30
-                 bg-[rgba(5,27,57,0.30)]
-                 px-7 py-3.5 text-[15px] font-semibold text-white
-                 backdrop-blur-[6px]
-                 transition duration-300
-                 hover:-translate-y-[2px]
-                 hover:border-[var(--color-cyan)]
-                 hover:bg-white/[0.08]
-                 sm:w-auto"
-        >
-          Cómo pedir turno
-        </a>
-      </div>
+          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
+        </svg>
+        {hero.cta}
+      </a>
 
       <!-- ===================================================
            BENEFICIOS
+           Mobile y tablet: tres columnas con ícono arriba.
+           Desktop: fila con ícono en círculo y divisores.
       ==================================================== -->
-      <div
-        class="mt-10 border-t border-white/[0.13] pt-6
-               md:mt-12 md:pt-7
-               reveal reveal-delay-4"
-      >
-        <div
-          class="hero-benefits grid grid-cols-1 gap-4
-                 min-[390px]:grid-cols-3
-                 md:max-w-[690px] md:grid-cols-3 md:gap-0
-                 lg:flex lg:max-w-none"
-        >
-          <!-- Atención -->
-          <div
-            class="hero-benefit flex items-start gap-3
-                   min-[390px]:flex-col min-[390px]:gap-2
-                   md:flex-row md:gap-3 md:pr-6"
-          >
-            <svg
-              class="hero-benefit-icon h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <circle cx="9" cy="8" r="3" />
-              <path d="M3 20a6 6 0 0 1 12 0" />
-              <circle cx="17" cy="9" r="2.5" />
-              <path d="M15 20a5 5 0 0 1 6-4.9" />
-            </svg>
-
-            <p class="hero-benefit-text text-[12px] leading-[1.4] md:text-[13px]">
-              <span class="block font-semibold text-white">
-                Atención cálida
-              </span>
-              <span class="mt-0.5 block text-white/60">
-                y personalizada
-              </span>
-            </p>
-          </div>
-
-          <!-- Tecnología -->
-          <div
-            class="hero-benefit flex items-start gap-3
-                   min-[390px]:flex-col min-[390px]:gap-2
-                   md:border-l md:border-white/[0.12]
-                   md:px-6
-                   md:flex-row md:gap-3"
-          >
-            <svg
-              class="hero-benefit-icon h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <rect x="3" y="4" width="18" height="12" rx="1.5" />
-              <path d="M8 20h8" />
-              <path d="M12 16v4" />
-              <path d="M7 9l3 3 2-2 4 4" />
-            </svg>
-
-            <p class="hero-benefit-text text-[12px] leading-[1.4] md:text-[13px]">
-              <span class="block font-semibold text-white">
-                Tecnología
-              </span>
-              <span class="mt-0.5 block text-white/60">
-                de última generación
-              </span>
-            </p>
-          </div>
-
-          <!-- Seguridad -->
-          <div
-            class="hero-benefit flex items-start gap-3
-                   min-[390px]:flex-col min-[390px]:gap-2
-                   md:border-l md:border-white/[0.12]
-                   md:pl-6
-                   md:flex-row md:gap-3"
-          >
-            <svg
-              class="hero-benefit-icon h-[21px] w-[21px] shrink-0 text-[var(--color-cyan)]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" />
-              <path d="M9 12l2 2 4-4" />
-            </svg>
-
-            <p class="hero-benefit-text text-[12px] leading-[1.4] md:text-[13px]">
-              <span class="block font-semibold text-white">
-                Procedimientos
-              </span>
-              <span class="mt-0.5 block text-white/75">
-                seguros y eficaces
-              </span>
-            </p>
-          </div>
-        </div>
+      <div class="mt-8 border-t border-white/[0.13] pt-5 md:mt-12 md:pt-7 xl:w-max">
+        <ul class="hero-benefits grid grid-cols-3">
+          {
+            hero.beneficios.map((beneficio) => (
+              <li class="hero-benefit flex flex-col items-center gap-2 px-1.5 text-center">
+                <svg
+                  class="hero-benefit-icon h-[22px] w-[22px] shrink-0 text-[var(--color-cyan)]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  set:html={iconosPaths[beneficio.icono]}
+                />
+                <span class="hero-benefit-text text-[12.5px] font-semibold leading-[1.35] text-white md:text-[13.5px]">
+                  {beneficio.etiqueta}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </div>
-
-  
 </section>
 
 <style>
@@ -291,8 +194,16 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
    * Vertical: valores menores muestran más arriba, valores mayores muestran más abajo
    */
 
+  /*
+   * Mobile: la foto vertical casi no tiene margen horizontal para reencuadrar,
+   * así que se amplía desde la esquina inferior derecha (camillas y cortinas).
+   * Con 1.7 el logo de la pared queda fuera de cuadro desde 360 px.
+   * Usa la propiedad `scale` para no pisar la animación de entrada, que usa `transform`.
+   */
   .hero-background {
-    object-position: 48% 35%;
+    object-position: 100% 100%;
+    scale: 1.7;
+    transform-origin: 100% 100%;
     animation: hero-image-enter 1200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -301,47 +212,33 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
   }
 
   .hero-overlay-mobile {
-    background: linear-gradient(180deg, rgba(3, 18, 40, 0.92) 0%, rgba(3, 18, 40, 0.82) 32%, rgba(3, 18, 40, 0.80) 65%, rgba(3, 18, 40, 0.95) 100%);
+    background: linear-gradient(180deg, rgba(3, 18, 40, 0.9) 0%, rgba(3, 18, 40, 0.8) 35%, rgba(3, 18, 40, 0.76) 65%, rgba(3, 18, 40, 0.93) 100%);
   }
 
   .hero-glow {
     background-image: radial-gradient(55% 50% at 88% 12%, rgba(11, 172, 219, 0.18) 0%, transparent 70%);
   }
 
+  .hero-fade {
+    background-image: linear-gradient(to bottom, transparent 0%, var(--color-white) 100%);
+  }
+
   .hero-cta-primary {
     background-image: var(--gradient-blue);
   }
 
-  /* Ken Burns continuo y muy sutil, independiente de la entrada de la imagen */
-  .hero-picture {
-    animation: hero-ken-burns 22s ease-in-out infinite alternate;
-    transform-origin: center;
-    will-change: transform;
+  .hero-benefit + .hero-benefit {
+    border-left: 1px solid color-mix(in srgb, var(--color-white) 14%, transparent);
   }
 
-  @keyframes hero-ken-burns {
+  @keyframes hero-image-enter {
     from {
-      transform: scale(1);
+      transform: scale(1.035);
+      opacity: 0.7;
     }
 
     to {
-      transform: scale(1.045);
-    }
-  }
-
-  .hero-scroll-arrow {
-    animation: hero-bounce 1.8s ease-in-out infinite;
-  }
-
-  @keyframes hero-bounce {
-    0%,
-    100% {
-      transform: translateY(0);
-      opacity: 0.55;
-    }
-
-    50% {
-      transform: translateY(5px);
+      transform: scale(1);
       opacity: 1;
     }
   }
@@ -360,6 +257,24 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
        * más abajo -> 45%, 50%
        */
       object-position: 62% 35%;
+      scale: none;
+    }
+
+    /* Ken Burns continuo y muy sutil; solo desde tablet (sin loops en mobile) */
+    .hero-picture {
+      animation: hero-ken-burns 22s ease-in-out infinite alternate;
+      transform-origin: center;
+      will-change: transform;
+    }
+
+    @keyframes hero-ken-burns {
+      from {
+        transform: scale(1);
+      }
+
+      to {
+        transform: scale(1.045);
+      }
     }
   }
 
@@ -369,22 +284,8 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
     }
   }
 
-  @keyframes hero-image-enter {
-    from {
-      transform: scale(1.035);
-      opacity: 0.7;
-    }
-
-    to {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
   /* =====================================================
      DESKTOP (1024 px o más)
-     Los selectores de clase del componente se imponen a las reglas
-     globales de h1 y p, que de otro modo fijan tamaño e interlínea.
   ====================================================== */
   @media (min-width: 1024px) {
     /* La foto se corre a la derecha para que el logo de la pared quede libre de texto; el borde se funde con el petróleo */
@@ -397,12 +298,18 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
       width: 80%;
       transform-origin: right center;
       mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
+      animation-duration: 32s;
     }
 
     .hero-background {
       object-position: 30% 35%;
     }
 
+    /*
+     * El oscuro de la izquierda llega más hacia el centro y nunca baja de ~22 %
+     * a la derecha: así la habitación blanca no se lee como otra imagen.
+     * El logo de la pared queda cerca del 70 % del ancho, con velo leve.
+     */
     .hero-overlay-desktop {
       background:
         radial-gradient(
@@ -414,15 +321,12 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
         linear-gradient(
           90deg,
           color-mix(in srgb, var(--color-navy-deep) 95%, transparent) 0%,
-          color-mix(in srgb, var(--color-navy-deep) 90%, transparent) 32%,
-          color-mix(in srgb, var(--color-navy) 62%, transparent) 48%,
-          color-mix(in srgb, var(--color-navy) 20%, transparent) 60%,
-          transparent 72%
-        ),
-        linear-gradient(
-          0deg,
-          color-mix(in srgb, var(--color-navy-deep) 40%, transparent) 0%,
-          transparent 20%
+          color-mix(in srgb, var(--color-navy-deep) 92%, transparent) 30%,
+          color-mix(in srgb, var(--color-navy-deep) 80%, transparent) 42%,
+          color-mix(in srgb, var(--color-navy) 55%, transparent) 54%,
+          color-mix(in srgb, var(--color-navy) 32%, transparent) 65%,
+          color-mix(in srgb, var(--color-navy) 22%, transparent) 78%,
+          color-mix(in srgb, var(--color-navy) 26%, transparent) 100%
         );
     }
 
@@ -432,10 +336,6 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
         color-mix(in srgb, var(--color-cyan) 20%, transparent) 0%,
         transparent 70%
       );
-    }
-
-    .hero-picture {
-      animation-duration: 32s;
     }
 
     @keyframes hero-ken-burns {
@@ -493,7 +393,6 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
       font-size: 16px;
       font-weight: 700;
       line-height: 1;
-      white-space: nowrap;
       transition: background-color 250ms ease, border-color 250ms ease, color 250ms ease,
         box-shadow 250ms ease, translate 250ms ease;
     }
@@ -511,40 +410,28 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
       box-shadow: 0 10px 28px color-mix(in srgb, var(--color-cyan) 38%, transparent);
     }
 
-    .hero-cta-secondary {
-      border-color: color-mix(in srgb, var(--color-white) 55%, transparent);
-      background-color: color-mix(in srgb, var(--color-navy-deep) 40%, transparent);
-      color: var(--color-white);
-    }
-
-    .hero-cta-secondary:hover {
-      border-color: var(--color-white);
-      background-color: color-mix(in srgb, var(--color-white) 14%, transparent);
-    }
-
     .hero-cta:focus-visible {
       outline-color: var(--color-white);
     }
 
     .hero-benefits {
+      display: flex;
       align-items: center;
-      max-width: 720px;
     }
 
     .hero-benefit {
       flex: none;
+      flex-direction: row;
       align-items: center;
       gap: 14px;
+      padding: 0;
+      text-align: left;
     }
 
     .hero-benefit + .hero-benefit {
-      margin-left: 24px;
-      padding-left: 24px;
-      border-color: color-mix(in srgb, var(--color-white) 16%, transparent);
-    }
-
-    .hero-benefit:first-child {
-      padding-right: 0;
+      margin-left: 22px;
+      padding-left: 22px;
+      border-left-color: color-mix(in srgb, var(--color-white) 16%, transparent);
     }
 
     .hero-benefit-icon {
@@ -558,68 +445,32 @@ const fuentesDesktop = fuentesResponsive('hero-desktop', [960, 1280, 1672]);
       color: var(--color-cyan-light);
     }
 
+    /* Entre 1024 y 1279 la columna es angosta: la etiqueta puede ir en dos líneas */
     .hero-benefit-text {
-      max-width: none;
+      max-width: 9.5em;
       font-family: var(--font-text);
-      font-size: 14px;
-      line-height: 1.4;
-      white-space: nowrap;
-    }
-
-    .hero-benefit-text > span:first-child {
       font-size: 15px;
       font-weight: 600;
-    }
-
-    .hero-benefit-text > span + span {
-      margin-top: 2px;
-      color: color-mix(in srgb, var(--color-white) 72%, transparent);
-    }
-
-    .hero-scroll-cue {
-      bottom: 20px;
-      font-family: var(--font-text);
-    }
-
-    .hero-scroll-cue > span {
-      color: color-mix(in srgb, var(--color-white) 70%, transparent);
+      line-height: 1.3;
     }
   }
 
-  /* Entrada del hero: más pausada y con desaceleración suave */
+  /* Desde 1280 cada beneficio va en una línea; la fila puede pasar el ancho del texto sin llegar al logo */
   @media (min-width: 1280px) {
     .hero-lead {
       max-width: 32em;
     }
-  }
-  @media (min-width: 1024px) {
-    .hero .reveal {
-      transform: translateY(18px);
-      transition-duration: 800ms;
-      transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    }
 
-    .hero .reveal.is-visible {
-      transform: translateY(0);
+    .hero-benefit-text {
+      max-width: none;
+      white-space: nowrap;
     }
-
-    .hero .reveal-delay-1 { transition-delay: 100ms; }
-    .hero .reveal-delay-2 { transition-delay: 200ms; }
-    .hero .reveal-delay-3 { transition-delay: 300ms; }
-    .hero .reveal-delay-4 { transition-delay: 400ms; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-background,
-    .hero-picture,
-    .hero-scroll-arrow {
+    .hero-picture {
       animation: none;
-    }
-
-    .hero .reveal {
-      opacity: 1;
-      transform: none;
-      transition: none;
     }
 
     .hero-cta,

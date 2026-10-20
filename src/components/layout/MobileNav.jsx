@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { nav } from '../../data/nav.js';
 import { site, getWhatsappLink, whatsappMensajes } from '../../data/site.js';
-import { logoSrc } from '../../lib/imagenes.js';
+import { isotipo } from '../../lib/imagenes.js';
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -203,16 +203,16 @@ export default function MobileNav() {
 
         <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full bg-[var(--color-cyan)]/10 blur-[100px]" />
 
-        <div className="relative flex flex-col min-h-full px-5 py-6">
+        <div className="relative flex flex-col min-h-full px-5 py-5">
           <div className="flex items-center justify-between">
             <a href="/" onClick={close} className="flex items-center gap-3">
-              <span className="flex items-center justify-center rounded-full bg-white p-[6px] border border-white/15 shadow-[var(--shadow-card)]">
+              <span className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white border border-white/15 shadow-[var(--shadow-card)]">
                 <img
-                  src={logoSrc}
+                  src={isotipo.src}
                   alt="CEDICH"
-                  width="42"
-                  height="42"
-                  className="h-[30px] w-auto"
+                  width={isotipo.width}
+                  height={isotipo.height}
+                  className="h-auto w-[35px]"
                 />
               </span>
               <span className="flex flex-col leading-tight">
@@ -237,7 +237,7 @@ export default function MobileNav() {
             </button>
           </div>
 
-          <nav className="mt-8">
+          <nav className="mt-5">
             <ul key={animKey}>
               {nav.map((item, index) => (
                 <li
@@ -248,13 +248,13 @@ export default function MobileNav() {
                   <a
                     href={item.href}
                     onClick={(event) => handleNavClick(event, item)}
-                    className="flex items-center gap-3 py-[18px]"
+                    className="flex h-[52px] items-center gap-3"
                   >
                     <span className="font-display text-[11px] font-semibold text-[var(--color-cyan)]">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span
-                      className={`flex-1 font-display text-[22px] transition-colors duration-150 ${
+                      className={`flex-1 font-display text-[21px] leading-[1.2] transition-colors duration-150 ${
                         activeAncla === item.ancla ? 'text-[var(--color-cyan)]' : 'text-white'
                       }`}
                     >
@@ -284,7 +284,7 @@ export default function MobileNav() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={close}
-            className="mobile-nav-cta mt-8 flex items-center justify-center gap-2 w-full rounded-[var(--radius-pill)] px-[22px] py-[14px] font-medium text-white"
+            className="mobile-nav-cta mt-6 mb-5 flex min-h-[48px] items-center justify-center gap-2 w-full rounded-[var(--radius-pill)] px-[22px] py-3 font-medium text-white"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
@@ -292,46 +292,51 @@ export default function MobileNav() {
             Solicitar turno
           </a>
 
-          <div className="mt-auto pt-6 border-t border-white/10">
-            <p className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-cyan)]">
-              Dónde estamos
-            </p>
-            <p className="mt-3 text-[14px] text-white/70">
+          <div className="mt-auto pt-5 border-t border-white/10">
+            <div className="flex items-center justify-between">
+              <p className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-cyan)]">
+                Dónde estamos
+              </p>
+
+              <div className="-my-2 -mr-2 flex items-center">
+                <a
+                  href={site.instagram.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram de CEDICH"
+                  className="flex h-11 w-11 items-center justify-center text-white"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                  </svg>
+                </a>
+                <a
+                  href={site.facebook.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook de CEDICH"
+                  className="flex h-11 w-11 items-center justify-center text-white"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                    <path d="M15 3h-2a5 5 0 0 0-5 5v2H6v4h2v7h4v-7h3l1-4h-4V8a1 1 0 0 1 1-1h3Z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <p className="mt-2 text-[14px] text-white/70">
               {site.direccion}, {site.localidad}, {site.provincia}
             </p>
             {/* PENDIENTE CLIENTE: confirmar horarios reales de atención */}
-            {site.horarios.map((horario) => (
-              <p key={horario.dia} className="mt-1 text-[13px] text-white/50">
-                {horario.dia} de {horario.franja}
-              </p>
-            ))}
-
-            <div className="mt-5 flex items-center gap-5">
-              <a
-                href={site.instagram.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram de CEDICH"
-                className="text-white"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-                </svg>
-              </a>
-              <a
-                href={site.facebook.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook de CEDICH"
-                className="text-white"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                  <path d="M15 3h-2a5 5 0 0 0-5 5v2H6v4h2v7h4v-7h3l1-4h-4V8a1 1 0 0 1 1-1h3Z" />
-                </svg>
-              </a>
-            </div>
+            <p className="mt-1 text-[13px] text-white/50">
+              {site.horarios.map((horario) => (
+                <span key={horario.dia} className="block">
+                  {horario.dia} de {horario.franja}
+                </span>
+              ))}
+            </p>
           </div>
         </div>
       </div>

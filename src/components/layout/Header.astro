@@ -1,8 +1,7 @@
 ---
 import { nav } from '../../data/nav.js';
 import { site, getWhatsappLink, whatsappMensajes } from '../../data/site.js';
-import MobileNav from './MobileNav.jsx';
-import { logoSrc } from '../../lib/imagenes.js';
+import { isotipo } from '../../lib/imagenes.js';
 
 const whatsappLink = getWhatsappLink(whatsappMensajes.solicitarTurno);
 
@@ -23,13 +22,13 @@ const esSolido = Astro.url.pathname !== '/';
 
   <div class="container relative h-full flex items-center justify-between gap-4">
     <a href="/" class="header-brand flex items-center gap-2.5 shrink-0 md:gap-3 lg:gap-3.5 -my-2 py-2">
-      <span class="header-logo-container flex items-center justify-center rounded-full bg-white p-[5px] md:p-[6px] lg:p-[8px]">
+      <span class="header-logo-container flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-white md:h-[44px] md:w-[44px] lg:h-[58px] lg:w-[58px]">
         <img
-          src={logoSrc}
+          src={isotipo.src}
           alt=""
-          width="42"
-          height="42"
-          class="header-logo h-[26px] w-auto md:h-[30px] lg:h-[40px]"
+          width={isotipo.width}
+          height={isotipo.height}
+          class="header-logo h-auto w-[30px] md:w-[35px] lg:w-[46px]"
         />
       </span>
       <span class="flex flex-col leading-tight">
@@ -60,7 +59,7 @@ const esSolido = Astro.url.pathname !== '/';
       href={whatsappLink}
       target="_blank"
       rel="noopener noreferrer"
-      class="header-whatsapp hidden lg:inline-flex items-center gap-2 rounded-[var(--radius-pill)] px-[18px] py-[12px] transition-all duration-300 xl:px-[22px]"
+      class="header-whatsapp hidden lg:inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius-pill)] px-[18px] py-[12px] transition-all duration-300 xl:px-[22px]"
     >
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
@@ -98,7 +97,7 @@ const esSolido = Astro.url.pathname !== '/';
 
   #site-header.is-scrolled .header-backdrop {
     opacity: 1;
-    background-color: color-mix(in srgb, var(--color-navy-deep) 82%, transparent);
+    background-color: color-mix(in srgb, var(--color-navy-deep) 94%, transparent);
     backdrop-filter: blur(14px) saturate(150%);
     border-bottom: 1px solid color-mix(in srgb, var(--color-cyan) 22%, transparent);
     box-shadow: 0 6px 24px color-mix(in srgb, var(--color-navy-deep) 30%, transparent);
@@ -106,7 +105,6 @@ const esSolido = Astro.url.pathname !== '/';
 
   @media (min-width: 1024px) {
     #site-header.is-scrolled .header-backdrop {
-      background-color: color-mix(in srgb, var(--color-navy-deep) 94%, transparent);
       border-bottom-color: color-mix(in srgb, var(--color-cyan) 24%, transparent);
     }
   }
@@ -123,11 +121,17 @@ const esSolido = Astro.url.pathname !== '/';
   .header-logo-container {
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: var(--shadow-card);
-    transition: padding 300ms ease, border-color 300ms ease;
+    transition: width 300ms ease, height 300ms ease, border-color 300ms ease;
   }
 
   .header-logo {
-    transition: height 300ms ease;
+    transition: width 300ms ease;
+  }
+
+  /* Arriba de todo, sobre zonas claras de la foto, los links necesitan un apoyo de contraste */
+  #site-header:not(.is-scrolled) .nav-link,
+  #site-header:not(.is-scrolled) .header-brand {
+    text-shadow: 0 1px 10px color-mix(in srgb, var(--color-navy-deep) 70%, transparent);
   }
 
   .nav-link.is-active {
@@ -178,11 +182,11 @@ const esSolido = Astro.url.pathname !== '/';
     }
 
     .header-glow {
-      height: 120px;
+      height: 130px;
       background-image: linear-gradient(
         to bottom,
-        color-mix(in srgb, var(--color-navy-deep) 78%, transparent) 0%,
-        color-mix(in srgb, var(--color-navy-deep) 38%, transparent) 55%,
+        color-mix(in srgb, var(--color-navy-deep) 84%, transparent) 0%,
+        color-mix(in srgb, var(--color-navy-deep) 52%, transparent) 50%,
         transparent 100%
       );
     }
@@ -221,10 +225,6 @@ const esSolido = Astro.url.pathname !== '/';
       font-weight: 600;
       white-space: nowrap;
     }
-
-    .header-whatsapp-text::after {
-      content: ' por WhatsApp';
-    }
   }
 
   @media (min-width: 1280px) {
@@ -240,11 +240,12 @@ const esSolido = Astro.url.pathname !== '/';
 
   @media (max-width: 1023.98px) {
     #site-header.is-scrolled .header-logo-container {
-      padding: 4px;
+      width: 32px;
+      height: 32px;
     }
 
     #site-header.is-scrolled .header-logo {
-      height: 22px;
+      width: 25px;
     }
   }
 
