@@ -20,7 +20,7 @@ const iconosPaths = {
 <section id="nosotros" class="relative bg-white py-14 md:py-24 overflow-hidden">
   <!-- Resplandor radial azul muy tenue -->
   <div
-    class="pointer-events-none absolute inset-x-0 top-0 h-[520px]"
+    class="nosotros-glow pointer-events-none absolute inset-x-0 top-0 h-[520px]"
     style={{
       backgroundImage:
         'radial-gradient(55% 55% at 50% 0%, color-mix(in srgb, var(--color-blue) 8%, transparent) 0%, transparent 100%)',
@@ -162,9 +162,14 @@ const iconosPaths = {
 </section>
 
 <style>
+  /* Resplandor y hexágonos arrancan invisibles en el borde superior, para fundirse con el final del hero */
+  .nosotros-glow {
+    mask-image: linear-gradient(to bottom, transparent 0, black 120px);
+  }
+
   .nosotros-hex-mask {
-    mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, black 120px, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 120px, black 50%, transparent 100%);
   }
 
   .diferencial-card {

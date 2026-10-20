@@ -20,65 +20,66 @@ const iconosPaths = {
 ---
 
 <section id="inicio" class="hero relative w-full overflow-hidden">
-  <!-- =====================================================
-       IMAGEN RESPONSIVE DE FONDO
-       Mobile: public/imagenes/optimizadas/hero-mobile-*
-       Desktop: public/imagenes/optimizadas/hero-desktop-*
-       Versiones AVIF/WebP en varios anchos.
-       sizes: con object-cover la imagen se recorta por alto, por eso
-       en mobile y tablet necesita más ancho que el viewport. En mobile
-       además se amplía para reencuadrar (ver .hero-background).
-  ====================================================== -->
-  <picture class="hero-picture absolute inset-0 block h-full w-full">
-    <source
-      media="(min-width: 768px)"
-      type="image/avif"
-      srcset={fuentesDesktop.avif}
-      sizes="(min-width: 1280px) 100vw, 1250px"
-    />
-    <source
-      media="(min-width: 768px)"
-      type="image/webp"
-      srcset={fuentesDesktop.webp}
-      sizes="(min-width: 1280px) 100vw, 1250px"
-    />
-    <source type="image/avif" srcset={fuentesMobile.avif} sizes="820px" />
-    <source type="image/webp" srcset={fuentesMobile.webp} sizes="820px" />
+  <!-- Fondo completo (foto + capas oscuras). Se vuelve transparente hacia abajo
+       y deja ver el blanco con el que arranca Nosotros. -->
+  <div class="hero-bg absolute inset-0">
+    <!-- =====================================================
+         IMAGEN RESPONSIVE DE FONDO
+         Mobile: public/imagenes/optimizadas/hero-mobile-*
+         Desktop: public/imagenes/optimizadas/hero-desktop-*
+         Versiones AVIF/WebP en varios anchos.
+         sizes: con object-cover la imagen se recorta por alto, por eso
+         en mobile y tablet necesita más ancho que el viewport. En mobile
+         además se amplía para reencuadrar (ver .hero-background).
+    ====================================================== -->
+    <picture class="hero-picture absolute inset-0 block h-full w-full">
+      <source
+        media="(min-width: 768px)"
+        type="image/avif"
+        srcset={fuentesDesktop.avif}
+        sizes="(min-width: 1280px) 100vw, 1250px"
+      />
+      <source
+        media="(min-width: 768px)"
+        type="image/webp"
+        srcset={fuentesDesktop.webp}
+        sizes="(min-width: 1280px) 100vw, 1250px"
+      />
+      <source type="image/avif" srcset={fuentesMobile.avif} sizes="820px" />
+      <source type="image/webp" srcset={fuentesMobile.webp} sizes="820px" />
 
-    <img
-      src={fuentesMobile.fallback}
-      alt=""
-      width="1080"
-      height="1920"
-      loading="eager"
-      fetchpriority="high"
-      class="hero-background absolute inset-0 h-full w-full object-cover"
-    />
-  </picture>
+      <img
+        src={fuentesMobile.fallback}
+        alt=""
+        width="1080"
+        height="1920"
+        loading="eager"
+        fetchpriority="high"
+        class="hero-background absolute inset-0 h-full w-full object-cover"
+      />
+    </picture>
 
-  <!-- =====================================================
-       OVERLAY DESKTOP
-       Oscuro a la izquierda para el contenido.
-       La imagen queda más visible hacia la derecha.
-  ====================================================== -->
-  <div class="hero-overlay-desktop absolute inset-0 hidden md:block"></div>
+    <!-- =====================================================
+         OVERLAY DESKTOP
+         Oscuro a la izquierda para el contenido.
+         La imagen queda más visible hacia la derecha.
+    ====================================================== -->
+    <div class="hero-overlay-desktop absolute inset-0 hidden md:block"></div>
 
-  <!-- =====================================================
-       OVERLAY MOBILE
-       Mantiene la imagen visible pero permite leer.
-  ====================================================== -->
-  <div class="hero-overlay-mobile absolute inset-0 md:hidden"></div>
+    <!-- =====================================================
+         OVERLAY MOBILE
+         Mantiene la imagen visible pero permite leer.
+    ====================================================== -->
+    <div class="hero-overlay-mobile absolute inset-0 md:hidden"></div>
 
-  <!-- Tinte general -->
-  <div
-    class="absolute inset-0 bg-[var(--color-navy)] opacity-[0.10] mix-blend-multiply lg:hidden"
-  ></div>
+    <!-- Tinte general -->
+    <div
+      class="absolute inset-0 bg-[var(--color-navy)] opacity-[0.10] mix-blend-multiply lg:hidden"
+    ></div>
 
-  <!-- Resplandor de profundidad, esquina opuesta al texto -->
-  <div class="hero-glow pointer-events-none absolute inset-0 hidden md:block"></div>
-
-  <!-- Cierre inferior: funde la foto con el fondo claro de Nosotros -->
-  <div class="hero-fade pointer-events-none absolute inset-x-0 bottom-0 hidden h-[110px] lg:block"></div>
+    <!-- Resplandor de profundidad, esquina opuesta al texto -->
+    <div class="hero-glow pointer-events-none absolute inset-0 hidden md:block"></div>
+  </div>
 
   <!-- =====================================================
        CONTENIDO
@@ -86,8 +87,8 @@ const iconosPaths = {
        render, sin depender del script de aparición.
   ====================================================== -->
   <div
-    class="container relative z-10 flex min-h-svh items-center pt-[100px] pb-8
-           md:min-h-[650px] md:pt-[135px] md:pb-14
+    class="container relative z-10 flex items-center pt-[100px] pb-[80px]
+           md:min-h-[650px] md:pt-[135px] md:pb-[112px]
            lg:min-h-[max(640px,100svh)] lg:pt-[124px] lg:pb-[136px]"
   >
     <div
@@ -118,7 +119,7 @@ const iconosPaths = {
 
       <!-- Bajada -->
       <p
-        class="hero-lead mt-4 max-w-[54ch]
+        class="hero-lead mt-4 max-w-[54ch] text-balance
                text-[15px] leading-[1.6] text-white/80
                md:mt-6 md:text-[17px] md:leading-[1.7]
                lg:text-[18px]"
@@ -174,7 +175,7 @@ const iconosPaths = {
                   aria-hidden="true"
                   set:html={iconosPaths[beneficio.icono]}
                 />
-                <span class="hero-benefit-text text-[12.5px] font-semibold leading-[1.35] text-white md:text-[13.5px]">
+                <span class="hero-benefit-text text-[12.5px] font-medium leading-[1.35] text-white md:text-[13.5px] md:font-semibold">
                   {beneficio.etiqueta}
                 </span>
               </li>
@@ -219,8 +220,23 @@ const iconosPaths = {
     background-image: radial-gradient(55% 50% at 88% 12%, rgba(11, 172, 219, 0.18) 0%, transparent 70%);
   }
 
-  .hero-fade {
-    background-image: linear-gradient(to bottom, transparent 0%, var(--color-white) 100%);
+  /* El padding inferior del contenido es mayor que --hero-fade, para que los beneficios no caigan en el fundido */
+  .hero-bg {
+    --hero-fade: 60px;
+    --hero-fade-mask: linear-gradient(
+      to bottom,
+      #000 calc(100% - var(--hero-fade)),
+      rgb(0 0 0 / 0.55) calc(100% - var(--hero-fade) * 0.45),
+      transparent 100%
+    );
+    -webkit-mask-image: var(--hero-fade-mask);
+    mask-image: var(--hero-fade-mask);
+  }
+
+  @media (min-width: 768px) {
+    .hero-bg {
+      --hero-fade: 90px;
+    }
   }
 
   .hero-cta-primary {
@@ -289,7 +305,8 @@ const iconosPaths = {
   ====================================================== */
   @media (min-width: 1024px) {
     /* La foto se corre a la derecha para que el logo de la pared quede libre de texto; el borde se funde con el petróleo */
-    .hero {
+    .hero-bg {
+      --hero-fade: 120px;
       background-color: var(--color-navy-deep);
     }
 
