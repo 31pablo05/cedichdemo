@@ -1,25 +1,22 @@
 ---
-import { servicios } from '../../data/servicios.js';
+import { serviciosEncabezado, serviciosAcciones, gruposServicios } from '../../data/servicios.js';
 import { getWhatsappLink } from '../../data/site.js';
 import HexPattern from '../ui/HexPattern.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 
-/** @type {Record<string, string>} */
-const iconosPaths = {
-  estomago:
-    '<circle cx="12" cy="10" r="3.5" stroke-width="1.5"/><path d="M8.5 10c0-1.9 1.6-3.5 3.5-3.5s3.5 1.6 3.5 3.5" stroke-width="1.5"/><path d="M12 13.5v3M9.5 16.5c0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5" stroke-width="1.5"/><ellipse cx="12" cy="7" rx="4.5" ry="2.5" stroke-width="1.5"/>',
-  colon:
-    '<path d="M5 8c0-1.7 1.3-3 3-3h1c1.1 0 2 .9 2 2v0c0 1.1.9 2 2 2h2c1.1 0 2 .9 2 2v4c0 1.7-1.3 3-3 3h-2c-1.1 0-2-.9-2-2v0c0-1.1-.9-2-2-2H7c-1.1 0-2-.9-2-2V8z" stroke-width="1.5"/>',
-  aire:
-    '<circle cx="12" cy="12" r="9" stroke-width="1.5"/><path d="M8 12h2m2 0h2m2 0h2M12 8v2m0 2v2m0 2v2" stroke-width="1.5" stroke-linecap="round"/><path d="M15 9l-3 3-3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
-  lactosa:
-    '<path d="M6 4h12v12c0 2.2-1.8 4-4 4h-4c-2.2 0-4-1.8-4-4V4z" stroke-width="1.5"/><path d="M6 4h12v4H6V4z" stroke-width="1.5"/><circle cx="10" cy="14" r="1.5" fill="currentColor"/><circle cx="14" cy="14" r="1.5" fill="currentColor"/>',
-  sibo:
-    '<ellipse cx="12" cy="8" rx="5" ry="3" stroke-width="1.5"/><path d="M7 8v8c0 1.7 2.2 3 5 3s5-1.3 5-3V8" stroke-width="1.5"/><circle cx="9" cy="11" r="1" fill="currentColor"/><circle cx="15" cy="11" r="1" fill="currentColor"/><circle cx="12" cy="14" r="1" fill="currentColor"/>',
-};
+// Numeración continua 01 a 05 a través de los dos grupos
+let contador = 0;
+const grupos = gruposServicios.map((grupo) => ({
+  ...grupo,
+  estudios: grupo.estudios.map((estudio) => ({
+    ...estudio,
+    numero: String(++contador).padStart(2, '0'),
+    whatsappLink: getWhatsappLink(estudio.mensajeWhatsapp),
+  })),
+}));
 ---
 
-<section id="servicios" class="relative bg-[var(--color-surface)] pt-14 pb-10 md:pt-24 md:pb-16 overflow-hidden">
+<section id="servicios" class="relative bg-[var(--color-surface)] pt-14 pb-14 md:pt-24 md:pb-20 overflow-hidden">
   <!-- Franja de transición desde el hero oscuro -->
   <div class="pointer-events-none absolute inset-x-0 top-0 h-20" style={{ backgroundImage: 'linear-gradient(to bottom, white 0%, var(--color-surface) 100%)' }}></div>
 
@@ -36,125 +33,110 @@ const iconosPaths = {
     <HexPattern color="var(--color-blue)" opacity={0.05} />
   </div>
 
+  <!-- Sin JavaScript, las cards se ven en su posición final -->
+  <noscript>
+    <style is:inline>
+      #servicios .reveal { opacity: 1; transform: none; }
+    </style>
+  </noscript>
+
   <div class="container relative">
     <SectionHeading
-      eyebrow="NUESTROS SERVICIOS"
-      titulo="Cinco estudios para tu salud digestiva"
-      bajada="Estudios digestivos con equipamiento moderno y acompañamiento en cada paso. Todos los estudios se realizan según indicación médica."
+      eyebrow={serviciosEncabezado.eyebrow}
+      titulo={serviciosEncabezado.titulo}
+      bajada={serviciosEncabezado.bajada}
       tema="claro"
       alineacion="centro"
+      equilibrado
     />
 
-    <!-- Mobile: carrusel deslizable con puntos -->
-    <!-- Tablet (md): 2 columnas con quinta card centrada -->
-    <!-- Desktop (lg): 3 arriba + 2 centradas abajo -->
-    <div
-      class="servicios-scroll mt-[28px] md:mt-10 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 md:snap-none lg:grid-cols-3"
-    >
-      {
-        servicios.map((servicio, index) => {
-          const whatsappLink = getWhatsappLink(`Hola, quiero consultar por ${servicio.titulo}`);
-          
-          return (
-            <div
-              class={`servicio-card group reveal reveal-delay-${Math.min(index, 4)} relative h-full w-[72vw] max-w-[260px] shrink-0 snap-start overflow-hidden flex flex-col bg-white border border-[var(--color-border)] rounded-[var(--radius)] shadow-[var(--shadow-card)] p-5 md:p-[26px] md:w-auto md:max-w-none md:shrink ${index === 4 ? 'md:col-start-1 md:col-end-3 md:max-w-[calc(50%-12px)] md:justify-self-center lg:col-start-auto lg:col-end-auto lg:max-w-none lg:justify-self-stretch' : ''}`}
-            >
-              <span class="servicio-card-accent absolute inset-x-0 top-0 left-0 h-[3px] w-0" />
+    <!--
+      Endoscópicos: apiladas en mobile, 2 columnas desde tablet.
+      Tests: apiladas en mobile; en tablet 2 columnas con la tercera a todo el ancho; 3 columnas desde desktop.
+    -->
+    {
+      grupos.map((grupo, indiceGrupo) => (
+        <div class={indiceGrupo === 0 ? 'mt-9 md:mt-12' : 'mt-10 md:mt-14'}>
+          <div class="flex items-center gap-4">
+            <h3 class="eyebrow eyebrow-dark shrink-0">{grupo.nombre}</h3>
+            <span class="h-px flex-1 bg-[var(--color-border)]" aria-hidden="true" />
+          </div>
 
-              <span
-                class="servicio-card-index absolute top-3 right-4 font-display font-bold text-[34px] sm:text-[46px] leading-none select-none"
-                aria-hidden="true"
+          <!--
+            Card: texto (número, título, descripción) y acciones.
+            Mobile: número y título en una línea; botón corto y link en una fila.
+            Tablet y desktop: columna con el botón a todo el ancho.
+            Endoscópicos desde desktop: texto a la izquierda y acciones a la derecha.
+          -->
+          <div class={`mt-4 grid grid-cols-1 gap-3 md:mt-5 md:grid-cols-2 md:gap-6 ${grupo.destacado ? '' : 'lg:grid-cols-3'}`}>
+            {grupo.estudios.map((estudio, index) => (
+              <article
+                class:list={[
+                  'servicio-card reveal relative flex h-full flex-col overflow-hidden rounded-[var(--radius)] border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]',
+                  `reveal-delay-${index}`,
+                  grupo.destacado
+                    ? 'servicio-card--destacado p-5 md:p-8 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-10'
+                    : 'p-4 md:p-6',
+                  !grupo.destacado && index === 2 && 'md:col-span-2 lg:col-span-1',
+                ]}
               >
-                {String(index + 1).padStart(2, '0')}
-              </span>
+                <div class={`flex flex-1 flex-col ${grupo.destacado ? 'lg:self-center' : ''}`}>
+                  <div class="flex items-baseline gap-2.5 md:block">
+                    <span class="servicio-numero font-display text-[17px] font-bold leading-none md:text-[22px]" aria-hidden="true">
+                      {estudio.numero}
+                    </span>
 
-              <div class="relative z-10 flex h-full flex-col">
-                <div class="servicio-card-tile w-[54px] h-[54px] rounded-[var(--radius)] flex items-center justify-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                    class="servicio-card-icon w-6 h-6 sm:w-[26px] sm:h-[26px] text-white"
-                    set:html={iconosPaths[servicio.icono]}
-                  />
+                    <h4 class={`servicio-card-title text-balance text-[var(--color-ink)] md:mt-3 ${grupo.destacado ? 'text-[19px] md:text-[22px]' : 'text-[18px]'}`}>
+                      {estudio.titulo}
+                    </h4>
+                  </div>
+
+                  <p class="servicio-card-desc mt-2 max-w-none text-[15px] leading-[1.6] md:mt-2.5">
+                    {estudio.descripcion}
+                  </p>
                 </div>
 
-                <h3 class="servicio-card-title mt-5 text-[var(--color-ink)] max-w-[22ch] leading-[1.3] sm:min-h-[2.6em]">{servicio.titulo}</h3>
-
-                <p class="servicio-card-desc mt-3 text-[14px] text-[var(--color-muted)] leading-[1.6] max-w-none flex-1">
-                  {servicio.descripcion}
-                </p>
-
-                <!-- Botón WhatsApp -->
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="servicio-card-cta mt-4 inline-flex items-center justify-center gap-2 w-full rounded-[var(--radius-pill)] bg-[var(--color-blue)] text-white px-4 py-2.5 text-[13px] font-semibold transition-all duration-200 hover:bg-[var(--color-blue-dark)]"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
-                  </svg>
-                  Consultar por este estudio
-                </a>
-
-                <!-- Link secundario -->
-                <a
-                  href="#pacientes"
-                  class="servicio-card-link mt-3 pt-2 inline-flex items-center justify-center gap-1.5 text-[13px] font-semibold text-[var(--color-blue-dark)] py-2 -my-2 rounded-[var(--radius-sm)]"
-                >
-                  Ver preparación
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    class="transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1"
-                    aria-hidden="true"
+                <div class={`mt-4 flex items-center justify-between gap-3 md:mt-6 md:flex-col md:items-stretch md:gap-1 ${grupo.destacado ? 'lg:mt-0 lg:items-center lg:self-center' : ''}`}>
+                  <a
+                    href={estudio.whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={`servicio-card-cta inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-pill)] bg-[var(--color-blue)] px-5 py-2.5 text-[14px] font-semibold text-white md:w-full md:px-4 ${grupo.destacado ? 'lg:w-auto lg:px-7' : ''}`}
                   >
-                    <path d="M5 12h14" />
-                    <path d="M13 6l6 6-6 6" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          );
-        })
-      }
-    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
+                    </svg>
+                    <span>{serviciosAcciones.consultar}<span class="servicio-cta-detalle">{serviciosAcciones.consultarDetalle}</span></span>
+                  </a>
 
-    <!-- Indicador de deslizamiento: solo en mobile -->
-    <p class="mt-4 flex items-center justify-center gap-1 text-[11px] text-[var(--color-muted)] md:hidden">
-      Deslizá para ver todos los estudios
-      <svg
-        width="12"
-        height="12"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M5 12h14" />
-        <path d="M13 6l6 6-6 6" />
-      </svg>
-    </p>
-
-    <!-- Puntos indicadores: solo en mobile -->
-    <div class="mt-2.5 flex items-center justify-center gap-1.5 md:hidden" aria-hidden="true">
-      {
-        servicios.map((_, index) => (
-          <span class="servicio-dot h-1.5 w-1.5 rounded-full bg-[var(--color-border)]" data-dot={index} />
-        ))
-      }
-    </div>
+                  <a
+                    href="#pacientes"
+                    class="servicio-card-link inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-[var(--radius-sm)] px-2 text-[13px] font-semibold text-[var(--color-blue-dark)] md:self-center"
+                  >
+                    {serviciosAcciones.verPreparacion}
+                    <svg
+                      class="servicio-card-link-arrow"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="M13 6l6 6-6 6" />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </div>
 </section>
 
@@ -164,169 +146,81 @@ const iconosPaths = {
     -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
   }
 
-  .servicios-scroll {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .servicios-scroll::-webkit-scrollbar {
-    display: none;
-  }
-
   .servicio-card {
-    transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+    transition: border-color 220ms ease, box-shadow 220ms ease;
   }
 
-  /* Hover solo en dispositivos con hover real */
-  @media (hover: hover) and (pointer: fine) {
-    .servicio-card:hover {
-      border-color: var(--color-blue);
-      box-shadow: var(--shadow-card-hover), 0 0 0 1px var(--color-blue);
-      background-color: var(--color-navy-deep);
-    }
-
-    .servicio-card:hover .servicio-card-index {
-      color: color-mix(in srgb, var(--color-cyan) 30%, transparent);
-    }
-
-    .servicio-card:hover .servicio-card-tile {
-      background-image: var(--gradient-blue);
-    }
-
-    .servicio-card:hover .servicio-card-title {
-      color: white;
-    }
-
-    .servicio-card:hover .servicio-card-desc {
-      color: rgba(255, 255, 255, 0.75);
-    }
-
-    .servicio-card:hover .servicio-card-cta {
-      background-color: white;
-      color: var(--color-blue-dark);
-    }
-
-    .servicio-card:hover .servicio-card-link {
-      color: var(--color-cyan);
-    }
-
-    .servicio-card:hover .servicio-card-accent {
-      width: 100%;
-      background-image: var(--gradient-blue);
-    }
+  /* Franja cyan superior: marca los estudios principales */
+  .servicio-card--destacado::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background-color: var(--color-cyan);
   }
 
-  .servicio-card-accent {
-    transition: width 280ms ease;
-  }
-
-  .servicio-card-index {
-    color: color-mix(in srgb, var(--color-border) 80%, transparent);
-    transition: color 220ms ease;
-  }
-
-  .servicio-card-tile {
-    background-image: linear-gradient(135deg, var(--color-blue) 0%, var(--color-blue-dark) 100%);
-    transition: background-image 220ms ease;
-  }
-
-  .servicio-card-icon {
-    transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  .servicio-numero {
+    color: var(--color-blue);
+    letter-spacing: 0.02em;
   }
 
   .servicio-card-title {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 17px;
-    transition: color 220ms ease;
+    line-height: 1.25;
+    max-width: none;
   }
 
+  /* Gris de descripción más oscuro que --color-muted: 7,6:1 sobre blanco */
   .servicio-card-desc {
-    transition: color 220ms ease;
+    color: color-mix(in srgb, var(--color-ink) 25%, var(--color-muted));
+  }
+
+  /* Mobile: el botón muestra solo "Consultar"; el resto lo siguen leyendo los lectores de pantalla */
+  @media (max-width: 767.98px) {
+    .servicio-cta-detalle {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
   }
 
   .servicio-card-cta {
-    transition: background-color 220ms ease, color 220ms ease, transform 220ms ease;
+    transition: background-color 220ms ease;
   }
 
-  .servicio-card-cta:hover {
-    transform: translateY(-1px);
+  .servicio-card-link-arrow {
+    transition: transform 200ms ease;
   }
 
-  .servicio-card-link {
-    transition: color 220ms ease;
-  }
-
-  .servicio-dot {
-    transition: background-color 200ms ease, transform 200ms ease;
-  }
-
-  .servicio-dot.is-active {
-    background-color: var(--color-blue);
-    transform: scale(1.3);
-  }
-
-  /* Desktop: layout 3 + 2 centrados */
-  @media (min-width: 1024px) {
-    .servicios-scroll {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 1fr;
+  /* Hover solo con mouse: en pantallas táctiles no queda ningún estado marcado al tocar */
+  @media (hover: hover) and (pointer: fine) {
+    .servicio-card:hover {
+      border-color: var(--color-blue);
+      box-shadow: var(--shadow-card-hover);
     }
 
-    .servicio-card:nth-child(4),
-    .servicio-card:nth-child(5) {
-      grid-row: 2;
+    .servicio-card-cta:hover {
+      background-color: var(--color-blue-dark);
     }
 
-    .servicio-card:nth-child(4) {
-      grid-column: 1 / 2;
-      margin-left: auto;
-      margin-right: 12px;
-      max-width: calc(100% - 12px);
-    }
-
-    .servicio-card:nth-child(5) {
-      grid-column: 3 / 4;
-      margin-right: auto;
-      margin-left: 12px;
-      max-width: calc(100% - 12px);
+    .servicio-card-link:hover .servicio-card-link-arrow {
+      transform: translateX(3px);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .servicio-card,
-    .servicio-card-accent,
-    .servicio-card-index,
-    .servicio-card-tile,
-    .servicio-card-icon,
-    .servicio-card-title,
-    .servicio-card-desc,
     .servicio-card-cta,
-    .servicio-card-link,
-    .servicio-dot {
+    .servicio-card-link-arrow {
       transition: none;
+    }
+
+    .servicio-card-link:hover .servicio-card-link-arrow {
+      transform: none;
     }
   }
 </style>
-
-<script>
-  const scrollContainer = document.querySelector('.servicios-scroll');
-  const dots = document.querySelectorAll('.servicio-dot');
-
-  if (scrollContainer && dots.length > 0 && window.innerWidth < 768) {
-    const updateDots = () => {
-      const scrollLeft = scrollContainer.scrollLeft;
-      const cardWidth = scrollContainer.querySelector('.servicio-card')?.offsetWidth || 0;
-      const gap = 16;
-      const activeIndex = Math.round(scrollLeft / (cardWidth + gap));
-
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('is-active', index === activeIndex);
-      });
-    };
-
-    scrollContainer.addEventListener('scroll', updateDots, { passive: true });
-    updateDots();
-  }
-</script>

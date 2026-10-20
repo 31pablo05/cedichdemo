@@ -5,6 +5,7 @@ const {
   bajada,
   tema = 'claro',
   alineacion = 'izquierda',
+  equilibrado = false,
 } = Astro.props;
 
 const esOscuro = tema === 'oscuro';
@@ -14,10 +15,11 @@ const eyebrowClass = esOscuro ? 'eyebrow-light' : 'eyebrow-dark';
 const tituloClass = esOscuro ? 'text-white' : 'text-[var(--color-ink)]';
 const bajadaClass = esOscuro ? 'text-white/75' : 'text-[var(--color-muted)]';
 const wrapperClass = esCentro ? 'text-center mx-auto' : 'text-left';
+const balanceClass = equilibrado ? 'text-balance' : '';
 ---
 
 <div class={wrapperClass}>
   <p class={`eyebrow ${eyebrowClass}`}>{eyebrow}</p>
-  <h2 class={`mt-4 ${tituloClass}`}>{titulo}</h2>
-  {bajada && <p class={`mt-4 max-w-[62ch] ${esCentro ? 'mx-auto' : ''} ${bajadaClass}`}>{bajada}</p>}
+  <h2 class={`mt-4 ${tituloClass} ${balanceClass}`}>{titulo}</h2>
+  {bajada && <p class={`mt-4 max-w-[62ch] ${esCentro ? 'mx-auto' : ''} ${bajadaClass} ${balanceClass}`}>{bajada}</p>}
 </div>
