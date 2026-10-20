@@ -29,8 +29,7 @@ const iconosPaths = {
          Desktop: public/imagenes/optimizadas/hero-desktop-*
          Versiones AVIF/WebP en varios anchos.
          sizes: con object-cover la imagen se recorta por alto, por eso
-         en mobile y tablet necesita más ancho que el viewport. En mobile
-         además se amplía para reencuadrar (ver .hero-background).
+         en mobile y tablet necesita más ancho que el viewport.
     ====================================================== -->
     <picture class="hero-picture absolute inset-0 block h-full w-full">
       <source
@@ -87,8 +86,8 @@ const iconosPaths = {
        render, sin depender del script de aparición.
   ====================================================== -->
   <div
-    class="container relative z-10 flex items-center pt-[100px] pb-[80px]
-           md:min-h-[650px] md:pt-[135px] md:pb-[112px]
+    class="container relative z-10 flex min-h-[100svh] items-end pt-[100px] pb-[48px]
+           md:min-h-[650px] md:items-center md:pt-[135px] md:pb-[112px]
            lg:min-h-[max(640px,100svh)] lg:pt-[124px] lg:pb-[136px]"
   >
     <div
@@ -195,16 +194,9 @@ const iconosPaths = {
    * Vertical: valores menores muestran más arriba, valores mayores muestran más abajo
    */
 
-  /*
-   * Mobile: la foto vertical casi no tiene margen horizontal para reencuadrar,
-   * así que se amplía desde la esquina inferior derecha (camillas y cortinas).
-   * Con 1.7 el logo de la pared queda fuera de cuadro desde 360 px.
-   * Usa la propiedad `scale` para no pisar la animación de entrada, que usa `transform`.
-   */
+  /* Mobile: anclada arriba a la derecha para que el logo de la pared quede en la zona superior derecha */
   .hero-background {
-    object-position: 100% 100%;
-    scale: 1.7;
-    transform-origin: 100% 100%;
+    object-position: 100% 0%;
     animation: hero-image-enter 1200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -213,7 +205,7 @@ const iconosPaths = {
   }
 
   .hero-overlay-mobile {
-    background: linear-gradient(180deg, rgba(3, 18, 40, 0.9) 0%, rgba(3, 18, 40, 0.8) 35%, rgba(3, 18, 40, 0.76) 65%, rgba(3, 18, 40, 0.93) 100%);
+    background: linear-gradient(180deg, rgba(3, 18, 40, 0.8) 0%, rgba(3, 18, 40, 0.55) 16%, rgba(3, 18, 40, 0.55) 34%, rgba(3, 18, 40, 0.85) 52%, rgba(3, 18, 40, 0.95) 100%);
   }
 
   .hero-glow {
@@ -273,7 +265,6 @@ const iconosPaths = {
        * más abajo -> 45%, 50%
        */
       object-position: 62% 35%;
-      scale: none;
     }
 
     /* Ken Burns continuo y muy sutil; solo desde tablet (sin loops en mobile) */
