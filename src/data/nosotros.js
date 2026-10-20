@@ -1,35 +1,36 @@
+import { site } from './site.js';
+
+const referenciaEnFrase = site.referencia.charAt(0).toLowerCase() + site.referencia.slice(1);
+
 export const nosotros = {
   eyebrow: 'SOBRE CEDICH',
   titulo: 'Un centro dedicado a cuidar tu salud digestiva',
-  parrafo1:
-    'CEDICH es un centro especializado en endoscopía digestiva ubicado en Rawson, Chubut. Trabajamos con un enfoque centrado en el diagnóstico preciso, la tecnología y una atención cercana en cada etapa.',
-  parrafo2:
-    'CEDICH fue impulsado por el Dr. Andrés Galarza, especialista en endoscopía digestiva, con el objetivo de brindar atención especializada y continuar incorporando herramientas y procedimientos para el cuidado de la salud digestiva.',
-  fundador: {
-    nombre: 'Dr. Andrés Galarza',
-    cargo: 'Fundador de CEDICH · Especialista en Endoscopía Digestiva',
-  },
+  parrafo:
+    'CEDICH es un centro de endoscopía digestiva en Rawson, impulsado por el Dr. Andrés Galarza. Nuestro objetivo es que cada paciente llegue informado, se sienta acompañado y reciba un diagnóstico preciso.',
   diferenciales: [
     {
-      titulo: 'Atención cercana',
-      descripcion: 'Acompañamiento personalizado en cada consulta',
-      icono: 'usuario',
+      titulo: 'Cerca tuyo',
+      descripcion: `En ${site.localidad}, ${referenciaEnFrase}.`,
+      icono: 'ubicacion',
     },
     {
-      titulo: 'Salud digestiva',
-      descripcion: 'Especialización en diagnóstico y tratamiento',
-      icono: 'salud',
+      titulo: 'Te explicamos cada paso',
+      descripcion: 'Indicaciones claras antes del estudio.',
+      icono: 'indicaciones',
     },
     {
-      titulo: 'Tecnología',
-      descripcion: 'Equipamiento moderno y técnicas actualizadas',
-      icono: 'tecnologia',
+      titulo: 'Resultados claros',
+      descripcion: 'Un informe comprensible y el seguimiento necesario.',
+      icono: 'informe',
     },
   ],
+  // PENDIENTE CLIENTE: cuando estén las fotos del equipo, volver a "Conocer al equipo"
   cta: {
-    texto: 'Conocer al equipo',
+    texto: 'Conocé al Dr. Galarza',
     destino: '#profesionales',
   },
+  etiquetaFoto: 'Equipo CEDICH · Rawson',
   // Nombre de la imagen optimizada en public/imagenes/optimizadas (vacío muestra el placeholder)
   imagen: 'nosotros',
+  imagenAlt: 'El equipo de CEDICH, con el Dr. Andrés Galarza, en el centro frente al logo institucional',
 };

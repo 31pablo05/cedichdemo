@@ -7,13 +7,16 @@ const fuentesImagen = nosotros.imagen
   ? fuentesResponsive(nosotros.imagen, [480, 720, 1080, 1448])
   : null;
 
+const sizesImagen =
+  '(min-width: 1536px) 670px, (min-width: 1024px) 600px, (min-width: 768px) calc(100vw - 92px), calc(100vw - 52px)';
+
 /** @type {Record<string, string>} */
 const iconosPaths = {
-  usuario:
-    '<circle cx="9" cy="8" r="3" /><path d="M3 20a6 6 0 0 1 12 0" /><circle cx="17" cy="9" r="2.5" /><path d="M15 20a5 5 0 0 1 6-4.9" />',
-  salud: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" /><path d="M9 12l2 2 4-4" />',
-  tecnologia:
-    '<rect x="3" y="4" width="18" height="12" rx="1.5" /><path d="M8 20h8" /><path d="M12 16v4" /><path d="M7 9l3 3 2-2 4 4" />',
+  ubicacion: '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" /><circle cx="12" cy="10" r="2.5" />',
+  indicaciones:
+    '<rect x="5" y="4" width="14" height="17" rx="2" /><rect x="9" y="2.5" width="6" height="3" rx="1" /><path d="M9 11h6" /><path d="M9 15h6" />',
+  informe:
+    '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" /><path d="M14 3v5h5" /><path d="m9 14.5 2 2 4-4" />',
 };
 ---
 
@@ -31,56 +34,120 @@ const iconosPaths = {
     <HexPattern color="var(--color-blue)" opacity={0.03} />
   </div>
 
-  <div class="container relative">
-    <div class="flex flex-col md:flex-row md:gap-8 lg:gap-12 md:items-center">
-      <!-- Zona izquierda: contenido -->
-      <div class="md:w-[52%]">
-        <p class="eyebrow eyebrow-dark">{nosotros.eyebrow}</p>
-        <h2 class="mt-4 text-[var(--color-ink)]">{nosotros.titulo}</h2>
-        <p class="mt-5 text-[15px] md:text-[16px] text-[var(--color-muted)] leading-[1.7] max-w-[62ch]">
-          {nosotros.parrafo1}
-        </p>
-        <p class="mt-4 text-[15px] md:text-[16px] text-[var(--color-muted)] leading-[1.7] max-w-[62ch]">
-          {nosotros.parrafo2}
-        </p>
+  <!-- Sin JavaScript, el contenido animado se ve en su posición final -->
+  <noscript>
+    <style is:inline>
+      #nosotros .reveal { opacity: 1; transform: none; }
+      #nosotros .nosotros-frame { transform: translate(var(--frame-offset), var(--frame-offset)); }
+    </style>
+  </noscript>
 
-        <!-- Diferenciales -->
-        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-4">
+  <div class="container relative">
+    <!--
+      Mobile y tablet: texto, foto, diferenciales y link, en ese orden.
+      Desktop: texto a la izquierda y foto a la derecha, centrados entre sí.
+    -->
+    <div class="nosotros-grid">
+      <div class="nosotros-intro">
+        <p class="eyebrow eyebrow-dark reveal">{nosotros.eyebrow}</p>
+        <h2 class="reveal reveal-delay-1 mt-4 text-balance text-[var(--color-ink)]">{nosotros.titulo}</h2>
+        <p class="nosotros-texto reveal reveal-delay-2 mt-5 text-[16px] leading-[1.65] max-w-[62ch] lg:text-[17px]">
+          {nosotros.parrafo}
+        </p>
+      </div>
+
+      <!-- Foto con bloque navy desplazado detrás -->
+      <div class="nosotros-media reveal mt-9 md:mt-12 lg:mt-0">
+        <div class="nosotros-frame" aria-hidden="true">
+          <HexPattern color="var(--color-cyan)" opacity={0.12} />
+        </div>
+
+        <div class="nosotros-image relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] shadow-[var(--shadow-card)] lg:aspect-[5/4]">
           {
-            nosotros.diferenciales.map((diferencial) => (
-              <div class="diferencial-card flex items-start gap-3 rounded-[var(--radius)] border border-transparent p-3 -m-3 sm:flex-col sm:items-start sm:gap-2">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-dark)]">
+            fuentesImagen ? (
+              <picture>
+                <source type="image/avif" srcset={fuentesImagen.avif} sizes={sizesImagen} />
+                <source type="image/webp" srcset={fuentesImagen.webp} sizes={sizesImagen} />
+                <img
+                  src={fuentesImagen.fallback}
+                  alt={nosotros.imagenAlt}
+                  width="1448"
+                  height="1086"
+                  loading="lazy"
+                  class="nosotros-image-img h-full w-full object-cover"
+                />
+              </picture>
+            ) : (
+              <div class="flex h-full w-full items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border)]">
+                <div class="text-center px-8">
                   <svg
-                    width="20"
-                    height="20"
+                    width="48"
+                    height="48"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="white"
+                    stroke="var(--color-blue)"
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    aria-hidden="true"
-                    set:html={iconosPaths[diferencial.icono]}
-                  />
-                </div>
-                <div>
-                  <h3 class="text-[15px] font-semibold text-[var(--color-ink)]">{diferencial.titulo}</h3>
-                  <p class="mt-0.5 text-[13px] text-[var(--color-muted)] max-w-none">
-                    {diferencial.descripcion}
+                    class="mx-auto mb-3 opacity-40"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="9" cy="9" r="2" />
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                  </svg>
+                  <p class="text-[13px] text-[var(--color-muted)] max-w-none">
+                    PENDIENTE CLIENTE: imagen institucional de CEDICH
                   </p>
                 </div>
               </div>
-            ))
+            )
           }
-        </div>
 
-        <!-- CTA -->
+          <p class="nosotros-etiqueta absolute left-3 top-3 inline-flex max-w-none items-center gap-2 rounded-[var(--radius-pill)] px-3 py-1.5 text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[var(--color-navy)] md:left-4 md:top-4">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-cyan)]" aria-hidden="true"></span>
+            {nosotros.etiquetaFoto}
+          </p>
+        </div>
+      </div>
+
+      <!-- Diferenciales: lista en mobile y desktop, fila de tres en tablet -->
+      <ul class="nosotros-diferenciales mt-10 grid grid-cols-1 gap-5 md:mt-12 md:-mx-3 md:grid-cols-3 md:gap-2 lg:mx-0 lg:mt-9 lg:grid-cols-1 lg:gap-5">
+        {
+          nosotros.diferenciales.map((diferencial, index) => (
+            <li class={`diferencial reveal reveal-delay-${index + 1} flex items-start gap-3.5 md:flex-col md:gap-3 md:rounded-[var(--radius)] md:p-3 lg:flex-row lg:gap-4 lg:p-0`}>
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-dark)]">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  set:html={iconosPaths[diferencial.icono]}
+                />
+              </span>
+              <div>
+                <h3 class="text-[16px] font-semibold leading-[1.35] text-[var(--color-ink)]">{diferencial.titulo}</h3>
+                <p class="nosotros-texto mt-1 text-[14px] leading-[1.5] max-w-none">
+                  {diferencial.descripcion}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="nosotros-cta reveal reveal-delay-4 mt-7 md:mt-8">
         <a
           href={nosotros.cta.destino}
-          class="mt-8 inline-flex items-center gap-2 rounded-[var(--radius-pill)] bg-[var(--color-blue-dark)] px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(8,96,132,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(8,96,132,0.45)]"
+          class="nosotros-link inline-flex min-h-[44px] items-center gap-2 text-[15px] font-semibold text-[var(--color-blue-dark)]"
         >
           {nosotros.cta.texto}
           <svg
+            class="nosotros-link-arrow"
             width="16"
             height="16"
             viewBox="0 0 24 24"
@@ -95,67 +162,6 @@ const iconosPaths = {
             <path d="M13 6l6 6-6 6" />
           </svg>
         </a>
-      </div>
-
-      <!-- Zona derecha: imagen institucional + dato del fundador -->
-      <div class="mt-12 md:mt-0 md:w-[48%]">
-        <div class="nosotros-image-wrapper">
-          <div class="nosotros-image relative aspect-[4/3] overflow-hidden rounded-t-[var(--radius-lg)] md:rounded-[var(--radius-lg)]">
-            {
-              fuentesImagen ? (
-                <picture>
-                  <source
-                    type="image/avif"
-                    srcset={fuentesImagen.avif}
-                    sizes="(min-width: 1024px) 540px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
-                  />
-                  <source
-                    type="image/webp"
-                    srcset={fuentesImagen.webp}
-                    sizes="(min-width: 1024px) 540px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
-                  />
-                  <img
-                    src={fuentesImagen.fallback}
-                    alt="El equipo de CEDICH, con el Dr. Andrés Galarza, en el centro frente al logo institucional"
-                    width="720"
-                    height="540"
-                    loading="lazy"
-                    class="nosotros-image-img h-full w-full object-cover"
-                  />
-                </picture>
-              ) : (
-                <div class="flex h-full w-full items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border)]">
-                  <div class="text-center px-8">
-                    <svg
-                      width="48"
-                      height="48"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="var(--color-blue)"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="mx-auto mb-3 opacity-40"
-                    >
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <circle cx="9" cy="9" r="2" />
-                      <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                    </svg>
-                    <p class="text-[13px] text-[var(--color-muted)] max-w-none">
-                      PENDIENTE CLIENTE: imagen institucional de CEDICH
-                    </p>
-                  </div>
-                </div>
-              )
-            }
-          </div>
-
-          <!-- Card del fundador: pie de foto en mobile, flotante desde tablet -->
-          <div class="nosotros-fundador-card rounded-b-[var(--radius-lg)] border border-white/20 bg-white/95 backdrop-blur-sm p-3 shadow-[var(--shadow-card)] md:absolute md:bottom-4 md:left-4 md:right-4 md:rounded-[var(--radius)] md:p-4 md:shadow-[var(--shadow-card-hover)]">
-            <p class="text-[14px] font-semibold text-[var(--color-ink)] md:text-[15px]">{nosotros.fundador.nombre}</p>
-            <p class="mt-0.5 text-[12px] text-[var(--color-muted)] max-w-none md:mt-1 md:text-[13px]">{nosotros.fundador.cargo}</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -172,51 +178,147 @@ const iconosPaths = {
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 120px, black 50%, transparent 100%);
   }
 
-  .diferencial-card {
-    transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+  .nosotros-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'intro'
+      'media'
+      'difs'
+      'cta';
   }
 
-  .diferencial-card:hover {
-    background-color: var(--color-surface);
-    border-color: var(--color-border);
-    transform: translateY(-2px);
+  .nosotros-intro {
+    grid-area: intro;
   }
 
-  .nosotros-image-wrapper {
+  .nosotros-media {
+    grid-area: media;
+  }
+
+  .nosotros-diferenciales {
+    grid-area: difs;
+  }
+
+  .nosotros-cta {
+    grid-area: cta;
+  }
+
+  /* Las filas 1fr de los extremos centran el texto respecto de la foto */
+  @media (min-width: 1024px) {
+    .nosotros-grid {
+      grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+      grid-template-rows: 1fr auto auto auto 1fr;
+      grid-template-areas:
+        '.     media'
+        'intro media'
+        'difs  media'
+        'cta   media'
+        '.     media';
+      column-gap: 56px;
+    }
+
+    .nosotros-media {
+      align-self: center;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .nosotros-grid {
+      column-gap: 72px;
+    }
+  }
+
+  /* El margen deja lugar al bloque navy, que asoma abajo y a la derecha */
+  .nosotros-media {
+    --frame-offset: 12px;
     position: relative;
+    margin-right: var(--frame-offset);
+    margin-bottom: var(--frame-offset);
+  }
+
+  @media (min-width: 1024px) {
+    .nosotros-media {
+      --frame-offset: 24px;
+    }
+  }
+
+  .nosotros-frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background-image: var(--gradient-navy);
+    transform: translate(var(--frame-offset), var(--frame-offset));
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1) 250ms;
+  }
+
+  .nosotros-media.reveal:not(.is-visible) .nosotros-frame {
+    transform: translate(0, 0);
+  }
+
+  .nosotros-etiqueta {
+    z-index: 1;
+    background-color: color-mix(in srgb, var(--color-white) 82%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 10px rgba(14, 45, 82, 0.12);
   }
 
   .nosotros-image-img {
     transition: transform 500ms ease;
   }
 
-  .nosotros-image:hover .nosotros-image-img {
-    transform: scale(1.04);
+  /* Gris de texto más oscuro que --color-muted: 7,6:1 sobre blanco */
+  .nosotros-texto {
+    color: color-mix(in srgb, var(--color-ink) 25%, var(--color-muted));
   }
 
-  /* En mobile la tarjeta NO es absoluta, es un pie de foto pegado a la imagen */
-  .nosotros-fundador-card {
-    border-top: none;
+  .diferencial {
+    transition: background-color 200ms ease;
   }
 
-  /* Desde tablet, la tarjeta vuelve a ser flotante sobre la foto */
-  @media (min-width: 768px) {
-    .nosotros-fundador-card {
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+  .nosotros-link-arrow {
+    transition: transform 200ms ease;
+  }
+
+  /* Hover solo con mouse: en pantallas táctiles no queda marcado al tocar */
+  @media (hover: hover) and (pointer: fine) {
+    .nosotros-image:hover .nosotros-image-img {
+      transform: scale(1.04);
+    }
+
+    .nosotros-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .nosotros-link:hover .nosotros-link-arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  /* Fondo al pasar el mouse solo en tablet, donde los diferenciales son tarjetas */
+  @media (hover: hover) and (pointer: fine) and (min-width: 768px) and (max-width: 1023.98px) {
+    .diferencial:hover {
+      background-color: var(--color-surface);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .diferencial-card,
-    .nosotros-image-img {
+    .nosotros-frame,
+    .nosotros-image-img,
+    .diferencial,
+    .nosotros-link-arrow {
       transition: none;
     }
 
-    .diferencial-card:hover {
-      transform: none;
+    .nosotros-media.reveal:not(.is-visible) .nosotros-frame {
+      transform: translate(var(--frame-offset), var(--frame-offset));
     }
 
-    .nosotros-image:hover .nosotros-image-img {
+    .nosotros-image:hover .nosotros-image-img,
+    .nosotros-link:hover .nosotros-link-arrow {
       transform: none;
     }
   }
