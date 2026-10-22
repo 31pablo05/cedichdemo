@@ -29,6 +29,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalOrganization',
   name: site.nombreCompleto,
+  alternateName: site.nombreCorto,
   description: 'Centro de Endoscopías Digestivas de Chubut. Especialistas en endoscopía digestiva alta, colonoscopía y tests de aire espirado.',
   url: baseUrl,
   logo: logoUrl,
@@ -41,8 +42,14 @@ const jsonLd = {
     postalCode: site.codigoPostal,
     addressCountry: site.pais,
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: site.coordenadas.latitud,
+    longitude: site.coordenadas.longitud,
+  },
+  hasMap: site.googleFichaUrl,
   telephone: site.telefonoInternacional,
-  sameAs: [site.instagram.url, site.facebook.url].filter(Boolean),
+  sameAs: [site.instagram.url, site.facebook.url, site.googleFichaUrl].filter(Boolean),
 };
 ---
 

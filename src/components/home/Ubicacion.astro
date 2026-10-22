@@ -4,9 +4,6 @@ import { ubicacionTextos } from '../../data/ubicacion.js';
 import HexPattern from '../ui/HexPattern.astro';
 
 const whatsappLink = getWhatsappLink(whatsappMensajes.solicitarTurno);
-const mapaSrc = `https://www.google.com/maps?q=${encodeURIComponent(
-  `${site.direccion}, ${site.localidad}, ${site.provincia}`
-)}&output=embed`;
 
 /** @type {Record<string, string>} */
 const iconos = {
@@ -26,7 +23,7 @@ const filas = [
     clave: 'direccion',
     titulo: datos.direccion,
     detalle: [site.direccion, `${site.localidad}, ${site.provincia} · ${site.referencia}`],
-    href: site.googleMapsUrl,
+    href: site.googleFichaUrl,
     externo: true,
   },
   {
@@ -126,13 +123,27 @@ const filas = [
             );
           })
         }
+        <li class={`reveal reveal-delay-${filas.length}`}>
+          <a
+            href={site.googleFichaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contacto-opiniones ml-[58px] inline-flex min-h-[44px] items-center gap-2 text-[14px] font-semibold text-[var(--color-blue-dark)]"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
+              <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z" />
+            </svg>
+            <span class="contacto-opiniones-texto">{ubicacionTextos.opiniones}</span>
+          </a>
+        </li>
       </ul>
 
       <div class="contacto-mapa-wrap reveal reveal-delay-2 relative mt-8 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)] lg:mt-0" data-mapa>
         <iframe
-          src={mapaSrc}
-          title={`Ubicación de ${site.nombreCorto} en ${site.direccion}, ${site.localidad}, ${site.provincia}`}
+          src={site.googleMapaEmbed}
+          title={ubicacionTextos.tituloMapa}
           loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
           class="contacto-mapa block h-full w-full"
         ></iframe>
 
@@ -158,7 +169,7 @@ const filas = [
         </a>
 
         <a
-          href={site.googleMapsComoLlegarUrl}
+          href={site.googleComoLlegarUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="contacto-cta-secundario inline-flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-pill)] bg-white px-6 text-[15px] font-semibold text-[var(--color-blue-dark)] lg:w-auto"
@@ -263,6 +274,11 @@ const filas = [
     .contacto-fila--link:hover .contacto-icono {
       background-color: var(--color-blue);
       color: var(--color-white);
+    }
+
+    .contacto-opiniones:hover .contacto-opiniones-texto {
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     .contacto-cta-principal:hover {

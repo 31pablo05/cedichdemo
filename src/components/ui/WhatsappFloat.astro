@@ -62,10 +62,14 @@ const whatsappLink = getWhatsappLink(whatsappMensajes.solicitarTurno);
 
 <script>
   const floatButton = document.getElementById('whatsapp-float');
+  const footer = document.querySelector('body > footer');
+
+  // Mientras el footer está en pantalla el botón se oculta para no taparlo
+  let footerVisible = false;
 
   const onScroll = () => {
     if (!floatButton) return;
-    if (window.scrollY > 500) {
+    if (window.scrollY > 500 && !footerVisible) {
       floatButton.classList.add('is-visible');
       floatButton.setAttribute('tabindex', '0');
     } else {
@@ -73,6 +77,13 @@ const whatsappLink = getWhatsappLink(whatsappMensajes.solicitarTurno);
       floatButton.setAttribute('tabindex', '-1');
     }
   };
+
+  if (footer && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      footerVisible = entry.isIntersecting;
+      onScroll();
+    }).observe(footer);
+  }
 
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });

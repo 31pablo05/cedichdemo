@@ -1,6 +1,6 @@
 export const footer = {
   descripcion:
-    'Estudios endoscópicos de diagnóstico y tratamiento en Rawson, con equipamiento propio y atención cercana.',
+    'Endoscopía digestiva y tests de aire espirado en Rawson, con equipamiento propio y atención cercana.',
   cta: {
     titulo: '¿Tenés que hacerte un estudio?',
     bajada: 'Coordiná tu turno por WhatsApp y te enviamos la preparación.',
@@ -11,6 +11,7 @@ export const footer = {
     navegacion: 'NAVEGACIÓN',
     contacto: 'CONTACTO',
     horarios: 'HORARIOS',
+    contactoYHorarios: 'CONTACTO Y HORARIOS',
   },
   contacto: {
     mensajeConsulta: 'Hola, quiero hacer una consulta',
@@ -24,4 +25,5 @@ export const footer = {
     texto: 'Diseño y desarrollo: DevCraft',
     url: 'https://devcraft.com.ar',
   },
+  volverArriba: 'Volver arriba',
 };
