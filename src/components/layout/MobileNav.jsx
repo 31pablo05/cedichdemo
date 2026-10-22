@@ -147,9 +147,11 @@ export default function MobileNav() {
       // En la home la sección existe: scroll suave sin recargar. Desde otras páginas se navega a la home.
       const targetElement = document.querySelector(item.ancla);
       if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Actualizar la URL sin recargar
-        history.pushState(null, '', item.href);
+        targetElement.scrollIntoView({ block: 'start' });
+        // Sin ancla en la URL: al recargar, la página arranca desde arriba
+        if (window.location.hash) {
+          history.replaceState(history.state, '', window.location.pathname + window.location.search);
+        }
       } else {
         // Si no existe la sección (estamos en otra página), navegar a la home
         window.location.assign(item.href);

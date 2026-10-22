@@ -28,7 +28,7 @@ function agrupar(estudios) {
 }
 
 export default function PreparacionAccordion({ estudios }) {
-  const [abierto, setAbierto] = useState(estudios[0]?.id ?? null);
+  const [abierto, setAbierto] = useState(null);
   // Cada pedido es un objeto nuevo: así se vuelve a hacer scroll aunque el estudio ya esté abierto
   const [pedidoScroll, setPedidoScroll] = useState(null);
   const raizRef = useRef(null);

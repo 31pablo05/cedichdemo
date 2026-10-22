@@ -352,12 +352,38 @@ const esSolido = Astro.url.pathname !== '/';
     });
   };
 
+  // En la home, los links del menú scrollean a su sección sin dejar el ancla en la URL,
+  // así al recargar la página arranca desde arriba. Fuera de la home navegan a "/#seccion".
+  const urlSinAncla = () => window.location.pathname + window.location.search;
+
   navLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      setActiveGroup(link.getAttribute('data-ancla') ?? '');
+    link.addEventListener('click', (event) => {
+      const ancla = link.getAttribute('data-ancla') ?? '';
+      const destino = ancla ? document.querySelector(ancla) : null;
+      if (!destino) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+
+      event.preventDefault();
+      setActiveGroup(ancla);
       holdNavigation();
+      destino.scrollIntoView({ block: 'start' });
+      if (window.location.hash) history.replaceState(history.state, '', urlSinAncla());
     });
   });
+
+  // Si se llegó a la home con el ancla de una sección del menú (por ejemplo desde una página legal),
+  // se respeta el destino y después se quita el ancla de la URL.
+  if (window.location.hash && navAnchors.has(window.location.hash)) {
+    window.addEventListener(
+      'load',
+      () => {
+        const destino = document.querySelector(window.location.hash);
+        if (destino) destino.scrollIntoView({ block: 'start', behavior: 'instant' });
+        history.replaceState(history.state, '', urlSinAncla());
+      },
+      { once: true }
+    );
+  }
 
   setActiveGroup(computeGroup());
   window.addEventListener('scroll', onSpyScroll, { passive: true });

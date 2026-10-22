@@ -20,6 +20,8 @@ const canonicalUrl = new URL(canonicalPath === '/' ? '/' : canonicalPath, Astro.
 const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url.origin);
 const ogImageAlt = `${site.nombreCompleto} — ${site.nombreCorto}`;
 
+const esHome = Astro.url.pathname === '/';
+
 const baseUrl = (Astro.site ?? Astro.url.origin).toString().replace(/\/$/, '');
 const logoUrl = `${baseUrl}/logos/logo-cedich-128.png`;
 
@@ -84,6 +86,17 @@ const jsonLd = {
     />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    {
+      esHome && (
+        <script is:inline>
+          // Home: al cargar o recargar sin ancla se muestra desde arriba (sin restaurar el scroll anterior).
+          // Con ancla en la URL (link compartido), el navegador va a esa sección.
+          if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+          if (!location.hash) window.scrollTo(0, 0);
+        </script>
+      )
+    }
   </head>
   <body class="font-body text-[var(--color-ink)] bg-white">
     <a
