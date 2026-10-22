@@ -8,7 +8,14 @@ export const obrasSociales = [
   'Obra social 5', // PENDIENTE CLIENTE
 ];
 
-export const notaCobertura = 'Consultanos por tu cobertura antes de coordinar el turno.';
-
-export const lineaApoyoCobertura =
-  'Escribinos con el nombre de tu obra social y el estudio que necesitás, y te confirmamos la cobertura.';
+export const obrasSocialesTextos = {
+  eyebrow: 'OBRAS SOCIALES',
+  titulo: 'Trabajamos con obras sociales y prepagas',
+  linea: 'Antes de coordinar el turno, te confirmamos tu cobertura por WhatsApp.',
+  pasos: [
+    'Escribinos por WhatsApp',
+    'Indicanos tu obra social y la orden médica',
+    'Te confirmamos cobertura y turno',
+  ],
+  boton: 'Consultar mi cobertura',
+};
