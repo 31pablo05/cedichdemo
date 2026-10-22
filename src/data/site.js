@@ -28,6 +28,8 @@ export const site = {
     usuario: '',
   },
   googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Pedro+Mart%C3%ADnez+45%2C+Rawson%2C+Chubut',
+  googleMapsComoLlegarUrl:
+    'https://www.google.com/maps/dir/?api=1&destination=Pedro+Mart%C3%ADnez+45%2C+Rawson%2C+Chubut',
 };
 
 // Mensajes de WhatsApp unificados

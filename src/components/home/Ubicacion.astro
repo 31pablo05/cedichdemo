@@ -1,168 +1,304 @@
 ---
 import { site, getWhatsappLink, whatsappMensajes } from '../../data/site.js';
+import { ubicacionTextos } from '../../data/ubicacion.js';
 import HexPattern from '../ui/HexPattern.astro';
 
 const whatsappLink = getWhatsappLink(whatsappMensajes.solicitarTurno);
 const mapaSrc = `https://www.google.com/maps?q=${encodeURIComponent(
   `${site.direccion}, ${site.localidad}, ${site.provincia}`
 )}&output=embed`;
+
+/** @type {Record<string, string>} */
+const iconos = {
+  direccion: '<path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.5" />',
+  horarios: '<circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" />',
+  telefono:
+    '<path d="M6 3h3l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2Z" />',
+  instagram:
+    '<rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />',
+  // facebook: '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V8Z" />',
+};
+
+const { datos } = ubicacionTextos;
+
+const filas = [
+  {
+    clave: 'direccion',
+    titulo: datos.direccion,
+    detalle: [site.direccion, `${site.localidad}, ${site.provincia} · ${site.referencia}`],
+    href: site.googleMapsUrl,
+    externo: true,
+  },
+  {
+    // PENDIENTE CLIENTE: confirmar horarios reales de atención (ver site.js)
+    clave: 'horarios',
+    titulo: datos.horarios,
+    detalle: site.horarios.map((horario) => `${horario.dia} de ${horario.franja}`),
+  },
+  {
+    clave: 'telefono',
+    titulo: datos.telefono,
+    detalle: [site.telefono],
+    href: `tel:+${site.whatsapp}`,
+  },
+  {
+    clave: 'instagram',
+    titulo: datos.instagram,
+    detalle: [site.instagram.usuario],
+    href: site.instagram.url,
+    externo: true,
+  },
+  // PENDIENTE CLIENTE: fila de Facebook, lista para activar si se confirma
+  // {
+  //   clave: 'facebook',
+  //   titulo: datos.facebook,
+  //   detalle: ['cedichendoscopia'],
+  //   href: site.facebook.url,
+  //   externo: true,
+  // },
+];
 ---
 
-<section
-  id="contacto"
-  class="relative w-full py-16 md:py-24 overflow-hidden bg-[var(--color-surface)]"
->
+<section id="contacto" class="relative w-full overflow-hidden bg-[var(--color-surface)] py-16 md:py-24">
+  <!-- Sin JavaScript, el contenido animado se ve en su posición final -->
+  <noscript>
+    <style is:inline>
+      #contacto .reveal { opacity: 1; transform: none; }
+    </style>
+  </noscript>
+
   <HexPattern color="var(--color-blue)" opacity={0.03} />
 
+  <!--
+    Mobile y tablet: encabezado, datos, mapa y botones, en una columna.
+    Desktop: 42 / 58, con el mapa a todo el alto de la columna izquierda.
+  -->
   <div class="container relative">
-    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)_minmax(0,1fr)] gap-8 lg:gap-6 lg:items-start">
-      <!-- Columna de datos -->
-      <div class="lg:flex lg:flex-col lg:h-full">
-        <p class="eyebrow eyebrow-dark">UBICACIÓN Y CONTACTO</p>
-        <h2 class="mt-4 text-[var(--color-ink)]">Estamos cerca, para lo que necesites</h2>
-
-        <div class="mt-6 flex flex-col gap-[18px]">
-          <div class="flex items-start gap-3">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-blue)"
-              stroke-width="1.5"
-              class="shrink-0 mt-0.5"
-              aria-hidden="true"
-            >
-              <path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z" />
-              <circle cx="12" cy="9.5" r="2.5" />
-            </svg>
-            <p class="text-[15px] font-semibold text-[var(--color-ink)] max-w-none">
-              {site.direccion}
-              <span class="block mt-1 text-[13px] font-normal text-[var(--color-muted)]">
-                {site.localidad}, {site.provincia} · {site.referencia}
-              </span>
-            </p>
-          </div>
-
-          <div class="flex items-start gap-3">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-blue)"
-              stroke-width="1.5"
-              class="shrink-0 mt-0.5"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 7v5l3 3" />
-            </svg>
-            <p class="text-[15px] font-semibold text-[var(--color-ink)] max-w-none">
-              Horarios
-              {
-                site.horarios.map((horario) => (
-                  <span class="block mt-1 text-[13px] font-normal text-[var(--color-muted)]">
-                    {horario.dia} de {horario.franja}
-                  </span>
-                ))
-              }
-            </p>
-          </div>
-
-          <div class="flex items-start gap-3">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-blue)"
-              stroke-width="1.5"
-              class="shrink-0 mt-0.5"
-              aria-hidden="true"
-            >
-              <path d="M6 3h3l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2Z" />
-            </svg>
-            <a href={`tel:+${site.whatsapp}`} class="text-[15px] font-semibold text-[var(--color-ink)] max-w-none py-2 -my-2">
-              {site.telefono}
-            </a>
-          </div>
-
-          <div class="flex items-start gap-3">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-blue)"
-              stroke-width="1.5"
-              class="shrink-0 mt-0.5"
-              aria-hidden="true"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle cx="17.5" cy="6.5" r="1" fill="var(--color-blue)" stroke="none" />
-            </svg>
-            <a
-              href={site.instagram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-[15px] font-semibold text-[var(--color-ink)] max-w-none py-2 -my-2"
-            >
-              {site.instagram.usuario}
-            </a>
-          </div>
-        </div>
+    <div class="contacto-grid">
+      <div class="contacto-intro">
+        <p class="eyebrow eyebrow-dark">{ubicacionTextos.eyebrow}</p>
+        <h2 class="mt-4 text-[var(--color-ink)]">{ubicacionTextos.titulo}</h2>
       </div>
 
-      <!-- Columna del mapa -->
-      <div class="lg:flex lg:flex-col lg:h-full">
-        <div class="lg:flex-1 lg:flex lg:flex-col">
-          <iframe
-            src={mapaSrc}
-            title={`Ubicación de ${site.nombreCorto} en ${site.direccion}, ${site.localidad}, ${site.provincia}`}
-            loading="lazy"
-            class="contacto-mapa w-full h-[240px] lg:h-full lg:min-h-[320px] rounded-[var(--radius)] border border-[var(--color-border)]"
-          ></iframe>
-        </div>
+      <ul class="contacto-datos mt-7 flex flex-col gap-2 lg:mt-8">
+        {
+          filas.map((fila, index) => {
+            const contenido = (
+              <>
+                <span class="contacto-icono flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-cyan-pale)] text-[var(--color-blue-dark)]">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    set:html={iconos[fila.clave]}
+                  />
+                </span>
+                <span class="flex flex-col pt-0.5">
+                  <span class="text-[15px] font-semibold leading-[1.35] text-[var(--color-ink)]">{fila.titulo}</span>
+                  {fila.detalle.map((linea) => (
+                    <span class="contacto-detalle mt-0.5 text-[15px] leading-[1.5]">{linea}</span>
+                  ))}
+                </span>
+              </>
+            );
 
+            return (
+              <li class={`reveal reveal-delay-${index}`}>
+                {fila.href ? (
+                  <a
+                    href={fila.href}
+                    target={fila.externo ? '_blank' : undefined}
+                    rel={fila.externo ? 'noopener noreferrer' : undefined}
+                    class="contacto-fila contacto-fila--link -mx-3 flex min-h-[44px] items-start gap-3.5 rounded-[var(--radius)] px-3 py-2"
+                  >
+                    {contenido}
+                  </a>
+                ) : (
+                  <div class="contacto-fila -mx-3 flex min-h-[44px] items-start gap-3.5 px-3 py-2">{contenido}</div>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <div class="contacto-mapa-wrap reveal reveal-delay-2 relative mt-8 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)] lg:mt-0" data-mapa>
+        <iframe
+          src={mapaSrc}
+          title={`Ubicación de ${site.nombreCorto} en ${site.direccion}, ${site.localidad}, ${site.provincia}`}
+          loading="lazy"
+          class="contacto-mapa block h-full w-full"
+        ></iframe>
+
+        <!-- Solo en mobile y tablet, con JavaScript: bloquea el mapa para que el dedo mueva la página -->
+        <button type="button" class="contacto-mapa-aviso absolute inset-0 hidden items-end justify-center pb-10" data-mapa-aviso>
+          <span class="rounded-[var(--radius-pill)] bg-[color-mix(in_srgb,var(--color-navy-deep)_78%,transparent)] px-3.5 py-1.5 text-[13px] font-medium text-white">
+            {ubicacionTextos.avisoMapa}
+          </span>
+        </button>
+      </div>
+
+      <div class="contacto-botones reveal reveal-delay-3 mt-6 flex flex-col gap-3 lg:mt-8 lg:flex-row">
         <a
-          href={site.googleMapsUrl}
+          href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
-          class="mt-4 inline-flex items-center justify-center w-full lg:w-auto rounded-[var(--radius-pill)] border-[1.5px] border-[var(--color-border)] text-[var(--color-ink)] px-6 py-3.5 font-medium transition-colors hover:border-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-white"
+          class="contacto-cta-principal inline-flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-pill)] bg-[var(--color-blue)] px-6 text-[15px] font-semibold text-white lg:w-auto"
         >
-          Cómo llegar
-        </a>
-      </div>
-
-      <!-- Columna de la card de WhatsApp -->
-      <div class="lg:flex lg:flex-col lg:h-full">
-        <div
-          class="lg:flex-1 lg:flex lg:flex-col relative overflow-hidden rounded-[var(--radius)] p-6 xl:p-7 pr-20 sm:pr-6 lg:pr-6 xl:pr-7"
-          style={{ backgroundImage: 'var(--gradient-blue)' }}
-        >
-          <div class="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/20 blur-[60px]"></div>
-
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="white" aria-hidden="true" class="relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="shrink-0" aria-hidden="true">
             <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
           </svg>
+          {ubicacionTextos.botones.turno}
+        </a>
 
-          <h3 class="relative mt-4 text-[19px] font-bold text-white">Solicitá tu turno por WhatsApp</h3>
-          <p class="relative mt-2.5 text-[14px] text-white/85 max-w-none lg:flex-1">
-            Te ayudamos a coordinar tu turno y respondemos tus dudas.
-          </p>
-
-          <a
-            href={whatsappLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="relative mt-[22px] inline-flex items-center justify-center w-full rounded-[var(--radius-pill)] bg-white text-[var(--color-blue-dark)] px-5 xl:px-6 py-3.5 font-semibold whitespace-nowrap lg:mt-auto"
-          >
-            Solicitar turno
-          </a>
-        </div>
+        <a
+          href={site.googleMapsComoLlegarUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contacto-cta-secundario inline-flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-pill)] bg-white px-6 text-[15px] font-semibold text-[var(--color-blue-dark)] lg:w-auto"
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
+            <path d="M3 11l19-9-9 19-2-8-8-2Z" />
+          </svg>
+          {ubicacionTextos.botones.comoLlegar}
+        </a>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .contacto-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contacto-mapa-wrap {
+    height: 260px;
+  }
+
+  /* Gris de detalle más oscuro que --color-muted: 7,6:1 sobre blanco */
+  .contacto-detalle {
+    color: color-mix(in srgb, var(--color-ink) 25%, var(--color-muted));
+  }
+
+  .contacto-fila--link {
+    transition: background-color 200ms ease;
+  }
+
+  .contacto-icono {
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  /* Mapa bloqueado (mobile y tablet con JS): el iframe no recibe gestos hasta tocar el aviso */
+  @media (max-width: 1023.98px) {
+    [data-mapa][data-bloqueado] .contacto-mapa {
+      pointer-events: none;
+    }
+
+    [data-mapa][data-bloqueado] .contacto-mapa-aviso {
+      display: flex;
+    }
+  }
+
+  /* Desktop: datos a la izquierda, mapa a todo el alto a la derecha */
+  @media (min-width: 1024px) {
+    .contacto-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+      grid-template-rows: auto auto 1fr;
+      grid-template-areas:
+        'intro mapa'
+        'datos mapa'
+        'botones mapa';
+      column-gap: 56px;
+    }
+
+    .contacto-intro {
+      grid-area: intro;
+    }
+
+    .contacto-datos {
+      grid-area: datos;
+    }
+
+    .contacto-botones {
+      grid-area: botones;
+      align-self: end;
+    }
+
+    .contacto-mapa-wrap {
+      grid-area: mapa;
+      height: auto;
+      min-height: 420px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .contacto-grid {
+      column-gap: 72px;
+    }
+  }
+
+  .contacto-cta-principal {
+    transition: background-color 200ms ease;
+  }
+
+  .contacto-cta-secundario {
+    border: 1.5px solid var(--color-blue);
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .contacto-fila--link:hover {
+      background-color: color-mix(in srgb, var(--color-blue) 6%, white);
+    }
+
+    .contacto-fila--link:hover .contacto-icono {
+      background-color: var(--color-blue);
+      color: var(--color-white);
+    }
+
+    .contacto-cta-principal:hover {
+      background-color: var(--color-blue-dark);
+    }
+
+    .contacto-cta-secundario:hover {
+      background-color: var(--color-blue);
+      color: var(--color-white);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contacto-fila--link,
+    .contacto-icono,
+    .contacto-cta-principal,
+    .contacto-cta-secundario {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Mobile y tablet: el mapa arranca bloqueado para no capturar el scroll.
+  // Tocar el aviso lo activa; tocar fuera del mapa lo vuelve a bloquear.
+  const mapa = document.querySelector('[data-mapa]');
+  const aviso = mapa?.querySelector('[data-mapa-aviso]');
+
+  if (mapa && aviso) {
+    const bloquear = () => mapa.setAttribute('data-bloqueado', '');
+    bloquear();
+
+    aviso.addEventListener('click', () => mapa.removeAttribute('data-bloqueado'));
+
+    document.addEventListener('pointerdown', (event) => {
+      if (!mapa.hasAttribute('data-bloqueado') && !mapa.contains(event.target)) bloquear();
+    });
+  }
+</script>
