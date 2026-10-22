@@ -60,22 +60,22 @@ const retrato = fuentesResponsive('profesional-mobile', [480, 720, 941]);
 
   <!-- =====================================================
        PERFIL DEL DR. GALARZA
-       Mobile: avatar + nombre y rol en una fila.
-       Desde tablet: retrato con bloque desplazado a la izquierda y texto a la derecha.
+       Mobile: retrato con bloque desplazado arriba y texto debajo.
+       Desde tablet: retrato a la izquierda y texto a la derecha.
   ====================================================== -->
-  <div class="relative pt-14 pb-16 md:pt-20 md:pb-24 lg:pb-28">
+  <div class="relative pt-14 pb-16 md:pt-20 md:pb-16 lg:pb-16">
     <div class="perfil-hex pointer-events-none absolute inset-0" aria-hidden="true">
       <HexPattern color="var(--color-cyan)" opacity={0.05} />
     </div>
 
     <div class="container relative">
       <div class="md:grid md:grid-cols-[minmax(0,40fr)_minmax(0,60fr)] md:items-center md:gap-12 lg:gap-16 xl:gap-20">
-        <div class="perfil-retrato reveal hidden md:block">
+        <div class="perfil-retrato reveal mb-10 md:mb-0">
           <div class="perfil-retrato-bloque" aria-hidden="true"></div>
-          <div class="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-lg)] shadow-[var(--shadow-float)]">
+          <div class="relative h-[420px] overflow-hidden rounded-[var(--radius-lg)] shadow-[var(--shadow-float)] md:aspect-[4/5] md:h-auto">
             <picture>
-              <source type="image/avif" srcset={retrato.avif} sizes="(min-width: 1024px) 440px, 40vw" />
-              <source type="image/webp" srcset={retrato.webp} sizes="(min-width: 1024px) 440px, 40vw" />
+              <source type="image/avif" srcset={retrato.avif} sizes="(min-width: 1024px) 440px, (min-width: 768px) 40vw, 100vw" />
+              <source type="image/webp" srcset={retrato.webp} sizes="(min-width: 1024px) 440px, (min-width: 768px) 40vw, 100vw" />
               <img
                 src={retrato.fallback}
                 alt={profesional.retratoAlt}
@@ -89,29 +89,11 @@ const retrato = fuentesResponsive('profesional-mobile', [480, 720, 941]);
         </div>
 
         <div>
-          <div class="reveal flex items-center gap-4 md:block">
-            <!-- Avatar solo en mobile: recorte de la cara del retrato -->
-            <div class="perfil-avatar relative h-[88px] w-[88px] shrink-0 overflow-hidden rounded-full md:hidden">
-              <picture>
-                <source type="image/avif" srcset={retrato.avif} sizes="260px" />
-                <source type="image/webp" srcset={retrato.webp} sizes="260px" />
-                <img
-                  src={retrato.fallback}
-                  alt=""
-                  width="941"
-                  height="1672"
-                  loading="lazy"
-                  class="perfil-avatar-img absolute max-w-none"
-                />
-              </picture>
-            </div>
-
-            <div>
-              <h3 class="perfil-nombre text-white">{profesional.nombre}</h3>
-              <p class="mt-1.5 max-w-none text-[14px] font-semibold text-[var(--color-cyan)] md:mt-3 md:text-[16px]">
-                {profesional.rol}
-              </p>
-            </div>
+          <div class="reveal">
+            <h3 class="perfil-nombre text-white">{profesional.nombre}</h3>
+            <p class="perfil-rol mt-1.5 max-w-none text-[14px] font-semibold text-[var(--color-cyan)] md:mt-3 md:text-[16px]">
+              {profesional.rol}
+            </p>
           </div>
 
           <p class="reveal reveal-delay-1 mt-5 max-w-[54ch] text-[16px] leading-[1.65] text-white/80 md:mt-6 md:text-[17px]">
@@ -189,9 +171,10 @@ const retrato = fuentesResponsive('profesional-mobile', [480, 720, 941]);
     background-image: linear-gradient(
       to bottom,
       transparent 0%,
-      transparent 55%,
-      color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 66%,
-      color-mix(in srgb, var(--color-navy-deep) 88%, transparent) 82%,
+      transparent 50%,
+      color-mix(in srgb, var(--color-navy-deep) 72%, transparent) 62%,
+      color-mix(in srgb, var(--color-navy-deep) 90%, transparent) 72%,
+      color-mix(in srgb, var(--color-navy-deep) 96%, transparent) 86%,
       var(--color-navy-deep) 100%
     );
   }
@@ -222,31 +205,32 @@ const retrato = fuentesResponsive('profesional-mobile', [480, 720, 941]);
   }
 
   /*
-   * Desktop: alto fijo (aprox. 70 % de pantalla). Con el encuadre al 35 %
-   * el logo queda completo arriba y las caras terminan unos 50–70 px antes del borde.
+   * Desktop: alto de aprox. 65 % de pantalla. El mínimo de 39vw es el alto que necesitan
+   * logo + caras (68 % de la foto) para entrar completos en pantallas muy anchas.
+   * El texto va debajo de la foto, sin pisar las caras.
    */
   @media (min-width: 1024px) {
     .equipo-foto {
       aspect-ratio: auto;
-      height: max(560px, 72svh, 45vw);
+      height: max(480px, 65svh, 39vw);
     }
 
     .equipo-foto-img {
-      object-position: 50% 35%;
+      object-position: 50% 28%;
     }
 
     .equipo-velo {
       background-image: linear-gradient(
         to bottom,
         transparent 0%,
-        transparent 68%,
-        color-mix(in srgb, var(--color-navy-deep) 65%, transparent) 88%,
+        transparent 86%,
+        color-mix(in srgb, var(--color-navy-deep) 70%, transparent) 96%,
         var(--color-navy-deep) 100%
       );
     }
 
     .equipo-texto {
-      margin-top: -48px;
+      margin-top: 8px;
     }
   }
 
@@ -257,9 +241,9 @@ const retrato = fuentesResponsive('profesional-mobile', [480, 720, 941]);
 
   /* Retrato: bloque azul desplazado detrás, mismo recurso que la foto de Nosotros */
   .perfil-retrato {
+    --retrato-offset: 12px;
     position: relative;
-    margin-right: 24px;
-    margin-bottom: 24px;
+    margin-right: var(--retrato-offset);
   }
 
   .perfil-retrato-bloque {
@@ -267,19 +251,14 @@ const retrato = fuentesResponsive('profesional-mobile', [480, 720, 941]);
     inset: 0;
     border-radius: var(--radius-lg);
     background-image: var(--gradient-blue);
-    transform: translate(24px, 24px);
+    transform: translate(var(--retrato-offset), var(--retrato-offset));
   }
 
-  /* Avatar: la cara del retrato (centro en 48 % / 24,5 % de la foto) centrada en el círculo */
-  .perfil-avatar {
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-white) 25%, transparent);
-  }
-
-  .perfil-avatar-img {
-    width: 260px;
-    height: auto;
-    left: -81px;
-    top: -69px;
+  @media (min-width: 768px) {
+    .perfil-retrato {
+      --retrato-offset: 24px;
+      margin-bottom: var(--retrato-offset);
+    }
   }
 
   .perfil-nombre {
