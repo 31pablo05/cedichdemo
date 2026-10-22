@@ -1,160 +1,339 @@
 ---
-import { profesionales } from '../../data/profesionales.js';
-import { getWhatsappLink } from '../../data/site.js';
+import { profesionales, profesionalesBanda } from '../../data/profesionales.js';
+import { getWhatsappLink, whatsappMensajes } from '../../data/site.js';
 import { fuentesResponsive } from '../../lib/imagenes.js';
+import HexPattern from '../ui/HexPattern.astro';
 
-// Con más de un profesional, este layout solo muestra el primero.
-// Para varios, pasar a una grilla de cards en lugar de este bloque foto+card.
+// Con más de un profesional, este bloque solo muestra el primero.
+// Para varios, pasar a una grilla de perfiles.
 const profesional = profesionales[0];
-const whatsappLink = getWhatsappLink('Hola, quiero hacer una consulta médica');
+const whatsappTurno = getWhatsappLink(whatsappMensajes.solicitarTurno);
 
-const fuentesMobile = fuentesResponsive('profesional-mobile', [480, 720, 941]);
-const fuentesDesktop = fuentesResponsive('profesional-desktop', [1024, 1280, 1672]);
+const equipoMobile = fuentesResponsive('equipo-mobile', [480, 720, 941]);
+const equipoDesktop = fuentesResponsive('equipo-desktop', [960, 1280, 1672]);
+const retrato = fuentesResponsive('profesional-mobile', [480, 720, 941]);
 ---
 
-<section id="profesionales" class="relative w-full overflow-hidden" style={{ backgroundImage: 'var(--gradient-navy)' }}>
-  <!-- Foto del profesional: panel en mobile, mitad superior en tablet, fondo completo desde lg -->
-  <div class="relative aspect-[4/5] w-full overflow-hidden md:aspect-[16/9] lg:absolute lg:inset-0 lg:aspect-auto">
-    <picture>
-      <source media="(min-width: 1024px)" type="image/avif" srcset={fuentesDesktop.avif} sizes="100vw" />
-      <source media="(min-width: 1024px)" type="image/webp" srcset={fuentesDesktop.webp} sizes="100vw" />
-      <source type="image/avif" srcset={fuentesMobile.avif} sizes="100vw" />
-      <source type="image/webp" srcset={fuentesMobile.webp} sizes="100vw" />
-      <img
-        src={fuentesMobile.fallback}
-        alt="Dr. Andrés Galarza en la sala de endoscopía de CEDICH"
-        width="1672"
-        height="941"
-        loading="lazy"
-        class="absolute inset-0 h-full w-full object-cover object-[50%_14%] md:object-[50%_20%] lg:object-[50%_18%]"
-      />
-    </picture>
+<section id="profesionales" class="relative w-full overflow-hidden bg-[var(--color-navy-deep)]">
+  <!-- Sin JavaScript, el contenido animado se ve en su posición final -->
+  <noscript>
+    <style is:inline>
+      #profesionales .reveal { opacity: 1; transform: none; }
+    </style>
+  </noscript>
 
-    <!-- Overlay vertical, para legibilidad del contenido que va debajo en mobile -->
-    <div
-      class="pointer-events-none absolute inset-0 md:hidden"
-      style={{
-        backgroundImage:
-          'linear-gradient(to bottom, color-mix(in srgb, var(--color-navy-deep) 10%, transparent) 0%, transparent 38%, color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 78%, color-mix(in srgb, var(--color-navy-deep) 95%, transparent) 100%)',
-      }}
-    />
-
-    <!-- Overlay vertical en tablet, más suave que mobile -->
-    <div
-      class="pointer-events-none absolute inset-0 hidden md:block lg:hidden"
-      style={{
-        backgroundImage:
-          'linear-gradient(to bottom, color-mix(in srgb, var(--color-navy-deep) 5%, transparent) 0%, transparent 30%, color-mix(in srgb, var(--color-navy-deep) 45%, transparent) 75%, color-mix(in srgb, var(--color-navy-deep) 85%, transparent) 100%)',
-      }}
-    />
-
-    <!-- Overlay horizontal, de izquierda (texto) a derecha (foto bien visible) -->
-    <div
-      class="pointer-events-none hidden lg:block lg:absolute lg:inset-0"
-      style={{
-        backgroundImage:
-          'linear-gradient(90deg, color-mix(in srgb, var(--color-navy-deep) 95%, transparent) 0%, color-mix(in srgb, var(--color-navy-deep) 88%, transparent) 35%, transparent 55%)',
-      }}
-    />
-
-    <!-- Velo inferior, muy leve, para asentar la tarjeta del doctor -->
-    <div
-      class="pointer-events-none hidden lg:block lg:absolute lg:inset-x-0 lg:bottom-0 lg:h-40"
-      style={{
-        backgroundImage:
-          'linear-gradient(to top, color-mix(in srgb, var(--color-navy-deep) 45%, transparent) 0%, transparent 100%)',
-      }}
-    />
-  </div>
-
-  <!-- Contenido: eyebrow, título, bajada, CTA y card del profesional -->
-  <div class="container relative z-10 pt-8 pb-6 md:pt-10 md:pb-10 lg:flex lg:min-h-[680px] lg:items-center lg:py-20 xl:min-h-[740px]">
-    <!-- Texto principal -->
-    <div class="reveal lg:max-w-[400px] xl:max-w-[440px]">
-      <p class="eyebrow eyebrow-light">PROFESIONALES</p>
-      <h2 class="mt-4 text-white">Experiencia médica al servicio de tu salud</h2>
-      <p class="mt-4 max-w-[40ch] text-[15px] text-white/75">
-        Nuestro equipo combina trayectoria, actualización constante y un trato humano en cada
-        consulta.
-      </p>
-      <a
-        href={whatsappLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-6 inline-flex w-fit items-center justify-center gap-2 rounded-[var(--radius-pill)] bg-white px-6 py-3 font-medium text-[var(--color-ink)] shadow-[0_4px_14px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(0,0,0,0.25)]"
-      >
-        Consultar por WhatsApp
-      </a>
+  <!-- =====================================================
+       BANDA DEL EQUIPO
+       La foto se ve completa en mobile y tablet; desde desktop se recorta
+       arriba y abajo sin tocar caras ni logo. El texto se superpone solo
+       sobre la zona inferior (debajo de las caras) y sigue sobre el navy.
+  ====================================================== -->
+  <div class="relative">
+    <div class="equipo-foto relative w-full overflow-hidden">
+      <picture>
+        <source media="(min-width: 768px)" type="image/avif" srcset={equipoDesktop.avif} sizes="100vw" />
+        <source media="(min-width: 768px)" type="image/webp" srcset={equipoDesktop.webp} sizes="100vw" />
+        <source type="image/avif" srcset={equipoMobile.avif} sizes="100vw" />
+        <source type="image/webp" srcset={equipoMobile.webp} sizes="100vw" />
+        <img
+          src={equipoMobile.fallback}
+          alt={profesionalesBanda.imagenAlt}
+          width="941"
+          height="1672"
+          loading="lazy"
+          class="equipo-foto-img absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
+      <div class="equipo-velo pointer-events-none absolute inset-0" aria-hidden="true"></div>
     </div>
 
-    <!-- Card del profesional: abajo en mobile, al lado en tablet (768-1023), bottom-right en desktop -->
-    <div class="profesional-card reveal reveal-delay-2 relative z-10 mx-5 mt-10 rounded-[var(--radius-lg)] border border-white/15 bg-[color-mix(in_srgb,var(--color-navy-panel)_80%,transparent)] p-5 shadow-[var(--shadow-float)] backdrop-blur-md transition-shadow duration-300 sm:w-[320px] md:mx-10 md:mt-0 md:ml-auto md:w-[280px] lg:absolute lg:inset-auto lg:bottom-12 lg:right-6 lg:mx-0 lg:w-[260px] xl:right-14">
-      <h3 class="text-[18px] font-bold text-white">{profesional.nombre}</h3>
-      <div class="mt-3 border-t border-white/[0.12]"></div>
+    <div class="equipo-texto container relative z-10">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow eyebrow-light">{profesionalesBanda.eyebrow}</p>
+        <h2 class="mt-4 text-balance text-white">{profesionalesBanda.titulo}</h2>
+        <p class="mt-4 max-w-[52ch] text-balance text-[16px] leading-[1.6] text-white/80 md:text-[17px]">
+          {profesionalesBanda.bajada}
+        </p>
+      </div>
+    </div>
+  </div>
 
-      <ul class="mt-3 flex flex-col gap-2.5">
-        {
-          profesional.atributos.map((atributo) => (
-            <li class="flex items-start gap-2.5">
+  <!-- =====================================================
+       PERFIL DEL DR. GALARZA
+       Mobile: avatar + nombre y rol en una fila.
+       Desde tablet: retrato con bloque desplazado a la izquierda y texto a la derecha.
+  ====================================================== -->
+  <div class="relative pt-14 pb-16 md:pt-20 md:pb-24 lg:pb-28">
+    <div class="perfil-hex pointer-events-none absolute inset-0" aria-hidden="true">
+      <HexPattern color="var(--color-cyan)" opacity={0.05} />
+    </div>
+
+    <div class="container relative">
+      <div class="md:grid md:grid-cols-[minmax(0,40fr)_minmax(0,60fr)] md:items-center md:gap-12 lg:gap-16 xl:gap-20">
+        <div class="perfil-retrato reveal hidden md:block">
+          <div class="perfil-retrato-bloque" aria-hidden="true"></div>
+          <div class="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-lg)] shadow-[var(--shadow-float)]">
+            <picture>
+              <source type="image/avif" srcset={retrato.avif} sizes="(min-width: 1024px) 440px, 40vw" />
+              <source type="image/webp" srcset={retrato.webp} sizes="(min-width: 1024px) 440px, 40vw" />
+              <img
+                src={retrato.fallback}
+                alt={profesional.retratoAlt}
+                width="941"
+                height="1672"
+                loading="lazy"
+                class="h-full w-full object-cover object-[50%_18%]"
+              />
+            </picture>
+          </div>
+        </div>
+
+        <div>
+          <div class="reveal flex items-center gap-4 md:block">
+            <!-- Avatar solo en mobile: recorte de la cara del retrato -->
+            <div class="perfil-avatar relative h-[88px] w-[88px] shrink-0 overflow-hidden rounded-full md:hidden">
+              <picture>
+                <source type="image/avif" srcset={retrato.avif} sizes="260px" />
+                <source type="image/webp" srcset={retrato.webp} sizes="260px" />
+                <img
+                  src={retrato.fallback}
+                  alt=""
+                  width="941"
+                  height="1672"
+                  loading="lazy"
+                  class="perfil-avatar-img absolute max-w-none"
+                />
+              </picture>
+            </div>
+
+            <div>
+              <h3 class="perfil-nombre text-white">{profesional.nombre}</h3>
+              <p class="mt-1.5 max-w-none text-[14px] font-semibold text-[var(--color-cyan)] md:mt-3 md:text-[16px]">
+                {profesional.rol}
+              </p>
+            </div>
+          </div>
+
+          <p class="reveal reveal-delay-1 mt-5 max-w-[54ch] text-[16px] leading-[1.65] text-white/80 md:mt-6 md:text-[17px]">
+            {profesional.parrafo}
+          </p>
+
+          <ul class="reveal reveal-delay-2 mt-6 flex flex-wrap gap-2">
+            {
+              profesional.datos.map((dato) => (
+                <li class="perfil-chip rounded-[var(--radius-pill)] px-3.5 py-1.5 text-[12.5px] font-medium text-white/90">
+                  {dato}
+                </li>
+              ))
+            }
+          </ul>
+
+          {
+            profesional.matricula && (
+              <p class="mt-4 max-w-none text-[13px] text-[var(--color-cyan)]">{profesional.matricula}</p>
+            )
+          }
+
+          <div class="reveal reveal-delay-3 mt-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
+            <a
+              href={whatsappTurno}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="perfil-cta inline-flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-pill)] bg-white px-6 text-[15px] font-semibold text-[var(--color-ink)] sm:w-auto"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
+              </svg>
+              {profesional.acciones.turno}
+            </a>
+
+            <a
+              href="#trayectoria"
+              class="perfil-link inline-flex min-h-[44px] items-center justify-center gap-2 text-[15px] font-semibold text-white/85 sm:justify-start"
+            >
+              {profesional.acciones.trayectoria}
               <svg
+                class="perfil-link-flecha"
                 width="16"
                 height="16"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="var(--color-cyan)"
-                stroke-width="1.5"
-                class="mt-0.5 shrink-0"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
                 aria-hidden="true"
               >
-                <circle cx="12" cy="12" r="9" />
-                <path d="M8.5 12.5l2.5 2.5 4.5-5" />
+                <path d="M12 5v14" />
+                <path d="M6 13l6 6 6-6" />
               </svg>
-              <span class="text-[13px] text-white/85 max-w-none">{atributo}</span>
-            </li>
-          ))
-        }
-      </ul>
-
-      {
-        profesional.matricula && (
-          <p class="mt-3 text-[12px] text-[var(--color-cyan)] max-w-none">
-            {profesional.matricula}
-          </p>
-        )
-      }
-
-      <a
-        href="#trayectoria"
-        class="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-white/70 transition-colors hover:text-[var(--color-cyan)] py-1 -my-1"
-      >
-        Conocer su trayectoria
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          class="transition-transform group-hover:translate-x-0.5"
-          aria-hidden="true"
-        >
-          <path d="M5 12h14" />
-          <path d="M13 6l6 6-6 6" />
-        </svg>
-      </a>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .profesional-card:hover {
-    box-shadow: var(--shadow-float), 0 0 0 1px color-mix(in srgb, var(--color-cyan) 40%, transparent),
-      0 0 32px color-mix(in srgb, var(--color-cyan) 25%, transparent);
+  /* Mobile: foto vertical completa. El texto arranca al 66 % del alto, debajo de las caras. */
+  .equipo-foto {
+    aspect-ratio: 941 / 1672;
+  }
+
+  .equipo-foto-img {
+    object-position: 50% 100%;
+  }
+
+  .equipo-velo {
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 55%,
+      color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 66%,
+      color-mix(in srgb, var(--color-navy-deep) 88%, transparent) 82%,
+      var(--color-navy-deep) 100%
+    );
+  }
+
+  .equipo-texto {
+    margin-top: -60vw;
+  }
+
+  /* Tablet: foto horizontal completa; el texto se apoya sobre el 20 % inferior */
+  @media (min-width: 768px) {
+    .equipo-foto {
+      aspect-ratio: 1672 / 941;
+    }
+
+    .equipo-velo {
+      background-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 62%,
+        color-mix(in srgb, var(--color-navy-deep) 60%, transparent) 82%,
+        var(--color-navy-deep) 100%
+      );
+    }
+
+    .equipo-texto {
+      margin-top: -11vw;
+    }
+  }
+
+  /*
+   * Desktop: alto fijo (aprox. 70 % de pantalla). Con el encuadre al 35 %
+   * el logo queda completo arriba y las caras terminan unos 50–70 px antes del borde.
+   */
+  @media (min-width: 1024px) {
+    .equipo-foto {
+      aspect-ratio: auto;
+      height: max(560px, 72svh, 45vw);
+    }
+
+    .equipo-foto-img {
+      object-position: 50% 35%;
+    }
+
+    .equipo-velo {
+      background-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 68%,
+        color-mix(in srgb, var(--color-navy-deep) 65%, transparent) 88%,
+        var(--color-navy-deep) 100%
+      );
+    }
+
+    .equipo-texto {
+      margin-top: -48px;
+    }
+  }
+
+  .perfil-hex {
+    mask-image: linear-gradient(to bottom, transparent 0, black 160px);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 160px);
+  }
+
+  /* Retrato: bloque azul desplazado detrás, mismo recurso que la foto de Nosotros */
+  .perfil-retrato {
+    position: relative;
+    margin-right: 24px;
+    margin-bottom: 24px;
+  }
+
+  .perfil-retrato-bloque {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    background-image: var(--gradient-blue);
+    transform: translate(24px, 24px);
+  }
+
+  /* Avatar: la cara del retrato (centro en 48 % / 24,5 % de la foto) centrada en el círculo */
+  .perfil-avatar {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-white) 25%, transparent);
+  }
+
+  .perfil-avatar-img {
+    width: 260px;
+    height: auto;
+    left: -81px;
+    top: -69px;
+  }
+
+  .perfil-nombre {
+    font-size: 26px;
+    line-height: 1.15;
+  }
+
+  @media (min-width: 768px) {
+    .perfil-nombre {
+      font-size: 40px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .perfil-nombre {
+      font-size: 46px;
+    }
+  }
+
+  .perfil-chip {
+    border: 1px solid color-mix(in srgb, var(--color-white) 28%, transparent);
+    background-color: color-mix(in srgb, var(--color-white) 5%, transparent);
+  }
+
+  .perfil-cta,
+  .perfil-link,
+  .perfil-link-flecha {
+    transition: background-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .perfil-cta:hover {
+      background-color: var(--color-surface);
+      box-shadow: var(--shadow-card-hover);
+    }
+
+    .perfil-link:hover {
+      color: var(--color-cyan);
+    }
+
+    .perfil-link:hover .perfil-link-flecha {
+      transform: translateY(2px);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .profesional-card {
+    .perfil-cta,
+    .perfil-link,
+    .perfil-link-flecha {
       transition: none;
+    }
+
+    .perfil-link:hover .perfil-link-flecha {
+      transform: none;
     }
   }
 </style>

@@ -1,73 +1,250 @@
 ---
 import { trayectoria } from '../../data/profesionales.js';
+import { fuentesResponsive } from '../../lib/imagenes.js';
+
+const quirofanoMobile = fuentesResponsive('trayectoria-mobile', [480, 720, 941]);
+const quirofanoDesktop = fuentesResponsive('trayectoria-desktop', [960, 1280, 1672]);
+const ultimo = trayectoria.etapas.length - 1;
 ---
 
 <section
   id="trayectoria"
   data-seccion-de="profesionales"
-  class="relative bg-white py-14 md:py-24 overflow-hidden"
+  class="relative overflow-hidden bg-white"
 >
-  <div class="container relative">
-    <div class="lg:grid lg:grid-cols-[minmax(0,30fr)_minmax(0,70fr)] lg:gap-12 xl:gap-16">
-      <!-- Columna izquierda: título -->
-      <div class="lg:sticky lg:top-28">
-        <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-blue)]">
-          {trayectoria.profesional}
+  <!-- Sin JavaScript, el contenido animado se ve en su posición final -->
+  <noscript>
+    <style is:inline>
+      #trayectoria .reveal { opacity: 1; transform: none; }
+      #trayectoria .tray-foto-img { transform: none; }
+    </style>
+  </noscript>
+
+  <!-- =====================================================
+       APERTURA: foto del quirófano
+       Mobile: foto vertical completa y texto abajo, sobre el degradado.
+       Desde tablet: doctor a la izquierda, texto a la derecha sobre el navy.
+  ====================================================== -->
+  <div class="tray-apertura relative bg-[var(--color-navy-deep)]">
+    <div class="tray-foto relative w-full overflow-hidden">
+      <picture>
+        <source media="(min-width: 768px)" type="image/avif" srcset={quirofanoDesktop.avif} sizes="100vw" />
+        <source media="(min-width: 768px)" type="image/webp" srcset={quirofanoDesktop.webp} sizes="100vw" />
+        <source type="image/avif" srcset={quirofanoMobile.avif} sizes="100vw" />
+        <source type="image/webp" srcset={quirofanoMobile.webp} sizes="100vw" />
+        <img
+          src={quirofanoMobile.fallback}
+          alt={trayectoria.imagenAlt}
+          width="941"
+          height="1672"
+          loading="lazy"
+          class="tray-foto-img absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
+      <div class="tray-velo pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    </div>
+
+    <div class="tray-texto-wrap container relative z-10">
+      <div class="tray-texto reveal">
+        <p class="eyebrow eyebrow-light">{trayectoria.eyebrow}</p>
+        <h2 class="tray-titulo mt-4 text-balance text-white">{trayectoria.titulo}</h2>
+        <p class="mt-4 max-w-none text-[17px] leading-[1.5] text-white/80 md:text-[19px]">
+          {trayectoria.subtitulo}
         </p>
-        <h2 class="mt-3 text-[var(--color-ink)]">{trayectoria.titulo}</h2>
-      </div>
-
-      <!-- Columna derecha: línea de tiempo -->
-      <div class="mt-10 lg:mt-0">
-        <ol class="relative flex flex-col gap-0">
-          {
-            trayectoria.etapas.map((etapa, index) => {
-              const esUltimo = index === trayectoria.etapas.length - 1;
-              return (
-                <li class="relative flex gap-6 pb-10 last:pb-0">
-                  {/* Punto y línea */}
-                  <div class="relative flex flex-col items-center">
-                    {/* Punto */}
-                    <div
-                      class={`trayectoria-punto relative z-10 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${
-                        esUltimo
-                          ? 'border-[var(--color-cyan)] bg-[var(--color-cyan)]'
-                          : 'border-[var(--color-cyan)] bg-white'
-                      }`}
-                    >
-                      {esUltimo && (
-                        <span class="absolute h-2 w-2 rounded-full bg-white" />
-                      )}
-                    </div>
-
-                    {/* Línea vertical */}
-                    {!esUltimo && (
-                      <span class="trayectoria-linea mt-1 w-[2px] flex-1 bg-[var(--color-cyan)]/25" />
-                    )}
-                  </div>
-
-                  {/* Contenido */}
-                  <div class="flex-1 -mt-[2px]">
-                    <p class="text-[14px] font-semibold text-[var(--color-blue-dark)]">
-                      {etapa.lugar} · {etapa.institucion}
-                    </p>
-                    <p class="mt-2 text-[15px] leading-[1.6] text-[var(--color-muted)] max-w-[58ch]">
-                      {etapa.descripcion}
-                    </p>
-                  </div>
-                </li>
-              );
-            })
-          }
-        </ol>
       </div>
     </div>
+  </div>
+
+  <!-- =====================================================
+       CAPÍTULOS: apilados en mobile, 2 × 2 desde tablet
+  ====================================================== -->
+  <div class="container py-14 md:py-20 lg:py-24">
+    <ol class="grid grid-cols-1 md:grid-cols-2 md:gap-x-12 md:gap-y-14 lg:gap-x-20 lg:gap-y-16">
+      {
+        trayectoria.etapas.map((etapa, index) => {
+          const esActual = index === ultimo;
+          return (
+            <li class={`capitulo reveal reveal-delay-${index} border-t border-[var(--color-border)] pt-6 pb-10 last:pb-0 md:pb-0`}>
+              <span
+                class={`capitulo-numero inline-flex items-center justify-center font-display text-[13px] font-bold leading-none ${esActual ? 'capitulo-numero--actual' : ''}`}
+                aria-hidden="true"
+              >
+                {String(index + 1).padStart(2, '0')}
+              </span>
+
+              <h3 class="capitulo-ciudad mt-3 text-[var(--color-ink)]">{etapa.ciudad}</h3>
+
+              <p class="mt-2 flex max-w-none items-center gap-2 text-[12px] font-semibold uppercase leading-[1.4] tracking-[0.1em] text-[var(--color-blue-dark)]">
+                {esActual && <span class="capitulo-punto h-2 w-2 shrink-0 rounded-full bg-[var(--color-cyan)]" aria-hidden="true" />}
+                {etapa.rotulo}
+              </p>
+
+              <p class={`capitulo-texto mt-4 max-w-[62ch] text-[16px] leading-[1.7] lg:text-[17px] ${index === 0 ? 'capitulo-texto--capital' : ''}`}>
+                {etapa.descripcion}
+              </p>
+            </li>
+          );
+        })
+      }
+    </ol>
   </div>
 </section>
 
 <style>
-  /* El último punto tiene un efecto de pulso suave para marcar "actualidad" */
-  .trayectoria-punto:last-of-type {
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-cyan) 15%, transparent);
+  /* Mobile: foto vertical completa; el texto arranca al 82 % del alto, debajo de la cara */
+  .tray-foto {
+    aspect-ratio: 941 / 1672;
+  }
+
+  .tray-velo {
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-navy-deep) 0%,
+      transparent 12%,
+      transparent 62%,
+      color-mix(in srgb, var(--color-navy-deep) 60%, transparent) 78%,
+      color-mix(in srgb, var(--color-navy-deep) 92%, transparent) 90%,
+      var(--color-navy-deep) 100%
+    );
+  }
+
+  .tray-texto-wrap {
+    margin-top: -32vw;
+    padding-bottom: 48px;
+  }
+
+  .tray-titulo {
+    font-size: 36px;
+    line-height: 1.05;
+  }
+
+  /* Tablet y desktop: foto de fondo, degradado desde el centro hacia la derecha y texto a la derecha */
+  @media (min-width: 768px) {
+    .tray-apertura {
+      display: flex;
+      align-items: center;
+      min-height: 56.25vw;
+    }
+
+    .tray-foto {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+    }
+
+    .tray-foto-img {
+      object-position: 30% 80%;
+    }
+
+    .tray-velo {
+      background-image:
+        linear-gradient(to bottom, color-mix(in srgb, var(--color-navy-deep) 70%, transparent) 0%, transparent 18%),
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          transparent 38%,
+          color-mix(in srgb, var(--color-navy-deep) 70%, transparent) 55%,
+          color-mix(in srgb, var(--color-navy-deep) 94%, transparent) 72%,
+          var(--color-navy-deep) 100%
+        );
+    }
+
+    .tray-texto-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0;
+      padding-block: 64px;
+    }
+
+    .tray-texto {
+      width: 44%;
+      max-width: 520px;
+    }
+
+    .tray-titulo {
+      font-size: 44px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tray-apertura {
+      min-height: max(560px, 80svh);
+    }
+
+    .tray-titulo {
+      font-size: 56px;
+    }
+
+    /* Zoom lento, una sola vez: arranca apenas ampliada y se asienta cuando el texto aparece */
+    .tray-foto-img {
+      transform: scale(1.06);
+      transition: transform 2400ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .tray-apertura:has(.tray-texto.is-visible) .tray-foto-img {
+      transform: scale(1);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .tray-titulo {
+      font-size: 64px;
+    }
+  }
+
+  .capitulo-numero {
+    color: var(--color-blue-dark);
+    letter-spacing: 0.08em;
+  }
+
+  /* El capítulo actual lleva el número relleno */
+  .capitulo-numero--actual {
+    min-width: 34px;
+    height: 24px;
+    padding-inline: 8px;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-blue-dark);
+    color: var(--color-white);
+  }
+
+  .capitulo-punto {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-cyan) 20%, transparent);
+  }
+
+  .capitulo-ciudad {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 1024px) {
+    .capitulo-ciudad {
+      font-size: 40px;
+    }
+  }
+
+  .capitulo-texto {
+    color: color-mix(in srgb, var(--color-ink) 25%, var(--color-muted));
+  }
+
+  /* Letra capital del primer capítulo */
+  .capitulo-texto--capital::first-letter {
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    font-family: var(--font-display);
+    font-size: 3.6em;
+    font-weight: 700;
+    line-height: 0.82;
+    color: var(--color-blue);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tray-foto-img,
+    .tray-apertura:has(.tray-texto.is-visible) .tray-foto-img {
+      transform: none;
+      transition: none;
+    }
   }
 </style>
