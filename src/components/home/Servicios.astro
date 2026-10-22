@@ -110,7 +110,7 @@ const grupos = gruposServicios.map((grupo) => ({
                   </a>
 
                   <a
-                    href="#pacientes"
+                    href={`#preparacion-${estudio.id}`}
                     class="servicio-card-link inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-[var(--radius-sm)] px-2 text-[13px] font-semibold text-[var(--color-blue-dark)] md:self-center"
                   >
                     {serviciosAcciones.verPreparacion}

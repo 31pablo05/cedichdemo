@@ -1,113 +1,218 @@
 ---
-import { tecnologia } from '../../data/tecnologia.js';
+import { tecnologia, tecnologiaEncabezado } from '../../data/tecnologia.js';
+import { getWhatsappLink, whatsappMensajes } from '../../data/site.js';
+import { fuentesResponsive } from '../../lib/imagenes.js';
 import HexPattern from '../ui/HexPattern.astro';
+
+const whatsappConsulta = getWhatsappLink(whatsappMensajes.consultaGeneral);
+const fotoMobile = fuentesResponsive('tecnologia-mobile', [480, 720, 941]);
+const fotoDesktop = fuentesResponsive('tecnologia-desktop', [960, 1280, 1600]);
 
 /** @type {Record<string, string>} */
 const iconosPaths = {
-  lupa: '<circle cx="10" cy="10" r="6" /><path d="M20 20l-5.5-5.5" />',
   monitor: '<rect x="3" y="4" width="18" height="12" rx="1.5" /><path d="M8 20h8" /><path d="M12 16v4" />',
+  herramienta:
+    '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z" />',
   escudo: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" /><path d="M9 12l2 2 4-4" />',
 };
 ---
 
-<section
-  id="tecnologia"
-  class="container my-14 md:my-24"
->
-  <div
-    class="spotlight relative flex flex-col-reverse overflow-hidden rounded-[var(--radius-lg)] border border-white/[0.08] shadow-[var(--shadow-card-hover)] lg:block lg:min-h-[620px]"
-    style={{ backgroundImage: 'var(--gradient-navy)' }}
-  >
-    <HexPattern color="var(--color-cyan)" opacity={0.06} />
+<section id="tecnologia" class="tec relative overflow-hidden bg-[var(--color-navy-deep)]">
+  <!-- Sin JavaScript, el contenido animado se ve en su posición final -->
+  <noscript>
+    <style is:inline>
+      #tecnologia .reveal { opacity: 1; transform: none; }
+    </style>
+  </noscript>
 
-    <!-- Zona izquierda: texto -->
-    <div class="p-6 md:p-12 lg:relative lg:z-10 lg:w-[55%] lg:p-14">
-        <p class="eyebrow eyebrow-light">TECNOLOGÍA Y EQUIPAMIENTO</p>
-        <h2 class="mt-4 text-white">Diagnóstico preciso con equipamiento propio</h2>
-        <p class="mt-4 text-white/75 text-[15px] max-w-[50ch]">
-          Contamos con endoscopios propios y mantenimiento periódico. Eso significa estudios más
-          rápidos, más seguros y con mejor calidad de imagen para vos.
+  <HexPattern color="var(--color-cyan)" opacity={0.05} />
+
+  <!-- =====================================================
+       FOTO
+       Mobile y tablet: vertical, arriba, fundida en el navy.
+       Desktop: desde poco antes del borde del texto hasta el borde derecho,
+       con un fundido navy solo en el lado que toca el texto.
+  ====================================================== -->
+  <div class="tec-media reveal relative w-full overflow-hidden">
+    <picture>
+      <source media="(min-width: 1024px)" type="image/avif" srcset={fotoDesktop.avif} sizes="1220px" />
+      <source media="(min-width: 1024px)" type="image/webp" srcset={fotoDesktop.webp} sizes="1220px" />
+      <source type="image/avif" srcset={fotoMobile.avif} sizes="100vw" />
+      <source type="image/webp" srcset={fotoMobile.webp} sizes="100vw" />
+      <img
+        src={fotoMobile.fallback}
+        alt={tecnologiaEncabezado.imagenAlt}
+        width="941"
+        height="1672"
+        loading="lazy"
+        class="tec-img absolute inset-0 h-full w-full object-cover"
+      />
+    </picture>
+    <div class="tec-velo pointer-events-none absolute inset-0" aria-hidden="true"></div>
+  </div>
+
+  <!-- =====================================================
+       TEXTO
+  ====================================================== -->
+  <div class="container relative z-10 pt-6 pb-16 md:pb-20 lg:py-20">
+    <div class="tec-texto">
+      <div class="reveal">
+        <p class="eyebrow eyebrow-light">{tecnologiaEncabezado.eyebrow}</p>
+        <h2 class="mt-4 text-balance text-white">{tecnologiaEncabezado.titulo}</h2>
+        <p class="mt-4 text-[16px] leading-[1.65] text-white/85 lg:text-[17px]">
+          {tecnologiaEncabezado.parrafo}
         </p>
+      </div>
 
-        <div class="mt-8 flex flex-col gap-5">
-          {
-            tecnologia.map((item) => (
-              <div class="flex items-start gap-4">
-                <div class="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-[var(--radius)] border border-[var(--color-cyan)]/25 bg-white/[0.08]">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--color-cyan)"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                    set:html={iconosPaths[item.icono]}
-                  />
-                </div>
-                <div>
-                  <p class="text-[15px] font-semibold text-white">{item.titulo}</p>
-                  <p class="mt-1 text-[14px] text-white/65">{item.descripcion}</p>
-                </div>
+      <ul class="mt-8 flex flex-col gap-5">
+        {
+          tecnologia.map((item, index) => (
+            <li class={`reveal reveal-delay-${index + 1} flex items-start gap-4`}>
+              <span class="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[var(--radius)] border border-[var(--color-cyan)]/25 bg-white/[0.06]">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--color-cyan)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  set:html={iconosPaths[item.icono]}
+                />
+              </span>
+              <div>
+                <h3 class="text-[17px] font-semibold leading-[1.35] text-white">{item.titulo}</h3>
+                <p class="mt-1 text-[15px] leading-[1.55] text-white/75">{item.descripcion}</p>
               </div>
-            ))
-          }
-        </div>
+            </li>
+          ))
+        }
+      </ul>
 
+      <div class="reveal reveal-delay-4 mt-9">
         <a
-          href="#servicios"
-          class="group mt-8 inline-flex items-center justify-center gap-2 rounded-[var(--radius-pill)] bg-white text-[var(--color-ink)] px-6 py-3 font-medium"
+          href={whatsappConsulta}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tec-cta inline-flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-pill)] px-6 text-[15px] font-semibold text-white lg:w-auto"
         >
-          Ver estudios que realizamos
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            class="transition-transform group-hover:translate-x-1"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14" />
-            <path d="M13 6l6 6-6 6" />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.24 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.28-8.24Zm-4.53 4.7c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.64 2.04.87 2.46.7 2.9.65.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.5.11-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.48Z" />
           </svg>
+          {tecnologiaEncabezado.boton}
         </a>
-    </div>
-
-    <!-- Zona derecha: foto. Panel en mobile, fondo completo de la tarjeta desde lg -->
-    <div class="relative aspect-[16/10] lg:absolute lg:inset-0 lg:aspect-auto">
-        <picture>
-          <source media="(min-width: 1024px)" srcset="/imagenes/equipamiento-desktop.webp" />
-          <img
-            src="/imagenes/equipamiento-mobile.webp"
-            alt="Sala de estudios y equipamiento de endoscopía de CEDICH"
-            width="900"
-            height="750"
-            loading="lazy"
-            class="tecnologia-img absolute inset-0 h-full w-full object-cover object-center lg:object-[60%_50%]"
-          />
-        </picture>
-
-        <div class="absolute inset-0 bg-[var(--color-blue)] opacity-[0.22] mix-blend-color"></div>
-        <div class="absolute inset-0 bg-[var(--color-navy)] opacity-25 mix-blend-multiply"></div>
-        <div class="absolute inset-0 bg-[var(--color-navy)] opacity-10"></div>
-
-        <div
-          class="absolute inset-x-0 bottom-0 h-1/2 lg:hidden"
-          style={{
-            backgroundImage: 'linear-gradient(to bottom, transparent 0%, var(--color-navy) 100%)',
-          }}
-        />
-        <div
-          class="hidden lg:block lg:absolute lg:inset-0"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, var(--color-navy) 0%, var(--color-navy) 45%, transparent 85%)',
-          }}
-        />
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* Mobile: foto vertical a ~70 % de la pantalla; se ve el equipo frente al monitor */
+  .tec-media {
+    height: max(420px, 70svh);
+  }
+
+  .tec-img {
+    object-position: 50% 20%;
+  }
+
+  .tec-velo {
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 55%,
+      color-mix(in srgb, var(--color-navy-deep) 70%, transparent) 82%,
+      var(--color-navy-deep) 100%
+    );
+  }
+
+  /* La foto aparece con un fundido, sin desplazarse */
+  .tec-media.reveal {
+    transform: none;
+    transition: opacity 900ms ease-out;
+  }
+
+  @media (min-width: 768px) {
+    .tec-media {
+      height: 560px;
+    }
+
+    .tec-img {
+      object-position: 50% 12%;
+    }
+  }
+
+  /*
+   * Desktop: la foto arranca 130 px antes del final de la columna de texto (430 px)
+   * y llega al borde derecho. Así la cara del doctor (al 17 % del ancho de la foto)
+   * queda a la derecha del texto y el equipo de la izquierda pasa por detrás del fundido,
+   * que es navy pleno mientras está debajo del texto.
+   */
+  @media (min-width: 1024px) {
+    .tec {
+      --tec-inicio: max(40px, calc(50vw - 560px));
+      display: flex;
+      align-items: center;
+      min-height: 680px;
+    }
+
+    .tec-media {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: calc(var(--tec-inicio) + 300px);
+      width: auto;
+      height: auto;
+    }
+
+    .tec-img {
+      object-position: 0% 50%;
+    }
+
+    .tec-velo {
+      background-image: linear-gradient(
+        to right,
+        var(--color-navy-deep) 0,
+        var(--color-navy-deep) 130px,
+        color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 165px,
+        transparent 205px
+      );
+    }
+
+    .tec .container {
+      width: 100%;
+    }
+
+    .tec-texto {
+      max-width: 430px;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .tec {
+      --tec-inicio: calc(50vw - 640px);
+    }
+  }
+
+  .tec-cta {
+    border: 1.5px solid color-mix(in srgb, var(--color-white) 75%, transparent);
+    transition: background-color 200ms ease, border-color 200ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tec-cta:hover {
+      border-color: var(--color-white);
+      background-color: color-mix(in srgb, var(--color-white) 10%, transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tec-media.reveal,
+    .tec-cta {
+      transition: none;
+    }
+  }
+</style>

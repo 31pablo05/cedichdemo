@@ -35,6 +35,7 @@ export const whatsappMensajes = {
   solicitarTurno: 'Hola, quiero solicitar un turno',
   consultaGeneral: 'Hola, tengo una consulta',
   consultaCobertura: 'Hola, quiero consultar si trabajan con mi obra social',
+  consultaPreparacion: 'Hola, quiero consultar por la preparación de un estudio',
 };
 
 export function getWhatsappLink(mensaje) {

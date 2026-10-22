@@ -205,26 +205,27 @@ const retrato = fuentesResponsive('profesional-mobile', [480, 720, 941]);
   }
 
   /*
-   * Desktop: alto de aprox. 65 % de pantalla. El mínimo de 39vw es el alto que necesitan
-   * logo + caras (68 % de la foto) para entrar completos en pantallas muy anchas.
+   * Desktop: alto de aprox. 80 % de pantalla y encuadre bajo, para que se vea el torso
+   * de la doctora de adelante. El mínimo de 50vw evita que, en pantallas muy anchas,
+   * el recorte superior llegue al logo de la pared.
    * El texto va debajo de la foto, sin pisar las caras.
    */
   @media (min-width: 1024px) {
     .equipo-foto {
       aspect-ratio: auto;
-      height: max(480px, 65svh, 39vw);
+      height: max(560px, 80svh, 50vw);
     }
 
     .equipo-foto-img {
-      object-position: 50% 28%;
+      object-position: 50% 67%;
     }
 
     .equipo-velo {
       background-image: linear-gradient(
         to bottom,
         transparent 0%,
-        transparent 86%,
-        color-mix(in srgb, var(--color-navy-deep) 70%, transparent) 96%,
+        transparent 82%,
+        color-mix(in srgb, var(--color-navy-deep) 60%, transparent) 93%,
         var(--color-navy-deep) 100%
       );
     }
